@@ -1,0 +1,33 @@
+.chart-wrapper{
+    position: absolute;
+    height: 81%;
+    width: 93%;
+    display: flex;
+    flex-direction: row;
+}
+
+.option-column-chart-pop-up{
+    flex: 30%
+}
+
+.chart-column-chart-pop-up{
+    flex: 70%;
+}
+
+.option-column-chart-grid{
+    display:grid;
+    place-items: center;
+    justify-content: top;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.5rem;
+}
+
+.choices-for-grid {
+    position: relative; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    margin: auto;
+    width: 90%;
+    height: 100%;
+}

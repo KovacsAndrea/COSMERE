@@ -1,0 +1,24 @@
+.center{
+    align-items: center;
+    padding: 100px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    
+}
+.cardGrid {
+    display:grid;
+    place-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1rem;
+}
+
+.outOfInvestiture {
+    text-align: center; 
+}
+
+.outOfInvestitureParagraph {
+    color: rgb(211, 194, 141);
+    font-size: 2rem;
+    font-family: fantasy;
+    padding: 20px;
+}

@@ -1,0 +1,22 @@
+.footerBannerWrapper {
+    padding:100px;
+    padding-top: 50px;
+}
+
+.footerBanner {
+    width: 100%;
+    height: 1400px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.footerBannerCosmere {
+    width: 100%;
+    height: 300px; 
+    background-image: url("../../../../src/assets/photos/Cosmere.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 0px -4px 8px 0px rgb(173, 173, 173);
+}

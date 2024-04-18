@@ -1,0 +1,41 @@
+.expandItem{
+    margin-top: -8px;
+    background-color: var(--lighterGrey);
+    text-align: center;
+    margin-bottom: 5px;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.expandIcon{
+    margin: 0px;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--lighterGrey);
+}
+
+
+.expandContent{
+    text-align: center;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0,1,0,1);
+}
+
+.expandContent.show {
+    height: auto;
+    transition: all 0.5s cubic-bezier(1, 0, 1, 0);
+}
+
+.hiddenInfoMessage{
+    display: inline;
+    color: black;
+    font-size: 13px;
+    margin: 0;
+}
+
+.hiddenErrorMessage{
+    display:inline;
+    color:rgb(188, 146, 31);;
+    font-size: 13px;
+    margin: 0;
+}

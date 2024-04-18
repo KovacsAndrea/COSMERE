@@ -1,0 +1,26 @@
+.infoBanner{ 
+    padding: 40px;
+    padding-top: 100px;
+    padding-left: 100px;
+    padding-right: 100px;
+    align-content: center;
+    width: 100%;
+    margin:auto;
+    background-color: rgb(246, 246, 246);
+}
+.title{
+    color: rgb(211, 194, 141);
+    padding-left: 20px;
+    font-size: 4rem;
+    font-family: fantasy;
+    padding: 20px;
+}
+
+.paragraph{
+    color: black;
+    padding-left: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 20px;
+    font-size:18px;
+}

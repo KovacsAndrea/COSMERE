@@ -1,0 +1,27 @@
+.addButtonStyle {
+    background: rgb(205, 183, 119);
+    box-shadow: 0 2px 5px 0 rgb(173, 173, 173); 
+    color: white;
+    border: none;
+    font-size: 18px;
+    padding: .5rem .75rem;
+    border-radius: .25em;
+    cursor: pointer;
+    height: 50px;
+    width: 350px;
+}
+
+.addButtonStyle:hover{
+    background-color: rgb(187, 164, 100);
+}
+
+.addButtonStyle:focus{
+    outline: none;
+}
+
+.addButtonCenter{
+    text-align: center;
+    align-items: center;
+    padding-bottom: 20px;
+    width: 100%;
+}

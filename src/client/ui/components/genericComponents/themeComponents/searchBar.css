@@ -1,0 +1,34 @@
+.searchBox {
+    height: 40px;
+    width: 240px;
+    display:flex;
+    background:rgb(211, 194, 141);
+    border-radius: 5px;
+}
+
+.searchInput {
+    height: 100%;
+    width: 200px;
+    border: none;
+    outline: none;
+    padding: 0 10px;
+    border-radius: 5px 0px 0px 5px;
+    font-family: fantasy;
+    font-size: 16px;
+}
+
+.searchIcon {
+    height: 100%;
+    width: 40px;
+    text-align: right;
+    align-content: center;
+    padding: 8px;
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+  }
+
+.searchIcon:hover {
+    background-color: rgb(187, 164, 100);
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+  }

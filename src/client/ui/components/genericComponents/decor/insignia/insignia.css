@@ -1,0 +1,15 @@
+
+
+.patternCenter{
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    height: 300px; 
+}
+
+.pattern{
+    width: 300px; 
+    padding-top: 60px;
+    padding-bottom: 60px;
+}

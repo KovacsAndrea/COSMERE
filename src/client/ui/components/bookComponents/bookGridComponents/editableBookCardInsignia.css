@@ -1,0 +1,80 @@
+.editableBookCardInsigniaFlex{
+    display: flex;
+    width:100%;
+    align-items: center;
+}
+
+.editableBookCardInsigniaItem{
+    flex:1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.editableBookCardInsigniaItemPhotoLeftSmall{
+    width: 100px;
+    height: 400px;
+    margin-top:120px;
+    background-image: url("../../../../src/assets/photos/ShallanCutReversed.jpg");
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgb(173, 173, 173); 
+    margin-right: 30px;
+    margin-bottom: 20px;
+}
+.editableBookCardInsigniaItemPhotoLeft{
+    width: 150px;
+    height: 500px;
+    margin-top:120px;
+    background-image: url("../../../../src/assets/photos/ShallanCutReversed.jpg");
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgb(173, 173, 173); 
+    margin-bottom: 20px;
+}
+
+.editableBookCardInsigniaItemPhotoRight{
+    width:150px;
+    height: 500px;
+    margin-top:120px;
+    background-image: url("../../../../src/assets/photos/ShallanCut.jpg");
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgb(173, 173, 173); 
+    margin-bottom: 20px;
+}
+
+.editableBookCardInsigniaItemPhotoRightSmall{
+    width: 100px;
+    height: 400px;
+    margin-top:120px;
+    background-image: url("../../../../src/assets/photos/ShallanCut.jpg");
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgb(173, 173, 173); 
+    margin-left: 30px;
+    margin-bottom: 20px;
+}
+
+.editableBookCardInsigniaItemPhotoLeftSmall:hover{
+    box-shadow: 0 4px 8px 0 rgb(157, 157, 157);  
+}
+
+.editableBookCardInsigniaItemPhotoLeft:hover{
+    box-shadow: 0 4px 8px 0 rgb(157, 157, 157); 
+}
+
+.editableBookCardInsigniaItemPhotoRight:hover{
+    box-shadow: 0 4px 8px 0 rgb(157, 157, 157); 
+}
+
+.editableBookCardInsigniaItemPhotoRightSmall:hover{
+    box-shadow: 0 4px 8px 0 rgb(157, 157, 157); 
+}

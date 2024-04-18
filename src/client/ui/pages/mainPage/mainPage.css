@@ -1,0 +1,10 @@
+h1 {
+    text-align: center;
+    color: rgb(47, 47, 47);
+}
+
+.testPageStyle {
+    align-content: center;
+    margin: auto;
+    background-color: rgb(255, 255, 255);
+}
