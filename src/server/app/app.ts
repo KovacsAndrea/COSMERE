@@ -8,6 +8,8 @@ import { filterData } from "./api/routes/filterData";
 import { sortData } from "./api/routes/sortData";
 import { chartData } from "./api/routes/chartData";
 import { paginationData } from "./api/routes/paginationData";
+import chapterRouter from "./api/routes/chapterRoutes";
+
 
 const app = express();
 app.use(morgan('dev'));
@@ -30,6 +32,7 @@ app.use("/filter", filterData)
 app.use("/sort", sortData)
 app.use("/chart", chartData)
 app.use("/pagination", paginationData)
+app.use("/chapters", chapterRouter)
 
 app.get('/ping', (_req, _res) => {
     _res.status(200).send('Server is up and running.');

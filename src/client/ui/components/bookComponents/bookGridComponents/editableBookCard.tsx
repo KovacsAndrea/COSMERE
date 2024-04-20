@@ -16,7 +16,7 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const data = location.state;
+    const bookId = location.state;
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -40,7 +40,7 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
 const [fetchDataOnce, setFetchDataOnce] = useState(false);
 
 if (!fetchDataOnce) {
-    axios.get('http://localhost:4000/books/' + data)
+    axios.get('http://localhost:4000/books/' + bookId)
         .then(response => {
             let bookData = response.data.book;
             setName(bookData._title);
@@ -62,8 +62,6 @@ if (!fetchDataOnce) {
             if (bookData._title.length !== 0){
                 setCanBeDeleted(true);
             }
-
-            // Set the boolean state variable to true
             setFetchDataOnce(true);
         })
         .catch(error => {
@@ -95,7 +93,6 @@ if (!fetchDataOnce) {
         allFieldsAreValid = 
         (nameValidator &&
             descriptionValidator &&
-            chaptersValidator &&
             planetValidator &&
             systemValidator &&
             shardValidator && 
@@ -103,7 +100,6 @@ if (!fetchDataOnce) {
         anyFieldIsDifferent = 
         (name !== OGname
             || description !== OGdescription
-            || chapters !== OGchapters
             || planet !== OGplanet
             || system !== OGsystem
             || shard !== OGshard
@@ -138,7 +134,7 @@ if (!fetchDataOnce) {
         if(canBeDeleted){
                 let confirmation = window.confirm("Sure you want to delete this?");
                 if(confirmation){
-                    axios.delete('http://localhost:4000/books/' + data)
+                    axios.delete('http://localhost:4000/books/' + bookId)
                     navigate("/main");
             }
         }
@@ -148,9 +144,9 @@ if (!fetchDataOnce) {
         if(canBeSaved) {
             // if(rafoServ.containsBook(data) || rafoServ.isValidIdForNewBook(data))
             {
-                axios.delete('http://localhost:4000/books/' + data)
+                axios.delete('http://localhost:4000/books/' + bookId)
                 axios.post('http://localhost:4000/books', {
-                id: data,
+                id: bookId,
                 title: name,
                 description: description,
                 chaptersFormat: chapters,
@@ -188,6 +184,7 @@ if (!fetchDataOnce) {
                         descriptionAreaRef={descriptionAreaRef}/>
 
                     <ChaptersCardComponent 
+                        bookId={bookId}
                         chapters={chapters}
                         setChapters={setChapters}
                         chaptersValidator={chaptersValidator}

@@ -17,7 +17,8 @@ export const Theme: React.FC<{
     const location = useLocation();
     const navShouldBeDisplayed = (
             location.pathname == '/main' ||
-            location.pathname.startsWith('/details/') )
+            location.pathname.startsWith('/details/') || 
+            location.pathname.startsWith('/chapters'))
     return (
         <>
         {navShouldBeDisplayed === true ? 

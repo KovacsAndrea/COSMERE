@@ -47,7 +47,7 @@ export const MainPage: React.FC<{ searchText: any,
             <IntroBanner/>
             <ConnectionStatus />
             <Insignia resource="Kaladin.png"/>
-            <AddButton />
+            <AddButton link="/details/"/>
             <UtilitiesComponent 
             selectedPlanets={selectedPlanets} setSelectedPlanets={setSelectedPlanets}
             selectedSystems={selectedSystems} setSelectedSystems={setSelectedSystems}

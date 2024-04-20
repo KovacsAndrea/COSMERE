@@ -19,7 +19,7 @@ export const ChartContent: React.FC<{}> = ({}) => {
     const [backendDateData, setBackendDateData] = useState(null);
     const URL = 'http://localhost:5000';
 
-    const socket = io(URL);
+    const socket = io(URL, { reconnectionAttempts: 1 });
 
     const [socketIsConnected, setSocketIsConnected] = useState(socket.connected);
     const [stateType, setStateType] = useState("Server")
@@ -27,9 +27,10 @@ export const ChartContent: React.FC<{}> = ({}) => {
     const [socektSystemData, setSocketSystemData] = useState([])
     const [socketShardData, setSocketShardData] = useState([]);
     const [socketDateData, setSocketDateData] = useState([]);
+
+    
     useEffect(() => {
         function onPlanetDataFromSocket(data: any) {
-            console.log("planet data");
             setSocketPlanetData(data);
         }
     
@@ -62,6 +63,7 @@ export const ChartContent: React.FC<{}> = ({}) => {
         let dateInterval: NodeJS.Timeout | null = null;
     
         if (stateType === "Socket") {
+            socket.connect();
             if (chartContent === "Planets") {
                 console.log("Requesting planet data from socket");
                 socket.emit('requestPlanetData');
@@ -71,6 +73,9 @@ export const ChartContent: React.FC<{}> = ({}) => {
                     console.log("Requesting planet data from socket");
                 }, interval);
                 socket.on('planetDataFromSocket', onPlanetDataFromSocket);
+                if (systemInterval) clearInterval(systemInterval);
+                if (shardInterval) clearInterval(shardInterval);
+                if (dateInterval) clearInterval(dateInterval);
             } else if (chartContent === "Systems") {
                 console.log("Requesting system data from socket");
                 socket.emit('requestSystemData');
@@ -79,6 +84,9 @@ export const ChartContent: React.FC<{}> = ({}) => {
                     socket.emit('requestSystemData')
                     console.log("Requesting system data from socket");
                 }, interval)
+                if (planetInterval) clearInterval(planetInterval);
+                if (shardInterval) clearInterval(shardInterval);
+                if (dateInterval) clearInterval(dateInterval);
             } else if (chartContent === "Shards") {
                 console.log("Requesting shard data from socket");
                 socket.emit('requestShardData');
@@ -87,6 +95,9 @@ export const ChartContent: React.FC<{}> = ({}) => {
                     socket.emit('requestShardData')
                     console.log("requesting shard")
                 }, interval)
+                if (planetInterval) clearInterval(planetInterval);
+                if (systemInterval) clearInterval(systemInterval);
+                if (dateInterval) clearInterval(dateInterval);
             } else if (chartContent === "Dates") {
                 console.log("Requesting date data from socket");
                 socket.emit('requestDateData');
@@ -95,7 +106,21 @@ export const ChartContent: React.FC<{}> = ({}) => {
                     socket.emit('')
                     console.log("requesting dates")
                 }, interval)
+                if (planetInterval) clearInterval(planetInterval);
+                if (systemInterval) clearInterval(systemInterval);
+                if (shardInterval) clearInterval(shardInterval);
             }
+        }
+
+        if (stateType === "Server") {
+            socket.disconnect();
+            setSocketIsConnected(false); // Update socket connection status
+    
+            // Clear all intervals
+            if (planetInterval) clearInterval(planetInterval);
+            if (systemInterval) clearInterval(systemInterval);
+            if (shardInterval) clearInterval(shardInterval);
+            if (dateInterval) clearInterval(dateInterval);
         }
     
         return () => {
@@ -112,7 +137,7 @@ export const ChartContent: React.FC<{}> = ({}) => {
             } else if (chartContent === "Dates") {
                 socket.off('dateDataFromSocket', onDateDataFromSocket);
             }
-            if (planetInterval) {clearInterval(planetInterval);}
+            if(planetInterval) {clearInterval(planetInterval);}
             if(systemInterval) {clearInterval(systemInterval);}
             if(shardInterval) {clearInterval(shardInterval)}
             if(dateInterval) {clearInterval(dateInterval)}
@@ -181,19 +206,13 @@ export const ChartContent: React.FC<{}> = ({}) => {
             : 
             <>
             {chartType === "Pie" ? 
-                chartContent === "Planets" ?
-                <PieChartElement data = {backendPlanetData}/> : 
-                chartContent === "Systems" ?
-                <PieChartElement data = {backendSystemData}/> : 
-                chartContent === "Shards" ?
-                <PieChartElement data={backendShardData}/> :
+                chartContent === "Planets" ? <PieChartElement data = {backendPlanetData}/> : 
+                chartContent === "Systems" ? <PieChartElement data = {backendSystemData}/> : 
+                chartContent === "Shards" ? <PieChartElement data={backendShardData}/> :
                 <PieChartElement data={backendDateData}/> 
-            : chartContent === "Planets" ?
-                <BarChartElement data = {backendPlanetData}/> :
-                chartContent === "Systems" ?
-                <BarChartElement data = {backendSystemData}/> :
-                chartContent === "Shards" ?
-                <BarChartElement data = {backendShardData}/> :
+            : chartContent === "Planets" ? <BarChartElement data = {backendPlanetData}/> :
+                chartContent === "Systems" ? <BarChartElement data = {backendSystemData}/> :
+                chartContent === "Shards" ? <BarChartElement data = {backendShardData}/> :
                 <BarChartElement data = {backendDateData}/>
             }
             </>}

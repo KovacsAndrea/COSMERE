@@ -7,6 +7,9 @@ import { HomePage } from './client/ui/pages/homePage/homePage';
 import { MainPage } from './client/ui/pages/mainPage/mainPage';
 import { NoPage } from './client/ui/pages/noPage/noPage';
 import axios from "axios"
+import { ChapterPage } from './client/ui/pages/chapterPage/chapterPage';
+import { ChapterDetailPage } from './client/ui/pages/chapterPage/chapterDetailPage';
+import { ChaptersOfBookPage } from './client/ui/pages/chapterPage/chapterPerBookPage';
 
 
 export const backendPath = "http://localhost:4000/"
@@ -23,7 +26,16 @@ function App() {
       console.error('Error fetching backend data:', error);
     })
 }, []);
-  
+
+  const [chapterList, setChapterList] = useState([]);
+  useEffect(() => {
+    axios.get("http://localhost:4000/chapters").then( response => {
+      setChapterList(response.data.chapters);
+    }).catch (error => {
+      console.error('Error fetching backend data:', error);
+    })
+}, []);
+
   const [searchText, setSearchText] = useState("")
   const [searchShouldBeComputed, setSearchShouldBeComputed] = useState("")
   const [selectedPlanets, setSelectedPlanets] = useState([]);
@@ -65,6 +77,9 @@ function App() {
         paginationShouldBeComputed = {paginationShouldBeComputed} setPaginationShouldBeComputed = {setPaginationShouldBeComputed}
         />} />
         <Route path="/details/*" element={<BookPage />}/>
+        <Route path="/chapters" element={<ChapterPage chapterList = {chapterList} setChapterList = {setChapterList} />}/>
+        <Route path="/chapters/*" element={<ChapterDetailPage />}/>
+        <Route path='/chapters/book/*' element = {<ChaptersOfBookPage />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
       </Theme>

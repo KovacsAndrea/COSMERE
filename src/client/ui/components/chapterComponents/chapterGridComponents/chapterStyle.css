@@ -1,0 +1,8 @@
+.chapter-card-book-title{
+    font-weight: 600;
+    color:black;
+    font-size: .9rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; 
+}

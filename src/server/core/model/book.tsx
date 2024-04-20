@@ -1,8 +1,10 @@
+import { Chapter } from "./chapter";
+
 interface BookInterface {
     id: string;
     title: string;
     description: string;
-    chapters: string[];
+    chapters: Chapter[];
     planet: string;
     system: string;
     shard: string;
@@ -17,7 +19,7 @@ export class Book implements BookInterface{
     private _id: string;
     private _title: string;
     private _description: string;
-    private _chapters: string[];
+    private _chapters: Chapter[];
     private _planet: string;
     private _system: string;
     private _shard: string; 
@@ -27,8 +29,7 @@ export class Book implements BookInterface{
     constructor(id: string,
         title: string,
         description: string,
-        chaptersFormat: string,
-        chapters: string[],
+        chapters: Chapter[],
         planet: string,
         system: string,
         shard: string, 
@@ -37,19 +38,14 @@ export class Book implements BookInterface{
             this._title = title;
             this._description = description;
             this._chapters = chapters;
-            this._chaptersFormat = chaptersFormat;
             this._planet = planet; 
             this._system = system;
             this._shard = shard;
             this._startDate = startDate; 
-            this.initChapters();
+            this._chaptersFormat = this.formattedChapters();
         }
 
-    private initChapters(){
-        if (this._chapters.length !== 0){
-            this.chaptersFormat = this.formattedChapters();
-        }
-    }
+    
 
     public get id(){
         return this._id;
@@ -90,7 +86,7 @@ export class Book implements BookInterface{
     private formattedChapters(){
         let formattedChapters = "";
         for (let i = 0; i < this._chapters.length; i++) {
-            formattedChapters += `Ch.${i + 1}: ${this._chapters[i]}; `;
+            formattedChapters += `Ch.${i + 1}: ${this._chapters[i].title}; `;
         }
         formattedChapters = formattedChapters.slice(0, -2);
         return formattedChapters;
@@ -111,7 +107,7 @@ export class Book implements BookInterface{
         this._description = description;
     }
 
-    public set chapters(chapters: string[]){
+    public set chapters(chapters: Chapter[]){
         this._chapters = chapters;
     }
 

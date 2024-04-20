@@ -26,13 +26,20 @@ export const SearchBar: React.FC<{
             }
             setSearchShouldBeComputed(searchText)
     }
+    async function setCurrentPageToBeginning(){
+        console.log("pagination to beginning from search")
+        axios.patch("http://localhost:4000/pagination/current", {currentPage: 1})
+    }
 
     const handleChange = (message: any) => {
         setSearchText(message)
+        setSearchShouldBeComputed(message)
         if (message === ""){
             setSearchShouldBeComputed("NONE")
-            axios.patch("http://localhost:4000/pagination/current", {currentPage: 1})
+            setCurrentPageToBeginning()
         }
+        setCurrentPageToBeginning()
+        console.log(searchShouldBeComputed)
     }
     return (
         <li className="searchBox">

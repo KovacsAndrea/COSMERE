@@ -2,6 +2,7 @@
 import { Book } from "../model/book.tsx";
 import { generateRandomChapter, generateRandomDate, generateRandomDescription, generateRandomPlanet, generateRandomShard, generateRandomSystem, generateRandomTitle } from "../model/bookGenerator.tsx";
 import { BookValidator } from "../model/bookValidator.tsx";
+import { Chapter } from "../model/chapter.tsx";
 import { IdGenerator } from "../model/idGenerator.tsx";
 import { BookRepo } from "../repo/bookRepo.tsx";
 import { DataRepo } from "../repo/dataRepo.tsx";
@@ -102,13 +103,14 @@ export class BookServ implements BookIServ{
         const description = generateRandomDescription();
         const chaptersList = []
         for(let i = 1; i<=10; i++){
-            chaptersList.push(generateRandomChapter())
+            const chapter = new Chapter(i.toString(), id, i, generateRandomChapter(), generateRandomChapter(),10000, "Kal")
+            chaptersList.push(chapter)
         }
         const planet = generateRandomPlanet();
         const system = generateRandomSystem();
         const shard = generateRandomShard();
         const date = generateRandomDate();
-        const book = new Book(id, title, description, "", chaptersList, planet, system, shard, date);
+        const book = new Book(id, title, description, chaptersList, planet, system, shard, date);
         return book;
     }
     

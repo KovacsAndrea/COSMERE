@@ -3,7 +3,7 @@ import './addButton.css'
 import React, { useState } from "react"
 import axios from "axios";
 
-export const AddButton: React.FC<{}> = ({}) => {
+export const AddButton: React.FC<{link: string}> = ({link}) => {
     const [newBookId, setNewBookID] = useState("-1");
 
     async function fetchNewBookId() {
@@ -18,7 +18,7 @@ export const AddButton: React.FC<{}> = ({}) => {
     return(
         <>
         <div className="addButtonCenter">
-            <Link to ={`/details/${newBookId}`} state={newBookId}>
+            <Link to ={`${link}${newBookId}`} state={newBookId}>
                 <button className = "addButtonStyle">Expand Coppermind</button>
             </Link>
         </div>

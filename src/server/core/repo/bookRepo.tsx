@@ -32,7 +32,7 @@ export class BookRepo implements BookIRepo{
     }
 
     public getMockBook(id: string): Book {
-        return new Book(id, '', '', '', [], '', '', '', 0)
+        return new Book(id, '', '', [], '', '', '', 0)
     }
 
     public getBooksByName(searchText: string): Book[] {

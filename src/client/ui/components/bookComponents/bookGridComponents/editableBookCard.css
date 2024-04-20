@@ -230,3 +230,10 @@ textarea::-webkit-scrollbar {
     outline: none;
     outline-width: 0px;
 }
+
+.details-button-expand-chapters{
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+}
