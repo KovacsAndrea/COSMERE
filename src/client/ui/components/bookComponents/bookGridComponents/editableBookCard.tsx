@@ -104,12 +104,6 @@ if (!fetchDataOnce) {
             || system !== OGsystem
             || shard !== OGshard
             || startDate.toString() !== OGstartDate.toString())
-        // if(name !== book.title) console.log("name is different")
-        // if(description !== book.description) console.log("description is different")
-        // if(startDate !== book.startDate.toString()) console.log("year is different " + startDate + " " + book.startDate)
-        // console.log(startDate)
-        // console.log(book.startDate)
-
 
         console.log("Any fields are different valoarea: " + anyFieldIsDifferent)
         console.log("All fields are valid: " + allFieldsAreValid)

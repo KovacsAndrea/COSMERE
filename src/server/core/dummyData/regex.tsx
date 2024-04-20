@@ -7,5 +7,10 @@ export const REGEX = {
     description: /^.+$/,
     title: /^.+$/,
     content: /^.+$/,
-    id: /^[1-9]\d*$/
+    id: /^[1-9]\d*$/,
+
+    chapterTitle: /^.+$/,
+    chapterDescription: /^.+$/,
+    chapterWordCount: /^(100000|\d{1,5})$/,
+    pov: /^.+$/
 }

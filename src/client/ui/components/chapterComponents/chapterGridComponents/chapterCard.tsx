@@ -20,6 +20,16 @@ export const ChapterCard: React.FC <{
     wordcount,
     pov 
 }) => {
+    const editableChapterCardData = {
+        chapterId: chapterId,
+        bookId: bookId,
+        chapterNumber: chapterNumber,
+        title: title,
+        bookTitle: bookTitle,
+        description: description,
+        wordcount: wordcount,
+        pov: pov
+    }
     const chapterTitle = `Ch.${chapterNumber}: ${title}`
     return(
         <>
@@ -33,7 +43,7 @@ export const ChapterCard: React.FC <{
                 </div>
                 <div className="cardFooter">
                         <Link to ={`/chapters/${chapterId}`}
-                            state={chapterId}>
+                            state={ editableChapterCardData }>
                             <button className="edit">Details</button>
                         </Link>
                     <button className="delete">Delete</button>

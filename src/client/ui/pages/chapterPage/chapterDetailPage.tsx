@@ -3,8 +3,7 @@ import { EditableChapterCard } from "../../components/chapterComponents/editable
 export const ChapterDetailPage: React.FC<{}> = ({}) => {
     return (
         <>
-        <EditableChapterCard />
-
+        <EditableChapterCard/>
         </>
     )
 }
