@@ -129,6 +129,14 @@
     background-color: var(--darkerGrey);
 }
 
+.textAreaStyle.expandable {
+    background-color: var(--mediumGrey);
+}
+
+.textAreaStyle.expandable:hover {
+    background-color: var(--mediumGrey);
+}
+
 .textAreaStyleError:focus{
     outline: none;
 }
@@ -230,9 +238,26 @@ textarea::-webkit-scrollbar {
     outline-width: 0px;
 }
 
-.details-button-expand-chapters{
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    text-align: center;
+.expand-small-editable-section-style{
+    position: relative;
+   
+    right: 10px;
+}
+
+.expand-small-editable-section{
+    font-size: 30px;
+    color: rgb(71, 71, 71);
+    margin-top: 10px;
+    flex: 0;
+}
+
+.expandable-small-editable-section-grid{
+    background-color: var(--mediumGrey);
+    display: flex;
+    border-radius: 7px;
+    margin-bottom: 5px;
+}
+
+.expandable-small-editable-section-grid:hover{
+    background-color: var(--mediumGrey);
 }

@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import { AccordionCArdComponent } from '../acordionCardComponent/accordionCardComponent.tsx'
+import { FaExpandArrowsAlt } from "react-icons/fa";
 import { adjustAreaHeight, errorMessage, infoMessage, validateContent } from '../utils.tsx'
 import React from "react";
 import { REGEX } from '../../../../../server/core/dummyData/regex.tsx';
 import { Link } from 'react-router-dom';
+import { IoListCircle } from 'react-icons/io5';
 export const ChaptersCardComponent: React.FC<{
 bookId: any
  chapters: any
@@ -19,24 +21,28 @@ bookId: any
     const validateChapters = () => validateContent(chapters.toString(), REGEX.chapters, setChaptersValidator)
     return (
         <>
-            <div className="textAreaWrapper">
-                <textarea className = "textAreaStyle"
-                    value = {chapters}
-                    readOnly = {true}
-                    title = "Novel chapters"
-                    placeholder="Input novel chapters"
-                    id = "chapters"
-                    rows={1} 
-                    ref={chaptersAreaRef} > </textarea>
-                    <div className='details-button-expand-chapters'>
-                        <Link to ={`/chapters/book/${bookId}`}
-                            state={bookId}>
-                            <button className='discardButton'>Details</button>
-                        </Link>
+        <div className = "textAreaWrapper ">
+            <div className="expandable-small-editable-section-grid">
+                    <textarea className = "textAreaStyle expandable"
+                        value = {chapters}
+                        readOnly = {true}
+                        title = "Novel chapters"
+                        placeholder="Input novel chapters"
+                        id = "chapters"
+                        rows={1} 
+                        ref={chaptersAreaRef} > 
+                        </textarea>
                     
+                
+                    <div className='expand-small-editable-section-style'>
+                                <Link to ={`/chapters/book/${bookId}`}
+                                    state={bookId}>
+                                    <IoListCircle  className = "expand-small-editable-section"/>
+                                </Link>
                     </div>
-                <AccordionCArdComponent infoMessage={infoMessage.chapters} errorMessage={errorMessage.chapters} />
             </div>
+            <AccordionCArdComponent infoMessage={infoMessage.chapters} errorMessage={errorMessage.chapters} />
+        </div>
         </>
     )
 }

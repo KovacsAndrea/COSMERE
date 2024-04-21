@@ -30,7 +30,12 @@ export const infoMessage ={
     planet: "The Cosmere Planet where the novel unfolds. ",
     system: "The Planetary System of the Cosmere where the novel unfolds. ",
     shard: "The Shard that rules over the Planet. ",
-    startDate: "The year the book was published."
+    startDate: "The year the book was published.",
+
+    chapterTitle: "The title of the chapter.",
+    chapterDescription: "The description of your chapter.",
+    chapterWordcount: "The word count of the chapter.",
+    chapterPov: "The point of view form which the chapter is being told.",
 }
 export const errorMessage = {
     title: "Title can't be empty!",
@@ -39,5 +44,10 @@ export const errorMessage = {
     planet: "Planet can't be empty! Max 100 characters!",
     system: "System can't be empty! Max 100 characters!",
     shard: "Shard can't be empty! Max 100 characters!",
-    startDate: "Year can't be empty! Between -1000 and 1000!"
+    startDate: "Year can't be empty! Between -1000 and 1000!",
+
+    chapterTitle: "Can't be empty!.",
+    chapterDescription: "Description can't be empty!",
+    chapterWordcount: "Between 1 and 100000",
+    chapterPov: "Can't be empty. Unless we're talking about Hoid. Then things get a little murky. But nevermind that...",
 }

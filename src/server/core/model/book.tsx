@@ -1,4 +1,6 @@
+import { ObjectId } from "mongodb";
 import { Chapter } from "./chapter";
+
 
 interface BookInterface {
     id: string;

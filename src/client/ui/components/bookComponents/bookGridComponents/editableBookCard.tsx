@@ -16,7 +16,8 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const bookId = location.state;
+    const bookId = location.state.bookId ? location.state.bookId : location.state;
+    console.log("ALOO, am ID" + bookId.toString())
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");

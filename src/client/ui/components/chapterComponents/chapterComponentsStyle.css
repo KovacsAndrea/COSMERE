@@ -72,6 +72,11 @@
     outline: none;
 }
 
+.medium-editable-section-editable-entity-card.shadow{
+    box-shadow: 0 2px 5px 0 rgb(173, 173, 173);
+}
+
+
 .small-editable-section-editable-entity-card-wrapper{
     width: 100%;
     padding: 5px;
@@ -109,25 +114,125 @@
 }
 
 .circle-container {
+    padding-top: 90px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    
+}
+
+.left-side{
+    align-items:flex-end;
+
+}
+
+.right-side{
+    align-items:flex-start;
+
 }
 
 .circle {
-    width: 50px; /* Adjust size as needed */
-    height: 50px; /* Adjust size as needed */
-    background-color: blue;
+    
     border-radius: 50%; /* Make it a circle */
-    margin-bottom: 10px; /* Spacing between circles */
 }
 
 .big-circle {
-    width: 70px; /* Larger size for the middle circle */
+    width: 280px; /* Larger size for the middle circle */
+    height: 280px;
+    margin-left: 35px;
+    margin-right: 35px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 0px 6px 10px 0px rgba(151, 151, 151, 0.75);
+}
+
+.left-side-circle{
+    background-image: url("../../../../src/assets/photos/AssassinSquare.jpg");
+
+}
+
+.right-side-circle{
+    background-image: url("../../../../src/assets/photos/AssassinSquareReversed.jpg");
+    
 }
 
 .small-circle {
-    width: 40px; /* Smaller size for the top and bottom circles */
+    width: 130px; 
+    height: 130px;
+    margin-left: 35px;
+    margin-right: 35px; 
+    box-shadow: 0px 4px 8px 0px rgba(151, 151, 151, 0.75);
+}
+
+.minuscule-circle {
+    width: 40px; 
+    height: 40px;
+    margin-bottom: -20px;
+    margin-top: -20px;
+    box-shadow: 0px 4px 8px 0px rgba(151, 151, 151, 0.75);
+    background-image: url("../../../../src/assets/photos/AssassinSquareReversed.jpg");
+}
+
+.left-side-small-circle{
+    background-image: url("../../../../src/assets/photos/AssassinSquare.jpg");
+
+}
+
+.right-side-small-circle{
+    background-image: url("../../../../src/assets/photos/AssassinSquareReversed.jpg");
+    
 }
 
 
+.save-delete-discard-icons-wrapper{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-chapter-section{
+    font-size: 40px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.icon-chapter-section.disabled-chapter-icon{
+    color: rgb(205, 205, 205);
+}
+
+.icon-chapter-section.chapter-save,
+.icon-chapter-section.chapter-discard{
+    color: rgb(211, 194, 141);
+}
+
+.icon-chapter-section.chapter-save:hover,
+.icon-chapter-section.chapter-discard:hover{
+    color: rgb(187, 164, 100);
+}
+
+.icon-chapter-section.chapter-delete{
+    color: rgb(71, 71, 71);
+}
+
+.icon-chapter-section.chapter-delete:hover{
+    color: rgb(47, 47, 47);
+}
+
+.icon-chapter-section.chapter-nav{
+    font-size: 60px;
+    color: rgb(211, 194, 141);
+}
+
+.icon-chapter-section.chapter-nav:hover{
+    color: rgb(187, 164, 100);
+}
+
+
+.editable-chapter-card-insignia-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}

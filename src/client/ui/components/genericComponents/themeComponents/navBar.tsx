@@ -18,7 +18,7 @@ export const NavBar: React.FC<{
             <nav>
                 <ul>
                     <li className='logo'>
-                        <Link to = "/" className="cosmereLogo">THE COSMERE</Link>
+                        <Link to = "/main" className="cosmereLogo">THE COSMERE</Link>
                     </li>
                     <SearchBar 
                      searchText = {searchText} 

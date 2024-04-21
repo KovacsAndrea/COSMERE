@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import './chapterStyle.css'
 
 export const ChapterCard: React.FC <{
@@ -20,6 +20,7 @@ export const ChapterCard: React.FC <{
     wordcount,
     pov 
 }) => {
+    const navigate = useNavigate();
     const editableChapterCardData = {
         chapterId: chapterId,
         bookId: bookId,
@@ -31,6 +32,9 @@ export const ChapterCard: React.FC <{
         pov: pov
     }
     const chapterTitle = `Ch.${chapterNumber}: ${title}`
+    const handleEditChapter = () => {
+        navigate(`/chapters/${editableChapterCardData.chapterId}`, {state: {editableChapterCardData}})
+    }
     return(
         <>
             <div className="card"> 
@@ -42,10 +46,7 @@ export const ChapterCard: React.FC <{
                     <div className="cardContent">Point of view: {pov}</div>
                 </div>
                 <div className="cardFooter">
-                        <Link to ={`/chapters/${chapterId}`}
-                            state={ editableChapterCardData }>
-                            <button className="edit">Details</button>
-                        </Link>
+                    <button className="edit" onClick = {handleEditChapter}>Details</button>
                     <button className="delete">Delete</button>
                     </div>
             </div>

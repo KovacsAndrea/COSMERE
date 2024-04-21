@@ -4,9 +4,10 @@ import { useLocation } from "react-router-dom";
 import { ChapterGrid } from "../../components/chapterComponents/chapterGridComponents/chapterGrid";
 import { Insignia } from "../../components/genericComponents/decor/insignia/insignia";
 import './chapterPages.css'
+import { ChapterNavigationComponent } from "../../components/chapterComponents/chapterNavigationComponent";
 export const ChaptersOfBookPage: React.FC<{}> = ({}) => {
     const location = useLocation();
-    const bookId = location.state;
+    const bookId = location.state.bookId ? location.state.bookId : location.state;
     const [chapterList, setChapterList] = useState([]);
     const [bookTitle, setBookTitle] = useState("")
     useEffect(() => {
@@ -22,6 +23,7 @@ export const ChaptersOfBookPage: React.FC<{}> = ({}) => {
         <>
             <div className="chapter-page-wrapper">
             <Insignia resource="Kaladin.png" /> 
+            <ChapterNavigationComponent bookId={bookId} bookTitle={bookTitle}/>
             <ChapterGrid chapterList={chapterList} bookTitle = {bookTitle}/>
             <Insignia resource="Kaladin.png" /> 
             </div>

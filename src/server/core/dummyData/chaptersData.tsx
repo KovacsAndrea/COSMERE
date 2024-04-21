@@ -253,9 +253,9 @@ export const tEMChapters: Chapter[] = [
 ];
 
 export const AJPEChapters: Chapter[] = [
-    new Chapter('211', '21', 1, 'Episode 28: The Mists of Elendel', 'Jak faces mysterious mists and unexpected challenges in the city of Elendel.', 0, 'Jak'),
-    new Chapter('212', '21', 2, 'Episode 29: The Pit of Chaos', 'Jak navigates the chaotic pit with wit and Allomantic prowess.', 0, 'Jak'),
-    new Chapter('213', '21', 3, 'Episode 30: The Final Showdown', 'Jak confronts his greatest adversary in the ultimate showdown.', 0, 'Jak')
+    new Chapter('211', '21', 1, 'Episode 28: The Mists of Elendel', 'Jak faces mysterious mists and unexpected challenges in the city of Elendel.', 23000, 'Jak'),
+    new Chapter('212', '21', 2, 'Episode 29: The Pit of Chaos', 'Jak navigates the chaotic pit with wit and Allomantic prowess.', 24000, 'Jak'),
+    new Chapter('213', '21', 3, 'Episode 30: The Final Showdown', 'Jak confronts his greatest adversary in the ultimate showdown.', 25000, 'Jak')
 ];
 
 export const WSIChapters: Chapter[] = [
