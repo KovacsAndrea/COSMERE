@@ -1,8 +1,8 @@
 
+import { ObjectId } from "mongodb";
 import { Book } from "../model/book.tsx";
-import { generateRandomChapter, generateRandomDate, generateRandomDescription, generateRandomPlanet, generateRandomShard, generateRandomSystem, generateRandomTitle } from "../model/bookGenerator.tsx";
+import { generateRandomDate, generateRandomDescription, generateRandomPlanet, generateRandomShard, generateRandomSystem, generateRandomTitle } from "../model/bookGenerator.tsx";
 import { BookValidator } from "../model/bookValidator.tsx";
-import { Chapter } from "../model/chapter.tsx";
 import { IdGenerator } from "../model/idGenerator.tsx";
 import { BookRepo } from "../repo/bookRepo.tsx";
 import { DataRepo } from "../repo/dataRepo.tsx";
@@ -101,16 +101,11 @@ export class BookServ implements BookIServ{
         const id = this.getNewBookId();
         const title = generateRandomTitle();
         const description = generateRandomDescription();
-        const chaptersList = []
-        for(let i = 1; i<=10; i++){
-            const chapter = new Chapter(i.toString(), id, i, generateRandomChapter(), generateRandomChapter(),10000, "Kal")
-            chaptersList.push(chapter)
-        }
         const planet = generateRandomPlanet();
         const system = generateRandomSystem();
         const shard = generateRandomShard();
         const date = generateRandomDate();
-        const book = new Book(id, title, description, chaptersList, planet, system, shard, date);
+        const book = new Book(new ObjectId(id), title, description, planet, system, shard, date);
         return book;
     }
     
@@ -237,8 +232,12 @@ export class BookServ implements BookIServ{
         return flooredNr + 1;
     }
 
-    public useDummyData(): void {
-        this.rafoRepo.useDummyData();
+    public useLocalData(): void {
+        this.rafoRepo.useLocalData();
+    }
+
+    public useCloudData(bookList: any): void {
+        this.rafoRepo.useCloudData(bookList)
     }
 
     public getBookById(id: string): Book | undefined {

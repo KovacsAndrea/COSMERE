@@ -10,6 +10,14 @@ chapterRouter.get("/", (_req, _res, _next) => {
     })
 })
 
+chapterRouter.get("/format/:bookId", (_req, _res, _next) => {
+    const bookId = _req.params.bookId;
+    const chaptersFormat = chapterRepo.getChapterFormat(bookId);
+    _res.status(200).json({
+        chaptersFormat: chaptersFormat
+    })
+})
+
 chapterRouter.get("/:bookId", (_req, _res, _next) => {
     const bookId = _req.params.bookId;
     const chapters = chapterRepo.getChaptersForBookId(bookId);

@@ -5,26 +5,39 @@ import { ChapterGrid } from "../../components/chapterComponents/chapterGridCompo
 import { Insignia } from "../../components/genericComponents/decor/insignia/insignia";
 import './chapterPages.css'
 import { ChapterNavigationComponent } from "../../components/chapterComponents/chapterNavigationComponent";
+import { useGlobalState } from "../../../../globalVariables";
 export const ChaptersOfBookPage: React.FC<{}> = ({}) => {
     const location = useLocation();
-    const bookId = location.state.bookId ? location.state.bookId : location.state;
+    const bookData = location.state.bookData;
+    console.log("HELLO FROM CHAPTER GRID PAGE" + bookData)
+    const bookId = bookData.id;
     const [chapterList, setChapterList] = useState([]);
     const [bookTitle, setBookTitle] = useState("")
+    const {usingLocal} = useGlobalState();
+
     useEffect(() => {
-        axios.get("http://localhost:4000/chapters/" + bookId). then(response => {
-            setChapterList(response.data.chapters);
-        })
-        axios.get("http://localhost:4000/books/" + bookId). then(response => {
-            setBookTitle(response.data.book._title);
-        })
+        async function useLocalData() {
+            axios.get("http://localhost:4000/chapters/" + bookId). then(response => {
+                setChapterList(response.data.chapters);
+            })
+            axios.get("http://localhost:4000/books/" + bookId). then(response => {
+                setBookTitle(response.data.book._title);
+            })
+        }
+        async function useCloudData() {
+            console.log(" -----------USING CLOUD DATA -----------")
+        }
+       if(usingLocal){useLocalData()} else {useCloudData()}
+
+        
     }, []) 
 
     return (
         <>
             <div className="chapter-page-wrapper">
             <Insignia resource="Kaladin.png" /> 
-            <ChapterNavigationComponent bookId={bookId} bookTitle={bookTitle}/>
-            <ChapterGrid chapterList={chapterList} bookTitle = {bookTitle}/>
+            <ChapterNavigationComponent bookData = {bookData}/>
+            <ChapterGrid chapterList={chapterList} bookData = {bookData}/>
             <Insignia resource="Kaladin.png" /> 
             </div>
         </>

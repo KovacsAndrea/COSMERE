@@ -1,12 +1,14 @@
 import axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
+import { useGlobalState } from "../../../../../globalVariables";
 
 
 export const CheckboxButton: React.FC<{name: string, category: string, selectedStuff: any, setSelectedStuff: any}> = ({name, category, selectedStuff, setSelectedStuff}) => {
     let listItems: string[] = selectedStuff;
     let checked = listItems.includes(name);
 
+    const {usingLocal} = useGlobalState();
     const [isChecked, setIsChecked] = useState(checked)
 
     useEffect(() => {
@@ -20,18 +22,24 @@ export const CheckboxButton: React.FC<{name: string, category: string, selectedS
     }, [isChecked, selectedStuff])
 
     const handleChange = (e: any) => {
-        const newValue = e.target.checked;
-        axios.patch("http://localhost:4000/pagination/current", {currentPage: 1})
-        setIsChecked(newValue); 
-        console.log(newValue);
-        if (listItems.includes(name)){
-            listItems = listItems.filter(item => item !== name);
+        async function useLocalData() {
+            const newValue = e.target.checked;
+            axios.patch("http://localhost:4000/pagination/current", {currentPage: 1})
+            setIsChecked(newValue); 
+            console.log(newValue);
+            if (listItems.includes(name)){
+                listItems = listItems.filter(item => item !== name);
+            }
+            else {
+                listItems.push(name);
+            }
+            setSelectedStuff(listItems);
+            axios.patch("http://localhost:4000/filter/" + category, {data: listItems})
         }
-        else {
-            listItems.push(name);
+        async function useCloudData() {
+            console.log(" -----------USING CLOUD DATA -----------")
         }
-        setSelectedStuff(listItems);
-        axios.patch("http://localhost:4000/filter/" + category, {data: listItems})
+        if(usingLocal){useLocalData()} else {useCloudData()}
     };
 
 

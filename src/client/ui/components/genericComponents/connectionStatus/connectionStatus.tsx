@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import './connectionStatus.css'
+import { useGlobalState } from '../../../../../globalVariables';
+
+
 async function checkInternetConnection(): Promise<boolean> {
     try {
         const response = await fetch("https://api.ipify.org?format=json", { method: "GET" });
@@ -18,11 +21,11 @@ async function checkServerStatus(): Promise<boolean> {
     }
 }
 export const ConnectionStatus: React.FC<{}> = ({}) => {
-    const [isConnected, setIsConnected] = useState(true);
-    const [serverIsRunning, setServerIsRunning] = useState(true);
+    const { clientIsConnectedToInternet, setClientIsConnectedToInternet } = useGlobalState();
+    const { serverIsRunning, setServerIsRunning} = useGlobalState();
     useEffect(() => {
         checkInternetConnection().then((connected) => {
-            setIsConnected(connected);
+            setClientIsConnectedToInternet(connected);
         });
     }, []);
     
@@ -34,7 +37,7 @@ export const ConnectionStatus: React.FC<{}> = ({}) => {
     return (
         <>
         {
-            isConnected === false || serverIsRunning === false ?
+            clientIsConnectedToInternet === false || serverIsRunning === false ?
             <>
 
 <div className='status-alert-grid'>
@@ -42,7 +45,7 @@ export const ConnectionStatus: React.FC<{}> = ({}) => {
                 <div className='left-background-image-status-component'></div>
             </div>
         <div className = "status-alert-component">
-                {isConnected === true ? <></> :
+                {clientIsConnectedToInternet === true ? <></> :
                     <p className="check-internet-conneciton"> It seems that your internet connection is not working at the moment. </p>}
                     {serverIsRunning === true ? <></> :
                     <p className="check-internet-conneciton"> Oops! We are currently having issues with our server. Please come back later. </p>}

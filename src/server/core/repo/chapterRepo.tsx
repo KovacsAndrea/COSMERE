@@ -1,4 +1,4 @@
-import { dummyRafo } from "../dummyData/booksData";
+import { AJPEChapters, SSFHChapters, TSMChapters, WSIChapters, WSIIChapters, WSIIIChapters, bomChapters, dsChapters, edChapters, elChapters, lmChapters, obChapters, rowChapters, shChapters, soChapters, tEMChapters, tHoAChapters, tHoEChapters, tWoAChapters, teSChapters, tfeChapters, tressChapters, wbChapters, wokChapters, worChapters, yumiChapters } from "../dummyData/chaptersData";
 import { Chapter } from "../model/chapter";
 
 export class ChapterRepo{
@@ -17,8 +17,34 @@ export class ChapterRepo{
     }
 
     public useDummyData(): void {
-        var chapterList = dummyRafo.flatMap(book => book.chapters)
-        this._chapters = chapterList;
+        this._chapters = ([] as Chapter[]).concat(
+            ...wokChapters,
+            ...worChapters,
+            ...obChapters,
+            ...rowChapters,
+            ...edChapters,
+            ...dsChapters,
+            ...tfeChapters,
+            ...tWoAChapters,
+            ...tHoAChapters,
+            ...shChapters,
+            ...soChapters,
+            ...bomChapters,
+            ...lmChapters,
+            ...yumiChapters,
+            ...tressChapters,
+            ...wbChapters,
+            ...elChapters,
+            ...tHoEChapters,
+            ...teSChapters,
+            ...tEMChapters,
+            ...AJPEChapters,
+            ...WSIChapters,
+            ...WSIIChapters,
+            ...WSIIIChapters,
+            ...SSFHChapters,
+            ...TSMChapters,
+        )
     }
 
     public getChaptersForBookId(bookId: string): Chapter[] {
@@ -29,5 +55,17 @@ export class ChapterRepo{
     public getChapterById(chapterId: string){
         let bookChapter = this._chapters.find(chapter => chapter.id === chapterId)
         return bookChapter;
+    }
+
+    public getChapterFormat(bookId: string): string {
+        let bookChapters = this._chapters.filter(chapter => chapter.book_id === bookId);
+        let formattedChapters: string[] = [];
+    
+        bookChapters.forEach(chapter => {
+            let formattedChapter = `Ch.${chapter.chapter_number}: ${chapter.title}`;
+            formattedChapters.push(formattedChapter);
+        });
+    
+        return formattedChapters.join(', ');
     }
 }

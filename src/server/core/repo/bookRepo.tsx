@@ -1,6 +1,7 @@
 import { Book } from "../model/book.tsx";
 import { dummyRafo } from "../dummyData/booksData.tsx";
 import { BookIRepo } from "./bookIRepo.tsx";
+import { ObjectId } from "mongodb";
 
 export class BookRepo implements BookIRepo{
     private rafo: Book[];
@@ -14,8 +15,12 @@ export class BookRepo implements BookIRepo{
 
     }
 
-    public useDummyData(): void {
+    public useLocalData(): void {
         this.rafo = dummyRafo
+    }
+
+    public useCloudData(bookList: any): void {
+        this.rafo = bookList;
     }
 
     public containsBook(id: string): boolean {
@@ -32,7 +37,7 @@ export class BookRepo implements BookIRepo{
     }
 
     public getMockBook(id: string): Book {
-        return new Book(id, '', '', [], '', '', '', 0)
+        return new Book(new ObjectId(id), '', '', '', '', '', 0)
     }
 
     public getBooksByName(searchText: string): Book[] {

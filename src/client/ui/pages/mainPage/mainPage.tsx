@@ -8,13 +8,13 @@ import { Insignia } from "../../components/genericComponents/decor/insignia/insi
 import { UtilitiesComponent } from "../../components/sortFilterComponents/sortFilterChartComponent.tsx";
 
 import { ConnectionStatus } from "../../components/genericComponents/connectionStatus/connectionStatus.tsx";
+import { useGlobalState } from "../../../../globalVariables.tsx";
 
 
 // Usage
 
 export const MainPage: React.FC<{ searchText: any,  
     searchShouldBeComputed: any,
-    bookList: any, setBookList:any, 
     selectedPlanets: any, setSelectedPlanets: any,
     selectedSystems: any, setSelectedSystems: any,
     selectedShards: any, setSelectedShards: any,
@@ -26,7 +26,7 @@ export const MainPage: React.FC<{ searchText: any,
     paginationValue: any, setPaginationValue: any
     paginationShouldBeComputed: any, setPaginationShouldBeComputed: any,
 }> = 
-    ({searchText, searchShouldBeComputed ,bookList, setBookList, 
+    ({searchText, searchShouldBeComputed,
     selectedPlanets, setSelectedPlanets,
     selectedSystems, setSelectedSystems,
     selectedShards, setSelectedShards,
@@ -39,6 +39,9 @@ export const MainPage: React.FC<{ searchText: any,
     paginationShouldBeComputed, setPaginationShouldBeComputed,
 }) => {
     
+    //const { bookList, setBookList} = useGlobalState()
+    const { mongoBookList, setMongoBookList} = useGlobalState();
+    const { usingLocal } = useGlobalState();
     
     return (
         <>
@@ -47,6 +50,10 @@ export const MainPage: React.FC<{ searchText: any,
             <IntroBanner/>
             <ConnectionStatus />
             <Insignia resource="Kaladin.png"/>
+            {usingLocal === false? <p>WE ARE USING DATA FROM DATABASE</p> : <></>}
+            {/* {mongoBookList.map( (book: any) => 
+                <p>{book._id.toString()}</p>
+            )} */}
             <AddButton link="/details/"/>
             <UtilitiesComponent 
             selectedPlanets={selectedPlanets} setSelectedPlanets={setSelectedPlanets}
@@ -65,8 +72,8 @@ export const MainPage: React.FC<{ searchText: any,
             <BookGrid 
             searchText = {searchText} 
             searchShouldBeComputed = {searchShouldBeComputed}
-            bookList = {bookList}
-            setBookList = {setBookList}
+            bookList = {mongoBookList}
+            setBookList = {setMongoBookList}
             filterShouldBeComputed = {filterShouldBeComputed}
             sortShouldBeComputed = {sortShouldBeComputed}
             paginationShouldBeComputed = {paginationShouldBeComputed}

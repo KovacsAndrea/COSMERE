@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import React from "react";
+import { useGlobalState } from "../../../../../globalVariables";
 
 export const RadioButton: React.FC<{name: string, category: string, 
     sortCriteria: any, setSortCriteria: any, 
@@ -10,12 +11,22 @@ export const RadioButton: React.FC<{name: string, category: string,
     sortCriteria, setSortCriteria,
     sortDirection, setSortDirection
 }) => {
+    
+    const {usingLocal} = useGlobalState()
     const handleClick = () =>{
-        console.log("am dat click")
-        setSortCriteria(category)
-        setSortDirection(name)
-        axios.patch("http://localhost:4000/sort/criteria", { sortCriteria: category})
-        axios.patch("http://localhost:4000/sort/direction", { sortDirection: name})
+        async function useLocalData() {
+            console.log("am dat click")
+            setSortCriteria(category)
+            setSortDirection(name)
+            axios.patch("http://localhost:4000/sort/criteria", { sortCriteria: category})
+            axios.patch("http://localhost:4000/sort/direction", { sortDirection: name})
+                    
+        }
+        async function useCloudData() {
+            console.log(" -----------USING CLOUD DATA -----------")
+        }
+       if(usingLocal){useLocalData()} else {useCloudData()}
+        
     }
 
     const handleChange = () =>{

@@ -4,6 +4,7 @@ import './bookTable.css'
 import React from "react";
 import axios from "axios";
 import { PaginationButton } from "../../genericComponents/paginationButton/paginationButton.tsx";
+import { useGlobalState } from "../../../../../globalVariables.tsx";
 
 const BookTable: React.FC<{ searchText: string, 
     searchShouldBeComputed: any
@@ -12,27 +13,25 @@ const BookTable: React.FC<{ searchText: string,
     filterShouldBeComputed: any
     sortShouldBeComputed: any
     paginationShouldBeComputed: any
-    setStuffChanged: any
     backendCurrentPage: any
     setBackendCurrentPage: any
     setMaxPageNr: any
 }> = 
 ({ searchText, searchShouldBeComputed, bookList, setBookList, filterShouldBeComputed,
-    sortShouldBeComputed, paginationShouldBeComputed, setStuffChanged, backendCurrentPage, setBackendCurrentPage, setMaxPageNr
+    sortShouldBeComputed, paginationShouldBeComputed, backendCurrentPage, setBackendCurrentPage, setMaxPageNr
 }) => {
-    let listItems = bookList;
     const [deleteBook, setDeleteBook] = useState("")
     
+    const { usingLocal } = useGlobalState();
     useEffect(() => {
-        
-        let currentSearchText = searchShouldBeComputed
+        async function useLocalData() {
+            let currentSearchText = searchShouldBeComputed
         if( currentSearchText === "" ) {
             currentSearchText = "NONE"
         }
   
         if(filterShouldBeComputed ){
             console.log("FAKEM Filter")
-            // setStuffChanged(true)
             updatePaginationButton();
             axios.get("http://localhost:4000/books/search/" + currentSearchText).then( response => {
                 setBookList(response.data.books);
@@ -71,13 +70,10 @@ const BookTable: React.FC<{ searchText: string,
             updatePaginationButton();
         }
         
-        //if(searchShouldBeComputed !== "NONE") {            setCurrentPageToBeginning()}
-
         if(searchShouldBeComputed){
             console.log("FAKEM SEARCH")
             console.log("Search text -> " + currentSearchText)
             updatePaginationButton()
-            // setStuffChanged(true)
             axios.get("http://localhost:4000/books/search/" + currentSearchText).then( response => {
                 setBookList(response.data.books);
                 
@@ -92,7 +88,6 @@ const BookTable: React.FC<{ searchText: string,
             console.log("PAginare: search text -> " + currentSearchText)
 
             updatePaginationButton()
-            // setStuffChanged(true)
             axios.get("http://localhost:4000/books/search/" + currentSearchText).then( response => {
                 setBookList(response.data.books);
                 
@@ -120,7 +115,15 @@ const BookTable: React.FC<{ searchText: string,
         }
         console.log(currentSearchText)
         console.log(backendCurrentPage)
-    
+        }
+
+
+        async function useCloudData() {
+            //do stuff here
+        }
+
+
+        if(usingLocal){useLocalData()} else {useCloudData()}
     }, [deleteBook, backendCurrentPage, searchShouldBeComputed, filterShouldBeComputed, paginationShouldBeComputed, sortShouldBeComputed])
 
 
@@ -170,24 +173,31 @@ export const BookGrid: React.FC<{ searchText: string,
 }) => {
     const [backendCurrentPage, setBackendCurrentPage] = useState(1);
     const [maxPageNr, setMaxPageNr] = useState(1);
-    const [stuffChanged, setStuffChanded] = useState(false)
+    const { usingLocal } = useGlobalState();
     useEffect(() => {
-        let currentSearchText = searchShouldBeComputed
-        if( currentSearchText === "" ) {
-            currentSearchText = "NONE"
-        }
         async function updatePaginationButton() {
-            axios.get("http://localhost:4000/pagination/current").then( response => {
-            setBackendCurrentPage(response.data.currentPage)
-            })
-            axios.get("http://localhost:4000/pagination/max").then( response => {
-                setMaxPageNr(response.data.maxPage)
-            })
-            axios.get("http://localhost:4000/books/search/" + currentSearchText).then( response => {
-            setBookList(response.data.books);
-            }).catch (error => {
-            console.error('Error fetching backend data:', error);
-            })
+            let currentSearchText = searchShouldBeComputed
+            if( currentSearchText === "" ) {
+                currentSearchText = "NONE"
+            }
+            async function useLocalData() {
+                axios.get("http://localhost:4000/pagination/current").then( response => {
+                    setBackendCurrentPage(response.data.currentPage)
+                    })
+                    axios.get("http://localhost:4000/pagination/max").then( response => {
+                        setMaxPageNr(response.data.maxPage)
+                    })
+                    axios.get("http://localhost:4000/books/search/" + currentSearchText).then( response => {
+                    setBookList(response.data.books);
+                    }).catch (error => {
+                    console.error('Error fetching backend data:', error);
+                    })
+                    
+            }
+            async function useCloudData() {
+                console.log(" -----------USING CLOUD DATA -----------")
+            }
+           if(usingLocal){useLocalData()} else {useCloudData()}
         }
         updatePaginationButton();
     }, [])
@@ -195,10 +205,6 @@ export const BookGrid: React.FC<{ searchText: string,
         <div className = "center">
         
         <PaginationButton 
-                setBookList = {setBookList}
-                stuffChanged = {stuffChanged}
-                setStuffChanged = {setStuffChanded}
-                searchShouldBeComputed ={searchShouldBeComputed}
                 backendCurrentPage={backendCurrentPage}
                 setBackendCurrentPage = {setBackendCurrentPage}
                 maxPageNr={maxPageNr}/>
@@ -212,7 +218,6 @@ export const BookGrid: React.FC<{ searchText: string,
                 filterShouldBeComputed = {filterShouldBeComputed}
                 sortShouldBeComputed = {sortShouldBeComputed}
                 paginationShouldBeComputed = {paginationShouldBeComputed}
-                setStuffChanged = {setStuffChanded}
                 backendCurrentPage={backendCurrentPage}
                 setBackendCurrentPage = {setBackendCurrentPage}
                 setMaxPageNr = {setMaxPageNr}

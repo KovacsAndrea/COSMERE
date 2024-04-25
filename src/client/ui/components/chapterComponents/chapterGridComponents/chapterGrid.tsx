@@ -2,9 +2,9 @@ import { ChapterCard } from "./chapterCard"
 
 export const ChapterGrid: React.FC<{
     chapterList:any, 
-    bookTitle: any}> = ({
+    bookData: any}> = ({
         chapterList,
-        bookTitle
+        bookData
     }) => {
     return(
         <>
@@ -16,7 +16,7 @@ export const ChapterGrid: React.FC<{
                 bookId={chapter._book_id} 
                 chapterNumber={chapter._chapter_number} 
                 title={chapter._title} 
-                bookTitle = {bookTitle}
+                bookData = {bookData}
                 description={chapter._description} 
                 wordcount={chapter._wordcount} 
                 pov = {chapter._pov}

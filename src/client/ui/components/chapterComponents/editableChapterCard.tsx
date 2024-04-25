@@ -1,22 +1,32 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import './chapterComponentsStyle.css'
 import { useEffect, useRef, useState } from "react";
-import { FaBook } from "react-icons/fa";
 import { adjustAreaHeight, adjustAreaHeightGrid, errorMessage, infoMessage, validateContent } from "../bookComponents/utils";
 import { REGEX } from "../../../../server/core/dummyData/regex";
-import { IoCheckmarkCircle, IoFilterCircle, IoInformationCircle } from "react-icons/io5";
+import { IoCheckmarkCircle, IoInformationCircle } from "react-icons/io5";
 import { IoCloseCircle } from "react-icons/io5";
 import { IoChevronBackCircle } from "react-icons/io5";
 import { AccordionCArdComponent } from "../bookComponents/acordionCardComponent/accordionCardComponent";
+import ErrorComponent from "../../../errorComponent";
 
 export const EditableChapterCard: React.FC<{}> = ({}) => {
+    
     const location = useLocation();
     const navigate = useNavigate();
+    const handleBackToBook = () => {
+        navigate(`/details/${bookData}`, { state: { bookData } })
+    }
+    const bookData = location.state.editableChapterCardData.bookData;
 
+    const handlebackToGrid = () => {
+        navigate(`/chapters/book/${bookData}`, { state: { bookData } })
+    }
+
+    try{
     const bookId = location.state.editableChapterCardData.bookId
     const chapterId = location.state.editableChapterCardData.chapterId;
     const chapterNumber = location.state.editableChapterCardData.chapterNumber;
-    const bookTitle = location.state.editableChapterCardData.bookTitle;
+    const bookTitle = bookData.title
 
     const [title, setTitle] = useState(location.state.editableChapterCardData.title);
     const [description, setDescription] = useState(location.state.editableChapterCardData.description);
@@ -109,7 +119,7 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
         if(canBeSaved){
             let confirmation = window.confirm("Book can be saved but not implemented yet")
             if(confirmation){
-                navigate(`/chapters/book/${bookId}`, { state: { bookId } })
+                navigate(`/chapters/book/${bookData}`, { state: { bookData } })
             }
         }
     }
@@ -118,7 +128,7 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
         if(canBeDeleted){
             let confirmation = window.confirm("Book can be DELETED but not implemented yet")
             if(confirmation){
-                navigate(`/chapters/book/${bookId}`, { state: { bookId } })
+                navigate(`/chapters/book/${bookData}`, { state: { bookData } })
             }
         }
     }
@@ -127,15 +137,13 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
         if(anyFieldIsDifferent){
             let confirmation = window.confirm("Discard changes made?")
             if(confirmation){
-                navigate(`/chapters/book/${bookId}`, { state: { bookId } })
+                navigate(`/chapters/book/${bookData}`, { state: { bookData } })
             }
-        }else{navigate(`/chapters/book/${bookId}`, { state: { bookId } })}
+        }else{navigate(`/chapters/book/${bookData}`, { state: { bookData } })}
 
     }
 
-    const handleBackToBook = () => {
-        navigate(`/details/${bookId}`, { state: { bookId } })
-    }
+    
 
     const updateSaveIconStatus = (chapterCanBeSaved: boolean) => {
         console.log("FaKEM MARE STIl")
@@ -242,4 +250,20 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
             </div>
         </div>
     </>)
+
+} catch(error) {
+    return (
+        <>
+        <div className = 'editable-entity-card-style'>
+            <div className="editable-entity-card-wrapper">
+            <ErrorComponent message={"Had some problems with chapters!"}/>
+            <div className = "save-delete-discard-icons-wrapper">
+                    <IoChevronBackCircle className = "icon-chapter-section chapter-discard" onClick={handlebackToGrid}/>
+                    <IoInformationCircle className = "icon-chapter-section chapter-discard" onClick={handleBackToBook}/>
+                </div>
+            </div>
+        </div>
+        </>
+    )
+}
 }

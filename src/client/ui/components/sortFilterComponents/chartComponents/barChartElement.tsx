@@ -1,7 +1,9 @@
 import { BarChart } from '@mui/x-charts/BarChart';
 import React from 'react';
+import ErrorComponent from '../../../../errorComponent';
 
 export const BarChartElement: React.FC<{data: any}> = ({data}) => {
+  const errorMessage = "Data is empty. Cannot display bar chart.";
     const chartSetting = {
         xAxis: [
           {
@@ -11,7 +13,8 @@ export const BarChartElement: React.FC<{data: any}> = ({data}) => {
         width: 630,
         height: 400,
       };
-    console.log("BARRRRRRRRRRRRRRRRR CHART DATA" + data)
+    try{
+      
     return (
         <>
         {data.toString().length !==0 ? <BarChart
@@ -24,8 +27,18 @@ export const BarChartElement: React.FC<{data: any}> = ({data}) => {
           left: 130,
         }}
         {...chartSetting}
-        /> : <></>}
+        /> : <ErrorComponent message={errorMessage} />}
         
         </>
     );
+  } catch (error: any) {
+    return (
+      <>
+      {error.message === "Cannot read properties of null (reading 'toString')" ? 
+      <ErrorComponent message={"Something went wrong while fetching data!"}  /> : 
+      <ErrorComponent message={error.message}  />}
+      
+      </>
+    )
+  }
 }

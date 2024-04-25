@@ -1,26 +1,43 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import React from 'react';
+import { useGlobalState } from '../../../../../globalVariables';
+import ErrorComponent from '../../../../errorComponent';
 export const PaginationContent: React.FC<{ 
     paginationValue: any, 
     setPaginationValue: any,
     paginationShouldBeComputed: any,
     setPaginationShouldBeComputed: any
 }> = ({}) => {
-
+    const {usingLocal} = useGlobalState();
     const [backendPaginationValue, setBackendPaginationValue] = useState(0);
+    const paginationCurrentlyDisabled = true;
     useEffect(() => {
-        axios.get("http://localhost:4000/pagination/").then( response => {
-            setBackendPaginationValue(response.data.elementsPerPage)
-        })
+        async function useLocalData() {
+            axios.get("http://localhost:4000/pagination/").then( response => {
+                setBackendPaginationValue(response.data.elementsPerPage)
+            })
+                    
+        }
+        async function useCloudData() {
+            console.log(" -----------USING CLOUD DATA -----------")
+        }
+       
+        if(usingLocal){useLocalData()} else {useCloudData()}
     }, )
 
     const handleChoice = (value: number) => {
-        axios.patch("http://localhost:4000/pagination/", {elementsPerPage: value})
-        axios.patch("http://localhost:4000/pagination/current", {currentPage: 1})
-        setBackendPaginationValue(value)
-        console.log(value)
-        console.log(1)
+		async function useLocalData() {
+            axios.patch("http://localhost:4000/pagination/", {elementsPerPage: value})
+            axios.patch("http://localhost:4000/pagination/current", {currentPage: 1})
+            setBackendPaginationValue(value)
+            console.log(value)
+            console.log(1)
+        }
+        async function useCloudData() {
+            console.log(" -----------USING CLOUD DATA -----------")
+        }
+        if(usingLocal){useLocalData()} else {useCloudData()}
     }
     
     const onChange = () => {
@@ -50,8 +67,11 @@ export const PaginationContent: React.FC<{
                         )}
                 </div>
             </div>
-            <div className="filter-grid-column-insignia">
-            </div>
+            {paginationCurrentlyDisabled ? 
+            <><ErrorComponent message={"Pagination is currently disabled!"}/></> : 
+            <><div className="filter-grid-column-insignia"></div></>}
+            
+            
         </div>
         </>
     )

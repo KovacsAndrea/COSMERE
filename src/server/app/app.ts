@@ -9,47 +9,58 @@ import { sortData } from "./api/routes/sortData";
 import { chartData } from "./api/routes/chartData";
 import { paginationData } from "./api/routes/paginationData";
 import chapterRouter from "./api/routes/chapterRoutes";
+import { connectToDatabase } from "../../database.service";
+import { mongoBookRouter } from "./api/routes/mongoBooks";
 
 
 const app = express();
-app.use(morgan('dev'));
-app.use(bodyParser.json())
 
-app.use((_req, _res, _next) => {
-    _res.header("Access-Control-Allow-Origin", "*");
-    _res.header("Access-Control-Allow-Headers", "*");
-    if (_req.method === 'OPTIONS') {
-        _res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET")
-        return _res.status(200).json({})
-    }
-    _next();
-})
 
 //routes which shouldd handle requests
-app.use("/books", bookRouter)
-app.use("/newId", idGenerator)
-app.use("/filter", filterData)
-app.use("/sort", sortData)
-app.use("/chart", chartData)
-app.use("/pagination", paginationData)
-app.use("/chapters", chapterRouter)
+connectToDatabase().then(() => {
+    app.use(morgan('dev'));
+    app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({ extended: true })); 
 
-app.get('/ping', (_req, _res) => {
-    _res.status(200).send('Server is up and running.');
-  });
-
-app.use((_req, _res, _next) => {
-    const error = new CosmereError("Not Found");
-    error.status = 404;
-    _next(error);
-})
-
-app.use((_error: CosmereError, _req: Request, _res: Response, _next: NextFunction) => {
-    _res.status(_error.status || 500);
-    _res.json({
-        _error: {
-            message: _error.message
+    app.use((_req, _res, _next) => {
+        _res.header("Access-Control-Allow-Origin", "*");
+        _res.header("Access-Control-Allow-Headers", "*");
+        if (_req.method === 'OPTIONS') {
+            _res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET")
+            return _res.status(200).json({})
         }
+        _next();
     })
-})
+    app.use("/books", bookRouter)
+    app.use("/newId", idGenerator)
+    app.use("/filter", filterData)
+    app.use("/sort", sortData)
+    app.use("/chart", chartData)
+    app.use("/pagination", paginationData)
+    app.use("/chapters", chapterRouter)
+    app.use("/mongoBooks", mongoBookRouter)
+    
+    app.get('/ping', (_req, _res) => {
+        _res.status(200).send('Server is up and running.');
+      });
+    
+    app.use((_req, _res, _next) => {
+        const error = new CosmereError("Not Found");
+        error.status = 404;
+        _next(error);
+    })
+    
+    app.use((_error: CosmereError, _req: Request, _res: Response, _next: NextFunction) => {
+        _res.status(_error.status || 500);
+        _res.json({
+            _error: {
+                message: _error.message
+            }
+        })
+    })
+}).catch((error: Error) => {
+    console.error("Database connection failed", error);
+    process.exit();
+});
+
 export default app;

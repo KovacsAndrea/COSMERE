@@ -2,7 +2,8 @@ import { FaRegTimesCircle} from "react-icons/fa"
 import { RadioButton } from "../commonComponents/radioButton.tsx"
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { backendPath } from "../../../../../App.tsx";
+import { useGlobalState } from "../../../../../globalVariables.tsx";
+import ErrorComponent from "../../../../errorComponent.tsx";
 export const SortContent: React.FC <{
     sortCriteria: any, setSortCriteria: any,
     sortDirection: any, setSortDirection: any
@@ -20,19 +21,29 @@ export const SortContent: React.FC <{
 
     const [backendSortDirection, setBackendSortDirection] = useState("")
     const [backendSortCriteria, setBackendSortCriteria] = useState("")
+    const {usingLocal} = useGlobalState();
+    const sortingIsCurrentlyDisabled = true;
 
     useEffect(() => {
-        axios.get("http://localhost:4000/sort/criteria").then( response => {
-            console.log("AM LUAT SORT CRITERIA" + response.data.sortCriteria)
-            setBackendSortCriteria(response.data.sortCriteria)
-        }).catch( error => {
-            console.error("Failed to fetch sort criteria " + error)
-        })
-
-        axios.get("http://localhost:4000/sort/direction").then( response => {
-            console.log("AM LUAT SORT DIRECTION")
-            setBackendSortDirection(response.data.sortDirection)
-        }).catch( error => {console.error("Failed to fetch sort direction", error)})
+        async function useLocalData() {
+            axios.get("http://localhost:4000/sort/criteria").then( response => {
+                console.log("AM LUAT SORT CRITERIA" + response.data.sortCriteria)
+                setBackendSortCriteria(response.data.sortCriteria)
+            }).catch( error => {
+                console.error("Failed to fetch sort criteria " + error)
+            })
+    
+            axios.get("http://localhost:4000/sort/direction").then( response => {
+                console.log("AM LUAT SORT DIRECTION")
+                setBackendSortDirection(response.data.sortDirection)
+            }).catch( error => {console.error("Failed to fetch sort direction", error)})
+                    
+        }
+        async function useCloudData() {
+            console.log(" -----------USING CLOUD DATA -----------")
+        }
+       
+        if(usingLocal){useLocalData()} else {useCloudData()}
     }, [])
 
     const clearSort = () => {
@@ -107,6 +118,8 @@ export const SortContent: React.FC <{
                 sortDirection={backendSortDirection} setSortDirection={setBackendSortDirection}/>)}
                 </div>
             </div>
+
+            {sortingIsCurrentlyDisabled ? <><ErrorComponent message={"Sorting is currently disabled!"} size={'40px'}/></> : <></>}
             
         </div>
         </>

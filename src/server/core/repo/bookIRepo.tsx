@@ -2,7 +2,7 @@ import { Book } from "../model/book.tsx";
 
 
 export interface BookIRepo {
-    useDummyData(): void;
+    useLocalData(): void;
     getAllBooks(): Book[];
     containsBook(id: string): boolean;
     getBookById(id: string): Book|undefined;

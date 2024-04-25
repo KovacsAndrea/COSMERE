@@ -1,7 +1,7 @@
 import { Book } from "../model/book.tsx";
 
 export interface BookIServ {
-    useDummyData(): void;
+    useLocalData(): void;
     getAllBooks(paginationNumber: any): Book[];
     getBookById(id: string): Book|undefined;
     getBooksByTitle(searchText: string, searchSet: Book[]): Book[];

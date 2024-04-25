@@ -1,24 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './bookCard.css'
 import React from "react";
-import { Book } from '../../../../../server/core/model/book';
-export function writeChapters(chapters: string[]) {
-    let formattedChapters = '';
-    for (let i = 0; i < chapters.length; i++) {
-        formattedChapters += `Ch.${i + 1}: ${chapters[i]}; `;
-    }
-    formattedChapters = formattedChapters.slice(0, -2);
-    return formattedChapters;
-}
 
-// bookTitle = {book._title}
-//                 bookDescription = {book._description}
-//                 bookChapters = {[]}
-//                 bookChaptersFormat = {book._chaptersFormat}
-//                 bookPlanet = {book._planet}
-//                 bookSystem = {book._system}
-//                 bookShard = {book._shard}
-//                 bookDate = {book._startDate}
+
 const BookCard: React.FC<{
     bookId: any
     bookTitle: any,
@@ -33,7 +17,6 @@ const BookCard: React.FC<{
         bookId,
         bookTitle,
         bookDescription,
-        bookChapers,
         bookChaptersFormat,
         bookPlanet,
         bookSystem,
@@ -41,6 +24,21 @@ const BookCard: React.FC<{
         bookDate,
          setDeleteBook}) => {
     const setUpBookForDelete = () => {setDeleteBook(bookId)}
+    const navigate = useNavigate();
+    const bookData = {
+        id: bookId,
+        title: bookTitle,
+        description: bookDescription,
+        chaptersFormat: bookChaptersFormat,
+        planet: bookPlanet,
+        system: bookSystem,
+        shard: bookShard,
+        date: bookDate
+    }
+
+    const handleExpandBook = () => {
+        navigate(`/details/${bookData.id}`, {state: {bookData}})
+    }
     return(
         <>
             <div className="card">
@@ -54,10 +52,7 @@ const BookCard: React.FC<{
                         <div className="cardContent">{bookDate}</div>
                     </div>
                     <div className="cardFooter">
-                        <Link to ={`/details/${bookId}`}
-                            state={bookId}>
-                            <button className="edit">Details</button>
-                        </Link>
+                            <button className="edit" onClick={handleExpandBook}>Details</button>
                     <button className="delete" onClick={setUpBookForDelete}>Delete</button>
 
                     </div>

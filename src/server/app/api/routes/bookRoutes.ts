@@ -36,7 +36,6 @@ bookRouter.post('/', (_req, _res, _next) => {
         book.id, 
         book.title, 
         book.description, 
-        [], 
         book.planet,
         book.system,
         book.shard,

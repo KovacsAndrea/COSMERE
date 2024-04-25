@@ -1,28 +1,38 @@
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import './paginationButton.css'
 import { TfiAngleDoubleLeft, TfiAngleDoubleRight, TfiAngleLeft, TfiAngleRight } from "react-icons/tfi";
 import React from 'react';
 import axios from 'axios';
+import { useGlobalState } from '../../../../../globalVariables';
 
 export const PaginationButton: React.FC<{
-    setBookList: any
-    stuffChanged: any,
-    setStuffChanged: any,
-    searchShouldBeComputed: any,
     backendCurrentPage: any, 
     setBackendCurrentPage: any,
     maxPageNr: any
-}> = ({setBookList, stuffChanged, setStuffChanged, searchShouldBeComputed, backendCurrentPage, setBackendCurrentPage, maxPageNr}) => {
+}> = ({backendCurrentPage, setBackendCurrentPage, maxPageNr}) => {
     let buttonText = ""
-
+    const {usingLocal} = useGlobalState();
     useEffect(() => {
-        buttonText = backendCurrentPage + "/" + maxPageNr
-        console.log("STUFF CHANGED PAGINATION BUTTON")
+        async function useLocalData() {
+            buttonText = backendCurrentPage + "/" + maxPageNr
+            console.log("STUFF CHANGED PAGINATION BUTTON")                    
+        }
+        async function useCloudData() {
+            console.log(" -----------USING CLOUD DATA -----------")
+        }
+       if(usingLocal){useLocalData()} else {useCloudData()}
+        
     }, [backendCurrentPage])
     
     const updateCurrentPage = (currentPage: number) => {
-        axios.patch("http://localhost:4000/pagination/current", {currentPage: currentPage})
-        setStuffChanged(true)
+        async function useLocalData() {
+            axios.patch("http://localhost:4000/pagination/current", {currentPage: currentPage})
+        }
+        async function useCloudData() {
+            console.log(" -----------USING CLOUD DATA -----------")
+        }
+       if(usingLocal){useLocalData()} else {useCloudData()}
+        
     }
 
     buttonText = backendCurrentPage + "/" + maxPageNr

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import './chapterStyle.css'
 
 export const ChapterCard: React.FC <{
@@ -6,7 +6,7 @@ export const ChapterCard: React.FC <{
     bookId: any,
     chapterNumber: any,
     title: any, 
-    bookTitle: any,
+    bookData: any,
     description: any, 
     wordcount: any,
     pov: any
@@ -15,7 +15,7 @@ export const ChapterCard: React.FC <{
     bookId, 
     chapterNumber, 
     title, 
-    bookTitle,
+    bookData,
     description, 
     wordcount,
     pov 
@@ -26,7 +26,7 @@ export const ChapterCard: React.FC <{
         bookId: bookId,
         chapterNumber: chapterNumber,
         title: title,
-        bookTitle: bookTitle,
+        bookData: bookData,
         description: description,
         wordcount: wordcount,
         pov: pov
@@ -40,7 +40,7 @@ export const ChapterCard: React.FC <{
             <div className="card"> 
                 <div className="cardHeader">{chapterTitle}</div>
                 <div className="cardBody"> 
-                    <div className="chapter-card-book-title">{bookTitle}</div>
+                    <div className="chapter-card-book-title">{bookData.title}</div>
                     <div className="cardContent">{description}</div>
                     <div className="cardContent">Word count: {wordcount}</div>
                     <div className="cardContent">Point of view: {pov}</div>
