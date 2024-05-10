@@ -10,7 +10,7 @@ export const ChaptersOfBookPage: React.FC<{}> = ({}) => {
     const location = useLocation();
     const bookData = location.state.bookData;
     console.log("HELLO FROM CHAPTER GRID PAGE" + bookData)
-    const bookId = bookData.id;
+    const bookId = bookData._id;
     const [chapterList, setChapterList] = useState([]);
     const [bookTitle, setBookTitle] = useState("")
     const {usingLocal} = useGlobalState();
@@ -27,7 +27,7 @@ export const ChaptersOfBookPage: React.FC<{}> = ({}) => {
         async function useCloudData() {
             console.log(" -----------USING CLOUD DATA -----------")
         }
-       if(usingLocal){useLocalData()} else {useCloudData()}
+       if(usingLocal){useLocalData()} else {useLocalData()}
 
         
     }, []) 

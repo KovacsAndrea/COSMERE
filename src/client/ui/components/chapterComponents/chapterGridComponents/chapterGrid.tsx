@@ -13,7 +13,7 @@ export const ChapterGrid: React.FC<{
                 {chapterList.map((chapter: any) => 
                 <ChapterCard 
                 chapterId={chapter._id} 
-                bookId={chapter._book_id} 
+                bookId={bookData._id} 
                 chapterNumber={chapter._chapter_number} 
                 title={chapter._title} 
                 bookData = {bookData}

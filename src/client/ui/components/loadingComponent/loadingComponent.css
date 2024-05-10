@@ -1,0 +1,25 @@
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70%;
+  }
+  
+  .ball {
+    width: 20px;
+    height: 20px;
+    background-color: var(--buttonGold) ;
+    border-radius: 50%;
+    animation: bounce 0.5s infinite alternate; 
+  }
+  
+  @keyframes bounce {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-20px);
+    }
+  }
+
+  

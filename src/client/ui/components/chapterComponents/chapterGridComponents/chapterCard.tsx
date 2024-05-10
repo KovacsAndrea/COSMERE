@@ -40,7 +40,7 @@ export const ChapterCard: React.FC <{
             <div className="card"> 
                 <div className="cardHeader">{chapterTitle}</div>
                 <div className="cardBody"> 
-                    <div className="chapter-card-book-title">{bookData.title}</div>
+                    <div className="chapter-card-book-title">{bookData._title}</div>
                     <div className="cardContent">{description}</div>
                     <div className="cardContent">Word count: {wordcount}</div>
                     <div className="cardContent">Point of view: {pov}</div>

@@ -19,14 +19,8 @@ function App() {
   
   const [searchText, setSearchText] = useState("")
   const [searchShouldBeComputed, setSearchShouldBeComputed] = useState("")
-  const [selectedPlanets, setSelectedPlanets] = useState([]);
-  const [selectedSystems, setSelectedSystems] = useState([]);
-  const [selectedShards, setSelectedShards] = useState([]);
-  const [selectedDates, setSelectedDates] = useState([])
   const [filterShouldBeComputed, setFilterShouldBeComputed] = useState(false)
 
-  const [sortCriteria, setSortCriteria] = useState("");
-  const [sortDirection, setSortDirection] = useState("");
   const [sortShouldBeComputed, setSortShouldBeComputed] = useState(false);
   
   const [paginationValue, setPaginationValue] = useState(-1)
@@ -46,14 +40,13 @@ function App() {
         <Route path="/main" element={<MainPage 
         searchText={searchText} 
         searchShouldBeComputed = {searchShouldBeComputed}
-        selectedPlanets = {selectedPlanets} setSelectedPlanets = {setSelectedPlanets}
-        selectedSystems={selectedSystems} setSelectedSystems={setSelectedSystems}
-        selectedShards={selectedShards} setSelectedShards={setSelectedShards}
-        selectedDates={selectedDates} setSelectedDates={setSelectedDates}
-        filterShouldBeComputed = {filterShouldBeComputed} setFilterShouldBeComputed = {setFilterShouldBeComputed}
-        sortCriteria = {sortCriteria} setSortCriteria = {setSortCriteria}
-        sortDirection = {sortDirection} setSortDirection = {setSortDirection}
-        sortShouldBeComputed = {sortShouldBeComputed} setSortShouldBeComputed = {setSortShouldBeComputed}
+
+        filterShouldBeComputed = {filterShouldBeComputed} 
+        setFilterShouldBeComputed = {setFilterShouldBeComputed}
+
+        sortShouldBeComputed = {sortShouldBeComputed} 
+        setSortShouldBeComputed = {setSortShouldBeComputed}
+        
         paginationValue={paginationValue} setPaginationValue={setPaginationValue}
         paginationShouldBeComputed = {paginationShouldBeComputed} setPaginationShouldBeComputed = {setPaginationShouldBeComputed}
         />} />

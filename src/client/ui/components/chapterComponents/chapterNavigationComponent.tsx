@@ -4,7 +4,7 @@ export const ChapterNavigationComponent: React.FC<{bookData: any}> = ({bookData}
     const navigate = useNavigate();
     const handleBackToBook = () => {
         console.log("BACK TO BOOK")
-        navigate(`/details/${bookData.id}`, { state: { bookData } })
+        navigate(`/details/${bookData._id}`, { state: { bookData } })
     }
 
     const editableChapterCardData = {

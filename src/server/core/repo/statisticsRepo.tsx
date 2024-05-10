@@ -5,12 +5,12 @@ export class StatisticsRepo {
 
     public getChartDataforPlanets(books: Book[]) {
         const planetCounts: Record<string, number> = {};
-        books.sort((a, b) => a.planet.localeCompare(b.planet));
+        books.sort((a, b) => a._planet.localeCompare(b._planet));
         books.forEach(book => {
-            if (book.planet in planetCounts) {
-                planetCounts[book.planet]++;
+            if (book._planet in planetCounts) {
+                planetCounts[book._planet]++;
             } else {
-                planetCounts[book.planet] = 1;
+                planetCounts[book._planet] = 1;
             }
         });
         const data: { id: number, color: string, value: number, label: string }[] = [];
@@ -29,10 +29,10 @@ export class StatisticsRepo {
     public getChartDataForSystems(books: Book[]) {
         const systemCounts: Record<string, number> = {};
         books.forEach(book => {
-            if (book.system in systemCounts) {
-                systemCounts[book.system]++;
+            if (book._system in systemCounts) {
+                systemCounts[book._system]++;
             } else {
-                systemCounts[book.system] = 1;
+                systemCounts[book._system] = 1;
             }
         });
         const data: { id: number, color: string, value: number, label: string }[] = [];
@@ -51,10 +51,10 @@ export class StatisticsRepo {
     public getChartDataForShards(books: Book[]) {
         const shardCounts: Record<string, number> = {};
         books.forEach(book => {
-            if (book.shard in shardCounts) {
-                shardCounts[book.shard]++;
+            if (book._shard in shardCounts) {
+                shardCounts[book._shard]++;
             } else {
-                shardCounts[book.shard] = 1;
+                shardCounts[book._shard] = 1;
             }
         });
         const data: { id: number, color: string, value: number, label: string }[] = [];
@@ -73,7 +73,7 @@ export class StatisticsRepo {
     public getChartDataForDates(books: Book[]) {
         const dateCounts: Record<number, number> = {};
         books.forEach(book => {
-            const year = book.startDate;
+            const year = book._startDate;
             if (year in dateCounts) {
                 dateCounts[year]++;
             } else {

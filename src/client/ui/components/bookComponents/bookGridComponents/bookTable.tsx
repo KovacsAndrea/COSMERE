@@ -5,24 +5,42 @@ import React from "react";
 import axios from "axios";
 import { PaginationButton } from "../../genericComponents/paginationButton/paginationButton.tsx";
 import { useGlobalState } from "../../../../../globalVariables.tsx";
+import LoadingComponent from "../../loadingComponent/loadingComponent.tsx";
 
-const BookTable: React.FC<{ searchText: string, 
+const BookTable: React.FC<{ 
+    searchText: string, 
     searchShouldBeComputed: any
     bookList: any, 
     setBookList: any
-    filterShouldBeComputed: any
+    filterShouldBeComputed: any,
+    setFilterShouldBeComputed: any
     sortShouldBeComputed: any
+    setSortShouldBeComputed: any
     paginationShouldBeComputed: any
+    setPaginationShouldBeComputed: any
     backendCurrentPage: any
     setBackendCurrentPage: any
     setMaxPageNr: any
 }> = 
-({ searchText, searchShouldBeComputed, bookList, setBookList, filterShouldBeComputed,
-    sortShouldBeComputed, paginationShouldBeComputed, backendCurrentPage, setBackendCurrentPage, setMaxPageNr
+({ searchText, 
+    searchShouldBeComputed, 
+    bookList, 
+    setBookList, 
+    filterShouldBeComputed,
+    setFilterShouldBeComputed,
+    sortShouldBeComputed, 
+    setSortShouldBeComputed,
+    paginationShouldBeComputed,
+    setPaginationShouldBeComputed, 
+    backendCurrentPage, 
+    setBackendCurrentPage, 
+    setMaxPageNr
 }) => {
     const [deleteBook, setDeleteBook] = useState("")
-    
+    const [isLoading, setIsLoading] = useState(true);
     const { usingLocal } = useGlobalState();
+    const { refreshFilterData, refreshBookList, setCurrentPageToBeginning, refreshCurrentPage } = useGlobalState();
+
     useEffect(() => {
         async function useLocalData() {
             let currentSearchText = searchShouldBeComputed
@@ -119,14 +137,54 @@ const BookTable: React.FC<{ searchText: string,
 
 
         async function useCloudData() {
-            //do stuff here
+            setIsLoading(true)
+            if(deleteBook.length != 0){
+                await axios.delete('http://localhost:4000/mongoBooks/' + deleteBook)
+                refreshBookList();
+                refreshFilterData();
+                setDeleteBook("")
+            }
+
+            if(filterShouldBeComputed){
+                console.log("BOOK TABLE SAYS WE SHOULD COMPUTE FILTER")
+                setCurrentPageToBeginning();
+                refreshCurrentPage();
+                refreshBookList();
+                setFilterShouldBeComputed(false)
+            }
+
+            if(sortShouldBeComputed){
+                console.log("BOOK TABLE SAYS SORT SHOULD BE COMPUTED")
+                setCurrentPageToBeginning();
+                refreshCurrentPage();
+                refreshBookList();
+                setSortShouldBeComputed(false)
+            }
+
+            if(paginationShouldBeComputed){
+                console.log("BOOK TABLE SAYS PAGINATION SHOULD BE COMPUTED")                
+                setCurrentPageToBeginning();
+                refreshCurrentPage();
+                refreshBookList();
+                setPaginationShouldBeComputed(false)
+            }
+            setIsLoading(false)
         }
 
+        async function fetchData() {
+            if (usingLocal) {
+                useLocalData();
+            } else {
+                await useCloudData(); // Wait for the async operation to complete
+            }
+        }
+    
+        fetchData();
+    }, [bookList, deleteBook, backendCurrentPage, searchShouldBeComputed, filterShouldBeComputed, paginationShouldBeComputed, sortShouldBeComputed])
 
-        if(usingLocal){useLocalData()} else {useCloudData()}
-    }, [deleteBook, backendCurrentPage, searchShouldBeComputed, filterShouldBeComputed, paginationShouldBeComputed, sortShouldBeComputed])
-
-
+    if (isLoading) {
+        return <LoadingComponent />;
+    }
     return (
         <>
         {bookList && bookList.length === 0 ? 
@@ -161,15 +219,21 @@ export const BookGrid: React.FC<{ searchText: string,
     searchShouldBeComputed: any,
     bookList: any, setBookList: any,
     filterShouldBeComputed: any
+    setFilterShouldBeComputed: any
     sortShouldBeComputed: any
+    setSortShouldBeComputed: any
     paginationShouldBeComputed: any
+    setPaginationShouldBeComputed: any
 }> = 
 ({searchText, 
     searchShouldBeComputed,
     bookList, setBookList, 
     filterShouldBeComputed,
+    setFilterShouldBeComputed,
     sortShouldBeComputed,
-    paginationShouldBeComputed
+    setSortShouldBeComputed,
+    paginationShouldBeComputed,
+    setPaginationShouldBeComputed
 }) => {
     const [backendCurrentPage, setBackendCurrentPage] = useState(1);
     const [maxPageNr, setMaxPageNr] = useState(1);
@@ -204,10 +268,7 @@ export const BookGrid: React.FC<{ searchText: string,
     return (
         <div className = "center">
         
-        <PaginationButton 
-                backendCurrentPage={backendCurrentPage}
-                setBackendCurrentPage = {setBackendCurrentPage}
-                maxPageNr={maxPageNr}/>
+        <PaginationButton />
         <div className ="cardGrid">
             
             <BookTable 
@@ -216,8 +277,11 @@ export const BookGrid: React.FC<{ searchText: string,
                 bookList = {bookList}
                 setBookList = {setBookList} 
                 filterShouldBeComputed = {filterShouldBeComputed}
+                setFilterShouldBeComputed = {setFilterShouldBeComputed}
                 sortShouldBeComputed = {sortShouldBeComputed}
+                setSortShouldBeComputed = {setSortShouldBeComputed}
                 paginationShouldBeComputed = {paginationShouldBeComputed}
+                setPaginationShouldBeComputed = {setPaginationShouldBeComputed}
                 backendCurrentPage={backendCurrentPage}
                 setBackendCurrentPage = {setBackendCurrentPage}
                 setMaxPageNr = {setMaxPageNr}

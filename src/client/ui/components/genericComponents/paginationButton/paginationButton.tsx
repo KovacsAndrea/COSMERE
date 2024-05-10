@@ -1,71 +1,76 @@
-import { useEffect} from 'react';
+import { useEffect, useState} from 'react';
 import './paginationButton.css'
 import { TfiAngleDoubleLeft, TfiAngleDoubleRight, TfiAngleLeft, TfiAngleRight } from "react-icons/tfi";
 import React from 'react';
 import axios from 'axios';
 import { useGlobalState } from '../../../../../globalVariables';
 
-export const PaginationButton: React.FC<{
-    backendCurrentPage: any, 
-    setBackendCurrentPage: any,
-    maxPageNr: any
-}> = ({backendCurrentPage, setBackendCurrentPage, maxPageNr}) => {
-    let buttonText = ""
-    const {usingLocal} = useGlobalState();
+export const PaginationButton: React.FC<{}> = ({}) => {
+    const {usingLocal, 
+        currentPage, 
+        refreshCurrentPage, 
+        updateCurrentPage, 
+        currentElementsPerPage,
+        mongoBookList} = useGlobalState();
+    const [maxPageNr, setMaxPageNr] = useState(0)
+    const [buttonText, setButtonText] = useState("")
+    const [isLoading, setIsLoading] = useState(true);
+    
     useEffect(() => {
         async function useLocalData() {
-            buttonText = backendCurrentPage + "/" + maxPageNr
+            setButtonText(currentPage + "/" + maxPageNr)
             console.log("STUFF CHANGED PAGINATION BUTTON")                    
         }
         async function useCloudData() {
-            console.log(" -----------USING CLOUD DATA -----------")
+            setButtonText(currentPage.toString() + "/" + maxPageNr.toString());
+            setIsLoading(false);
         }
        if(usingLocal){useLocalData()} else {useCloudData()}
         
-    }, [backendCurrentPage])
+    }, [currentPage, maxPageNr])
     
-    const updateCurrentPage = (currentPage: number) => {
+    useEffect(() => {
+        console.log("PAGINATION DETECTED THAT BOOKLIST CHANGED")
+        setMaxPageNr(mongoBookList.length)
+    }, [mongoBookList])
+
+    const handleCurrentPageChange = (currentPage: number) => {
         async function useLocalData() {
             axios.patch("http://localhost:4000/pagination/current", {currentPage: currentPage})
         }
         async function useCloudData() {
-            console.log(" -----------USING CLOUD DATA -----------")
+            updateCurrentPage(currentPage)
+            refreshCurrentPage();
         }
        if(usingLocal){useLocalData()} else {useCloudData()}
         
     }
 
-    buttonText = backendCurrentPage + "/" + maxPageNr
-    let noElementsFound = "No books found!"
     const handleFirst = () => {
-        if (backendCurrentPage > 1){
-            updateCurrentPage(1)
-            setBackendCurrentPage(1)
-            console.log(backendCurrentPage)
+        if (currentPage > 1){
+            handleCurrentPageChange(1)
+            console.log(currentPage)
         }
     }
 
     const handlePrevious = () => {
-        if (backendCurrentPage > 1){
-            updateCurrentPage(backendCurrentPage -1)
-            setBackendCurrentPage(backendCurrentPage -1 )
-            console.log(backendCurrentPage)
+        if (currentPage > 1){
+            handleCurrentPageChange(currentPage -1 )
+            console.log(currentPage)
         }
     }
 
     const handleNext = () => {
-        if(backendCurrentPage < maxPageNr){
-            updateCurrentPage(backendCurrentPage + 1)
-            setBackendCurrentPage(backendCurrentPage + 1)
-            console.log(backendCurrentPage)
+        if(currentPage < maxPageNr){
+            handleCurrentPageChange(currentPage + 1)
+            console.log(currentPage)
         }
     }
 
     const handleLast = () => {
-        if(backendCurrentPage < maxPageNr){
-            updateCurrentPage(maxPageNr)
-            setBackendCurrentPage(maxPageNr)
-            console.log(backendCurrentPage)
+        if(currentPage < maxPageNr){
+            handleCurrentPageChange(maxPageNr)
+            console.log(currentPage)
         }
     }
 
@@ -74,10 +79,10 @@ export const PaginationButton: React.FC<{
             <div className="pagination-button-center">
                     <TfiAngleDoubleLeft className='pagination-angle'onClick={handleFirst}/>
                     <TfiAngleLeft className='pagination-angle' onClick={handlePrevious}/>
-                    {maxPageNr !== 0 ? 
-                    <label className = "pagination-button-label"> {buttonText} </label> 
+                    {isLoading ? 
+                    <label className = "pagination-button-label"> ... </label> 
                     : 
-                    <label className='pagination-button-label'> {noElementsFound} </label>}
+                    <label className='pagination-button-label'> {buttonText} </label>}
                     
                     <TfiAngleRight className='pagination-angle'onClick={handleNext}/>
                     <TfiAngleDoubleRight className='pagination-angle'onClick={handleLast}/>

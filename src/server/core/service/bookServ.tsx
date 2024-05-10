@@ -118,19 +118,19 @@ export class BookServ implements BookIServ{
         let result = this.rafoRepo.getAllBooks();
         if(!(planets.length === this.dataRepo.getPlanets().length ||
             planets.length === 0)){
-                result = result.filter(book => planets.includes(book.planet));
+                result = result.filter(book => planets.includes(book._planet));
             }
         if(!(systems.length === this.dataRepo.getSystems().length ||
             systems.length === 0)){
-                result = result.filter(book => systems.includes(book.system));
+                result = result.filter(book => systems.includes(book._system));
             }
         if(!(shards.length === this.dataRepo.getShards().length ||
             shards.length === 0)){
-                result = result.filter(book => shards.includes(book.shard));
+                result = result.filter(book => shards.includes(book._shard));
             }
         if(!(dates.length === this.dataRepo.getDates().length ||
             dates.length === 0)){
-                result = result.filter(book => dates.includes(book.startDate.toString()));
+                result = result.filter(book => dates.includes(book._startDate.toString()));
             }
         return result;
     }
@@ -139,38 +139,38 @@ export class BookServ implements BookIServ{
         let books = this.getFilteredBooks();
         if(this.sortDirection == "Ascending"){
             if(this.sortCriteria == "Title"){
-                books.sort((book1, book2) => book1.title.localeCompare(book2.title))
+                books.sort((book1, book2) => book1._title.localeCompare(book2._title))
             }
             if(this.sortCriteria == "Planets"){
-                books.sort((book1, book2) => book1.planet.localeCompare(book2.planet))
+                books.sort((book1, book2) => book1._planet.localeCompare(book2._planet))
             }
             if(this.sortCriteria == "Systems"){
-                books.sort((book1, book2) => book1.system.localeCompare(book2.system))
+                books.sort((book1, book2) => book1._system.localeCompare(book2._system))
             }
             if(this.sortCriteria == "Shards"){
-                books.sort((book1, book2) => book1.shard.localeCompare(book2.shard))
+                books.sort((book1, book2) => book1._shard.localeCompare(book2._shard))
             }
             if(this.sortCriteria == "Dates"){
-                books.sort((book1, book2) => book1.startDate - book2.startDate)
+                books.sort((book1, book2) => book1._startDate - book2._startDate)
                 console.log("SORTAM TATI")
             }
         }
 
         if(this.sortDirection == "Descending"){
             if(this.sortCriteria == "Title"){
-                books.sort((book1, book2) => book2.title.localeCompare(book1.title))
+                books.sort((book1, book2) => book2._title.localeCompare(book1._title))
             }
             if(this.sortCriteria == "Planets"){
-                books.sort((book1, book2) => book2.planet.localeCompare(book1.planet))
+                books.sort((book1, book2) => book2._planet.localeCompare(book1._planet))
             }
             if(this.sortCriteria == "Systems"){
-                books.sort((book1, book2) => book2.system.localeCompare(book1.system))
+                books.sort((book1, book2) => book2._system.localeCompare(book1._system))
             }
             if(this.sortCriteria == "Shards"){
-                books.sort((book1, book2) => book2.shard.localeCompare(book1.shard))
+                books.sort((book1, book2) => book2._shard.localeCompare(book1._shard))
             }
             if(this.sortCriteria == "Dates"){
-                books.sort((book1, book2) => book2.startDate - book1.startDate)
+                books.sort((book1, book2) => book2._startDate - book1._startDate)
             }
         }
         return books
@@ -254,7 +254,7 @@ export class BookServ implements BookIServ{
         }
         else{
 
-        let filteredBooks = books.filter(book => book.title.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()))
+        let filteredBooks = books.filter(book => book._title.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()))
         this.editedBookListLength = filteredBooks.length;
         return filteredBooks.slice(this.elementsPerPage * (this.currentPage-1), 
         this.elementsPerPage * this.currentPage);
@@ -321,7 +321,7 @@ export class BookServ implements BookIServ{
     }
 
     public getListofIds(): string[] {
-        return this.rafoRepo.getAllBooks().map(book => book.id)
+        return this.rafoRepo.getAllBooks().map(book => book._id.toString())
     }
 
     public isValidNewBook(book: Book): boolean {
@@ -337,10 +337,10 @@ export class BookServ implements BookIServ{
     }
 
     public updateAddData(): void {
-        let planets = [...new Set(this.rafoRepo.getAllBooks().map(book => book.planet))];
-        let systems = [...new Set(this.rafoRepo.getAllBooks().map(book => book.system))];
-        let shards = [...new Set(this.rafoRepo.getAllBooks().map(book => book.shard))];
-        let startDates = [...new Set(this.rafoRepo.getAllBooks().map(book => book.startDate))];
+        let planets = [...new Set(this.rafoRepo.getAllBooks().map(book => book._planet))];
+        let systems = [...new Set(this.rafoRepo.getAllBooks().map(book => book._system))];
+        let shards = [...new Set(this.rafoRepo.getAllBooks().map(book => book._shard))];
+        let startDates = [...new Set(this.rafoRepo.getAllBooks().map(book => book._startDate))];
         planets.forEach(planet => {
             if (!this.dataRepo.getPlanets().includes(planet)) {
                 this.dataRepo.addPlanet(planet);
@@ -366,10 +366,10 @@ export class BookServ implements BookIServ{
     }
 
     public updateDeleteData(): void {
-        let planets = [...new Set(this.rafoRepo.getAllBooks().map(book => book.planet))];
-        let systems = [...new Set(this.rafoRepo.getAllBooks().map(book => book.system))];
-        let shards = [...new Set(this.rafoRepo.getAllBooks().map(book => book.shard))];
-        let startDates = [...new Set(this.rafoRepo.getAllBooks().map(book => book.startDate))];
+        let planets = [...new Set(this.rafoRepo.getAllBooks().map(book => book._planet))];
+        let systems = [...new Set(this.rafoRepo.getAllBooks().map(book => book._system))];
+        let shards = [...new Set(this.rafoRepo.getAllBooks().map(book => book._shard))];
+        let startDates = [...new Set(this.rafoRepo.getAllBooks().map(book => book._startDate))];
         this.dataRepo.getPlanets().forEach(planet => {
             if (!planets.includes(planet)) {
                 this.dataRepo.deletePlanet(planet);

@@ -1,6 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './bookCard.css'
 import React from "react";
+import { Book } from '../../../../../server/core/model/book';
+import axios from 'axios';
 
 
 const BookCard: React.FC<{
@@ -23,21 +25,24 @@ const BookCard: React.FC<{
         bookShard,
         bookDate,
          setDeleteBook}) => {
-    const setUpBookForDelete = () => {setDeleteBook(bookId)}
-    const navigate = useNavigate();
-    const bookData = {
-        id: bookId,
-        title: bookTitle,
-        description: bookDescription,
-        chaptersFormat: bookChaptersFormat,
-        planet: bookPlanet,
-        system: bookSystem,
-        shard: bookShard,
-        date: bookDate
-    }
 
+    const setUpBookForDelete = async () =>{setDeleteBook(bookId); 
+        
+    }
+    const navigate = useNavigate();
+    let bookData = new Book(
+        bookId,
+        bookTitle,
+        bookDescription,
+        bookPlanet,
+        bookSystem,
+        bookShard,
+        bookDate,
+        bookChaptersFormat
+    )
+    
     const handleExpandBook = () => {
-        navigate(`/details/${bookData.id}`, {state: {bookData}})
+        navigate(`/details/${bookData._id.toString()}`, {state: {bookData}})
     }
     return(
         <>
@@ -59,8 +64,6 @@ const BookCard: React.FC<{
             </div>
         </>
     )
+
 }
-
-
-
 export default BookCard;

@@ -14,19 +14,19 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
     const location = useLocation();
     const navigate = useNavigate();
     const handleBackToBook = () => {
-        navigate(`/details/${bookData}`, { state: { bookData } })
+        navigate(`/details/${bookData._id}`, { state: { bookData } })
     }
     const bookData = location.state.editableChapterCardData.bookData;
 
     const handlebackToGrid = () => {
-        navigate(`/chapters/book/${bookData}`, { state: { bookData } })
+        navigate(`/chapters/book/${bookData._id}`, { state: { bookData } })
     }
 
     try{
     const bookId = location.state.editableChapterCardData.bookId
     const chapterId = location.state.editableChapterCardData.chapterId;
     const chapterNumber = location.state.editableChapterCardData.chapterNumber;
-    const bookTitle = bookData.title
+    const bookTitle = bookData._title
 
     const [title, setTitle] = useState(location.state.editableChapterCardData.title);
     const [description, setDescription] = useState(location.state.editableChapterCardData.description);
@@ -119,7 +119,7 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
         if(canBeSaved){
             let confirmation = window.confirm("Book can be saved but not implemented yet")
             if(confirmation){
-                navigate(`/chapters/book/${bookData}`, { state: { bookData } })
+                navigate(`/chapters/book/${bookData._id}`, { state: { bookData } })
             }
         }
     }
@@ -128,7 +128,7 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
         if(canBeDeleted){
             let confirmation = window.confirm("Book can be DELETED but not implemented yet")
             if(confirmation){
-                navigate(`/chapters/book/${bookData}`, { state: { bookData } })
+                navigate(`/chapters/book/${bookData._id}`, { state: { bookData } })
             }
         }
     }
@@ -137,9 +137,9 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
         if(anyFieldIsDifferent){
             let confirmation = window.confirm("Discard changes made?")
             if(confirmation){
-                navigate(`/chapters/book/${bookData}`, { state: { bookData } })
+                navigate(`/chapters/book/${bookData._id}`, { state: { bookData } })
             }
-        }else{navigate(`/chapters/book/${bookData}`, { state: { bookData } })}
+        }else{navigate(`/chapters/book/${bookData._id}`, { state: { bookData } })}
 
     }
 

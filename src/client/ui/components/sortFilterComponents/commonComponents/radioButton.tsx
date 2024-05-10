@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import React from "react";
 import { useGlobalState } from "../../../../../globalVariables";
 
-export const RadioButton: React.FC<{name: string, category: string, 
+export const RadioButton: React.FC<{
+    name: any, 
+    category: any, 
     sortCriteria: any, setSortCriteria: any, 
     sortDirection: any, setSortDirection: any,
 
@@ -11,8 +13,14 @@ export const RadioButton: React.FC<{name: string, category: string,
     sortCriteria, setSortCriteria,
     sortDirection, setSortDirection
 }) => {
+
+    // console.log(name);
+    // console.log(category);
+    // console.log(sortCriteria);
+    // console.log(sortDirection);
     
     const {usingLocal} = useGlobalState()
+
     const handleClick = () =>{
         async function useLocalData() {
             console.log("am dat click")
@@ -23,9 +31,17 @@ export const RadioButton: React.FC<{name: string, category: string,
                     
         }
         async function useCloudData() {
-            console.log(" -----------USING CLOUD DATA -----------")
+            console.log(category);
+            console.log(name);
+            // console.log(sortCriteria);
+            // console.log(sortDirection);
+            console.log("PIZDAS")
+            setSortCriteria(category);
+            setSortDirection(name);
+            console.log(sortCriteria);
+            console.log(sortDirection)
         }
-       if(usingLocal){useLocalData()} else {useCloudData()}
+       if(usingLocal){useCloudData()} else {useCloudData()}
         
     }
 
@@ -39,8 +55,12 @@ export const RadioButton: React.FC<{name: string, category: string,
     return(
         <>
         <div className="checkable-option-for-filter-button">
-            <input type="radio" name="SORT" value={name} id = {name + category} checked = {isChecked} className = "stilu-lu-vasile" onClick={handleClick} onChange={handleChange}/>
-            <label htmlFor={name + category} className="stilu-lu-vasile-da-ptr-label"> {name} </label>
+            <input type="radio" name="SORT" 
+            value={name} 
+            id = {name + category} 
+            checked = {isChecked} 
+            className = "stilu-lu-vasile" onClick={handleClick} onChange={handleChange}/>
+            <label htmlFor={name + category} className="stilu-lu-vasile-da-ptr-label"> {name == 1 ? "Ascending" : "Descending"} </label>
         </div>
         </>
     )

@@ -16,12 +16,12 @@ export class BookValidator {
     }
 
     public isValidNewBook(book: Book, listOfIds: string[]): boolean {
-        return this.isValidIdForNewBook(book.id, listOfIds) &&
-        this.isValidContentForNewBook(book.title) &&
-        this.isValidContentForNewBook(book.description) &&
-        this.isValidContentForNewBook(book.planet) &&
-        this.isValidContentForNewBook(book.system) &&
-        this.isValidContentForNewBook(book.shard) &&
-        this.isValidStartDateForNewBook(book.startDate.toString())
+        return this.isValidIdForNewBook(book._id.toString(), listOfIds) &&
+        this.isValidContentForNewBook(book._title) &&
+        this.isValidContentForNewBook(book._description) &&
+        this.isValidContentForNewBook(book._planet) &&
+        this.isValidContentForNewBook(book._system) &&
+        this.isValidContentForNewBook(book._shard) &&
+        this.isValidStartDateForNewBook(book._startDate.toString())
     }
 }

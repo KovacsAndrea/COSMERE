@@ -17,7 +17,7 @@ export const ChaptersCardComponent: React.FC<{
         useEffect(() => {adjustAreaHeight(chaptersAreaRef);})
         const navigate = useNavigate();
         const handleExpandChapters = () => {
-            navigate(`/chapters/book/${bookData.id}`, {state: {bookData}})
+            navigate(`/chapters/book/${bookData._id}`, {state: {bookData}})
         }
     
         return (

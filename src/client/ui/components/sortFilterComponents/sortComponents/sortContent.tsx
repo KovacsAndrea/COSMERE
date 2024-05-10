@@ -1,8 +1,6 @@
 import { FaRegTimesCircle} from "react-icons/fa"
 import { RadioButton } from "../commonComponents/radioButton.tsx"
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useGlobalState } from "../../../../../globalVariables.tsx";
+import React, { useEffect } from "react";
 import ErrorComponent from "../../../../errorComponent.tsx";
 export const SortContent: React.FC <{
     sortCriteria: any, setSortCriteria: any,
@@ -16,40 +14,22 @@ export const SortContent: React.FC <{
     const systems = "Systems"
     const shards = "Shards"
     const startDate = "Dates"
-    
-    let directions = ["Ascending", "Descending"];
 
-    const [backendSortDirection, setBackendSortDirection] = useState("")
-    const [backendSortCriteria, setBackendSortCriteria] = useState("")
-    const {usingLocal} = useGlobalState();
+    const titleCategory = "_title"
+    const planetsCategory ="_planet"
+    const systemsCategory = "_system"
+    const shardsCategory = "_shard"
+    const startDateCategory = "_startDate"
+    
+    let directions = [1, -1];
     const sortingIsCurrentlyDisabled = true;
-
-    useEffect(() => {
-        async function useLocalData() {
-            axios.get("http://localhost:4000/sort/criteria").then( response => {
-                console.log("AM LUAT SORT CRITERIA" + response.data.sortCriteria)
-                setBackendSortCriteria(response.data.sortCriteria)
-            }).catch( error => {
-                console.error("Failed to fetch sort criteria " + error)
-            })
-    
-            axios.get("http://localhost:4000/sort/direction").then( response => {
-                console.log("AM LUAT SORT DIRECTION")
-                setBackendSortDirection(response.data.sortDirection)
-            }).catch( error => {console.error("Failed to fetch sort direction", error)})
-                    
-        }
-        async function useCloudData() {
-            console.log(" -----------USING CLOUD DATA -----------")
-        }
-       
-        if(usingLocal){useLocalData()} else {useCloudData()}
-    }, [])
 
     const clearSort = () => {
         setSortCriteria("");
         setSortDirection("");
     }
+
+    useEffect(() => {console.log("FILTER CONTENT               ->>>>>>>>>>>>>>>>>> IS RENDERING")}, [])
     
     return (
         <>
@@ -61,9 +41,10 @@ export const SortContent: React.FC <{
                 </div>
                 <div className="design-for-option-column">
                 {directions.map( direction => <RadioButton
-                name = {direction} category = {title} key = {direction + title} 
-                sortCriteria = {backendSortCriteria} setSortCriteria={setBackendSortCriteria}
-                sortDirection={backendSortDirection} setSortDirection={setBackendSortDirection}/>)}
+                name = {direction} 
+                category = {titleCategory} key = {direction + title} 
+                sortCriteria = {sortCriteria} setSortCriteria={setSortCriteria}
+                sortDirection={sortDirection} setSortDirection={setSortDirection}/>)}
                 </div>
             </div>
 
@@ -74,9 +55,10 @@ export const SortContent: React.FC <{
                 </div>
                 <div className="design-for-option-column">
                 {directions.map( direction => <RadioButton
-                name = {direction} category = {planets} key = {direction + planets} 
-                sortCriteria = {backendSortCriteria} setSortCriteria={setBackendSortCriteria}
-                sortDirection={backendSortDirection} setSortDirection={setBackendSortDirection}/>)}
+                name = {direction} 
+                category = {planetsCategory} key = {direction + planets} 
+                sortCriteria = {sortCriteria} setSortCriteria={setSortCriteria}
+                sortDirection={sortDirection} setSortDirection={setSortDirection}/>)}
                 </div>
             </div>
 
@@ -87,9 +69,10 @@ export const SortContent: React.FC <{
                 </div>
                 <div className="design-for-option-column">
                 {directions.map( direction => <RadioButton
-                name = {direction} category = {systems} key = {direction + systems} 
-                sortCriteria = {backendSortCriteria} setSortCriteria={setBackendSortCriteria}
-                sortDirection={backendSortDirection} setSortDirection={setBackendSortDirection}/>)}
+                name = {direction} 
+                category = {systemsCategory} key = {direction + systems} 
+                sortCriteria = {sortCriteria} setSortCriteria={setSortCriteria}
+                sortDirection={sortDirection} setSortDirection={setSortDirection}/>)}
                 </div>
             </div>
 
@@ -100,9 +83,10 @@ export const SortContent: React.FC <{
                 </div>
                 <div className="design-for-option-column">
                 {directions.map( direction => <RadioButton
-                name = {direction} category = {shards} key = {direction + shards} 
-                sortCriteria = {backendSortCriteria} setSortCriteria={setBackendSortCriteria}
-                sortDirection={backendSortDirection} setSortDirection={setBackendSortDirection}/>)}
+                name = {direction} 
+                category = {shardsCategory} key = {direction + shards} 
+                sortCriteria = {sortCriteria} setSortCriteria={setSortCriteria}
+                sortDirection={sortDirection} setSortDirection={setSortDirection}/>)}
                 </div>
             </div>
 
@@ -113,9 +97,10 @@ export const SortContent: React.FC <{
                 </div>
                 <div className="design-for-option-column">
                 {directions.map( direction => <RadioButton
-                name = {direction} category = {startDate} key = {direction + startDate} 
-                sortCriteria = {backendSortCriteria} setSortCriteria={setBackendSortCriteria}
-                sortDirection={backendSortDirection} setSortDirection={setBackendSortDirection}/>)}
+                name = {direction} 
+                category = {startDateCategory} key = {direction + startDate} 
+                sortCriteria = {sortCriteria} setSortCriteria={setSortCriteria}
+                sortDirection={sortDirection} setSortDirection={setSortDirection}/>)}
                 </div>
             </div>
 

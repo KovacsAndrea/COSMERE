@@ -19,19 +19,23 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
     const navigate = useNavigate();
 
     const bookData = location.state.bookData;
-    if(bookData == undefined || bookData.id == undefined) {
+    if(bookData == undefined || bookData._id == undefined) {
         throw new Error("ID or BOOK DATA is not defined in the State!")
     }
-    const bookId = location.state.bookData.id;
+    const bookId = location.state.bookData._id;
     console.log("ALOO, am ID" + bookId.toString())
-
-    const [name, setName] = useState(location.state.bookData.title);
-    const [description, setDescription] = useState(location.state.bookData.description);
-    const [chapters, setChapters] = useState(location.state.bookData.chaptersFormat);
-    const [planet, setPlanet] = useState(location.state.bookData.planet);
-    const [system, setSystem] = useState(location.state.bookData.system);
-    const [shard, setShard] = useState(location.state.bookData.shard);
-    const [startDate, setStartDate] = useState(location.state.bookData.date);
+    const { 
+        refreshFilterData,
+        setCurrentPageToBeginning,
+        refreshCurrentPage,
+        refreshBookList} = useGlobalState();
+    const [name, setName] = useState(location.state.bookData._title);
+    const [description, setDescription] = useState(location.state.bookData._description);
+    const [chapters, setChapters] = useState(location.state.bookData._chaptersFormat);
+    const [planet, setPlanet] = useState(location.state.bookData._planet);
+    const [system, setSystem] = useState(location.state.bookData._system);
+    const [shard, setShard] = useState(location.state.bookData._shard);
+    const [startDate, setStartDate] = useState(location.state.bookData._startDate);
 
     const [OGname, setOGName] = useState(location.state.bookData.title);
     const [OGdescription, setOGDescription] = useState(location.state.bookData.description);
@@ -42,7 +46,7 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
 
     const [canBeDeleted, setCanBeDeleted] = useState(false);
 
-    const {usingLocal} = useGlobalState();
+    const {usingLocal } = useGlobalState();
 
     const [nameValidator, setNameValidator] = useState(false)
     const [descriptionValidator, setDescriptionValidator] = useState(false)
@@ -104,13 +108,20 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
             if(canBeDeleted){
                 let confirmation = window.confirm("Sure you want to delete this?");
                 if(confirmation){
-                    axios.delete('http://localhost:4000/books/' + bookId)
+                    await axios.delete('http://localhost:4000/books/' + bookId)
                     navigate("/main");
                 }
             }
         }
 
         async function useCloudData() {
+            if(canBeDeleted){
+                let confirmation = window.confirm("Sure you want to delete this?");
+                if(confirmation){
+                    await axios.delete('http://localhost:4000/mongoBooks/' + bookId)
+                    navigate("/main");
+                }
+            }
             console.log(" -----------USING CLOUD DATA -----------")
         }
 
@@ -123,8 +134,8 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
             if(canBeSaved) {
                 // if(rafoServ.containsBook(data) || rafoServ.isValidIdForNewBook(data))
                 {
-                    axios.delete('http://localhost:4000/books/' + bookId)
-                    axios.post('http://localhost:4000/books', {
+                    await axios.delete('http://localhost:4000/books/' + bookId)
+                    await axios.post('http://localhost:4000/books', {
                     id: bookId,
                     title: name,
                     description: description,
@@ -133,19 +144,33 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
                     system: system,
                     shard: shard,
                     date: startDate
-                })
-                .then(response => {
-                    console.log('New book added:', response.data.book);
-                })
-                .catch(error => {
-                    console.error('Error adding new book:', error);
-                });
+                    })
+                    setCurrentPageToBeginning();
+                    refreshCurrentPage();
+                    refreshBookList();
+                    refreshFilterData();
                     navigate("/main");
                 }
             } 
         }
         async function useCloudData() {
-            console.log(" -----------USING CLOUD DATA -----------")
+            if(canBeSaved) {
+                // if(rafoServ.containsBook(data) || rafoServ.isValidIdForNewBook(data))
+                {
+                    await axios.delete('http://localhost:4000/mongoBooks/' + bookId)
+                    await axios.post('http://localhost:4000/mongoBooks', {
+                    _id: bookId,
+                    _title: name,
+                    _description: description,
+                    chaptersFormat: chapters,
+                    _planet: planet,
+                    _system: system,
+                    _shard: shard,
+                    _startDate: startDate})
+                    refreshFilterData();
+                    navigate("/main");
+                }
+            } 
         }
        if(usingLocal){useLocalData()} else {useCloudData()}
     }

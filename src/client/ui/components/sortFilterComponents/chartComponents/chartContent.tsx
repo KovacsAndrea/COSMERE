@@ -12,24 +12,28 @@ import { io } from 'socket.io-client';
 import { StateOptions } from './stateOptions.tsx';
 import { useGlobalState } from '../../../../../globalVariables.tsx';
 import ErrorComponent from '../../../../errorComponent.tsx';
+import { ChartData, ChartElement } from '../../../../../server/app/api/routes/mongoBooks.ts';
+import CuteLoadingComponent from '../../loadingComponent/loadingComponent.tsx';
 export const ChartContent: React.FC<{}> = ({}) => {
     const [chartType, setCharType] = useState("Pie")
     const [chartContent, setChartContent] = useState("Planets")
-    const [backendPlanetData, setBackendPlanetData] = useState([])
-    const [backendSystemData, setBackendSystemData] = useState([]);
-    const [backendShardData, setBackendShardData] = useState([]);
-    const [backendDateData, setBackendDateData] = useState([]);
+    const [backendPlanetData, setBackendPlanetData] = useState<ChartElement[]>([])
+    const [backendSystemData, setBackendSystemData] = useState<ChartElement[]>([]);
+    const [backendShardData, setBackendShardData] = useState<ChartElement[]>([]);
+    const [backendDateData, setBackendDateData] = useState<ChartElement[]>([]);
     const URL = 'http://localhost:5000';
 
     const socket = io(URL, { reconnectionAttempts: 1 });
 
     const [socketIsConnected, setSocketIsConnected] = useState(socket.connected);
     const [stateType, setStateType] = useState("Server")
-    const [socketPlanetData, setSocketPlanetData] = useState([]);
-    const [socektSystemData, setSocketSystemData] = useState([])
-    const [socketShardData, setSocketShardData] = useState([]);
-    const [socketDateData, setSocketDateData] = useState([]);
+    const [socketPlanetData, setSocketPlanetData] = useState<ChartElement[]>([]);
+    const [socektSystemData, setSocketSystemData] = useState<ChartElement[]>([])
+    const [socketShardData, setSocketShardData] = useState<ChartElement[]>([]);
+    const [socketDateData, setSocketDateData] = useState<ChartElement[]>([]);
     const {usingLocal} = useGlobalState();
+    const [isLoading, setIsLoading] = useState(true);
+    const [fetchedOnce, setFetchedOnce] = useState(false);
     
     useEffect(() => {
         if(usingLocal){useLocalData()} else {useCloudData()}
@@ -71,6 +75,7 @@ export const ChartContent: React.FC<{}> = ({}) => {
                 socket.connect();
                 if(socketIsConnected){
                     if (chartContent === "Planets") {
+
                         console.log("Requesting planet data from socket");
                         socket.emit('requestPlanetData');
                         socket.on('planetDataFromSocket', onPlanetDataFromSocket);
@@ -82,6 +87,7 @@ export const ChartContent: React.FC<{}> = ({}) => {
                         if (systemInterval) clearInterval(systemInterval);
                         if (shardInterval) clearInterval(shardInterval);
                         if (dateInterval) clearInterval(dateInterval);
+
                     } else if (chartContent === "Systems") {
                         console.log("Requesting system data from socket");
                         socket.emit('requestSystemData');
@@ -93,6 +99,7 @@ export const ChartContent: React.FC<{}> = ({}) => {
                         if (planetInterval) clearInterval(planetInterval);
                         if (shardInterval) clearInterval(shardInterval);
                         if (dateInterval) clearInterval(dateInterval);
+
                     } else if (chartContent === "Shards") {
                         console.log("Requesting shard data from socket");
                         socket.emit('requestShardData');
@@ -104,6 +111,7 @@ export const ChartContent: React.FC<{}> = ({}) => {
                         if (planetInterval) clearInterval(planetInterval);
                         if (systemInterval) clearInterval(systemInterval);
                         if (dateInterval) clearInterval(dateInterval);
+
                     } else if (chartContent === "Dates") {
                         console.log("Requesting date data from socket");
                         socket.emit('requestDateData');
@@ -151,12 +159,11 @@ export const ChartContent: React.FC<{}> = ({}) => {
             };
         }
 
-
         async function useCloudData() {
-            console.log(" -----------USING CLOUD DATA -----------")
+            console.log("CLOUD DATA FOR THIS SECTION NOT IMPLEMENTED YET")
         }
        
-}, [stateType, chartContent]);
+    }, [stateType, chartContent]);
     
     //#region  node
     useEffect (() => {
@@ -191,17 +198,36 @@ export const ChartContent: React.FC<{}> = ({}) => {
                 .catch(error => {
                     console.error("Failed fetching chart data for dates", error);
                 });
-                    
         }
 
         async function useCloudData() {
-            console.log(" -----------USING CLOUD DATA -----------")
+            console.log("FETCHING CHART DATA")
+            const result = await axios.get<{chartData: ChartData}>("http://localhost:4000/mongoBooks/chart/data")
+            // After 2 seconds, set the fetched data and hide the loading indicator
+            setBackendPlanetData(result.data.chartData.planets);
+            setBackendSystemData(result.data.chartData.systems);
+            setBackendShardData(result.data.chartData.shards);
+            setBackendDateData(result.data.chartData.dates);
+            setIsLoading(false);
         }
 
-       if(usingLocal){useLocalData()} else {useCloudData()}
-        
+        async function fetchData() {
+            if (usingLocal) {
+                // Fetch data from the local server
+                await useLocalData();
+            } else {
+                // Fetch data from the cloud
+                await useCloudData();
+            }
+        }
+       fetchData();
+     
     }, [])
     //#endregion
+    
+    if(isLoading) {
+        return <CuteLoadingComponent />
+    }
 
     return (
     <>

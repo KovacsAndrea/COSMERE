@@ -4,50 +4,51 @@ import { useEffect, useState } from "react";
 import { useGlobalState } from "../../../../../globalVariables";
 
 
-export const CheckboxButton: React.FC<{name: string, category: string, selectedStuff: any, setSelectedStuff: any}> = ({name, category, selectedStuff, setSelectedStuff}) => {
-    let listItems: string[] = selectedStuff;
-    let checked = listItems.includes(name);
+export const CheckboxButton: React.FC<{
+    name: any, 
+    category: string, 
+    selectedStuff: any, 
+    setSelectedStuff: any}> = ({
+        name, 
+        category, 
+        selectedStuff, 
+        setSelectedStuff, }) => {
 
-    const {usingLocal} = useGlobalState();
+    let listItems: any[] = selectedStuff;
+    let checked = listItems.includes(name);
     const [isChecked, setIsChecked] = useState(checked)
 
     useEffect(() => {
-        let listItems: string[] = selectedStuff;
-        if(listItems.includes(name)){
-            setIsChecked(true)
-        }
-        else{
-            setIsChecked(false)
-        }
-    }, [isChecked, selectedStuff])
+        let listItems: any[] = selectedStuff;
+        setIsChecked(listItems.includes(name))
+    }, [selectedStuff])
+
+    const updateSelectedItemsOnChange = () => {
+        if (listItems.includes(name)){
+            listItems = listItems.filter(item => item !== name);
+        } else {listItems.push(name)}
+    }
 
     const handleChange = (e: any) => {
-        async function useLocalData() {
-            const newValue = e.target.checked;
-            axios.patch("http://localhost:4000/pagination/current", {currentPage: 1})
-            setIsChecked(newValue); 
-            console.log(newValue);
-            if (listItems.includes(name)){
-                listItems = listItems.filter(item => item !== name);
-            }
-            else {
-                listItems.push(name);
-            }
-            setSelectedStuff(listItems);
-            axios.patch("http://localhost:4000/filter/" + category, {data: listItems})
-        }
-        async function useCloudData() {
-            console.log(" -----------USING CLOUD DATA -----------")
-        }
-        if(usingLocal){useLocalData()} else {useCloudData()}
+        setIsChecked(e.target.checked)
+        updateSelectedItemsOnChange();
+        setSelectedStuff(listItems);
     };
-
 
     return(
         <>
         <div className="checkable-option-for-filter-button">
-            <input type="checkbox" checked = {isChecked} value={name} id = {name + category} className = "stilu-lu-vasile" onChange={(e) => {handleChange(e)}} />
-            <label htmlFor={name + category} className="stilu-lu-vasile-da-ptr-label"> {name} </label>
+            <input 
+            type="checkbox" 
+            className = "stilu-lu-vasile" 
+            id = {name + category} 
+            checked = {isChecked} 
+            value={name.toString()}
+            onChange={(e) => {handleChange(e)}} />
+
+            <label 
+            className="stilu-lu-vasile-da-ptr-label"
+             htmlFor={name + category}> {name} </label>
         </div>
         </>
     )

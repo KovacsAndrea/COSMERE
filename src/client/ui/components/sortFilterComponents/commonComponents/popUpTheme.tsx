@@ -2,10 +2,18 @@ import React from "react";
 import { FaTimes } from "react-icons/fa";
 
 export const PopUpTheme: React.FC<{
-    isOpen: any, setIsOpen: any,  title: string, setFunctionalityShouldBeComputed: any, 
-    insigniaLeftClassName: string, insigniaRightClassName: string,
-    children: any, }> = 
-    ({isOpen, setIsOpen, children, title, setFunctionalityShouldBeComputed, insigniaLeftClassName, insigniaRightClassName}) => {
+    isOpen: any,  
+    title: string, 
+    insigniaLeftClassName: string, 
+    insigniaRightClassName: string,
+    onClickAction: any
+    children: any, }> = ({
+        isOpen, 
+        children, 
+        title, 
+        insigniaLeftClassName, 
+        insigniaRightClassName,
+        onClickAction}) => {
     return (
         <>
         {isOpen && (
@@ -16,12 +24,7 @@ export const PopUpTheme: React.FC<{
                         <div className="pop-up-header"> 
                             <p className="pop-up-title"> {title} </p>
                             <FaTimes className="pop-up-theme-close-button"
-                            onClick = { () => {
-                                setIsOpen(!isOpen);
-                                if(setFunctionalityShouldBeComputed != null) {
-                                    setFunctionalityShouldBeComputed(true); 
-                                }
-                                }}/>
+                            onClick = { onClickAction}/>
                         </div>
                         {children}
                     </div>

@@ -1,8 +1,9 @@
 import { PieChart } from '@mui/x-charts/PieChart';
 import React from 'react';
 import ErrorComponent from '../../../../errorComponent';
+import { ChartElement } from '../../../../../server/app/api/routes/mongoBooks';
 
-export const PieChartElement: React.FC<{data: any}> = ({data}) => {
+export const PieChartElement: React.FC<{data: ChartElement[]}> = ({data}) => {
     const errorMessage = "Data is empty. Cannot display pie chart.";
     try{
         return (
@@ -11,7 +12,7 @@ export const PieChartElement: React.FC<{data: any}> = ({data}) => {
             <PieChart
                 series={[
                     {
-                    data: data,
+                        data: data,
                         highlightScope: { faded: 'global', highlighted: 'item' },
                         faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
                         innerRadius: 50,

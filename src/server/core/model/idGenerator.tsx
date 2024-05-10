@@ -2,7 +2,7 @@ import { Book } from "./book.tsx";
 
 export class IdGenerator {
     public getNewBookId(listOfBooks: Book[]): string {
-        let listOfIds = listOfBooks.map(book => parseInt(book.id));
+        let listOfIds = listOfBooks.map(book => parseInt(book._id.toString()));
         listOfIds.sort((a, b) => a - b); 
 
         let newId = 1; 
