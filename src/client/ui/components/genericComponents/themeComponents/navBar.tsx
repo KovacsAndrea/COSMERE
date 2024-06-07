@@ -1,7 +1,8 @@
 import './navBar.css'
 import { Link } from 'react-router-dom'
 import { SearchBar } from './searchBar.tsx'
-import React from "react";
+import React, { useEffect } from "react";
+import { useGlobalState } from '../../../../../globalVariables.tsx';
 export const NavBar: React.FC<{
     searchText: string, 
     setSearchText: any,
@@ -13,10 +14,21 @@ export const NavBar: React.FC<{
     searchShouldBeComputed,
         setSearchShouldBeComputed,
 }) =>{
+    const { 
+        user,
+        refreshUser
+     } = useGlobalState();
+
+    const token = sessionStorage.getItem('token')
+    useEffect(() => {
+        refreshUser();
+    }, [])
     return (
         <>
             <nav>
-                <ul>
+                <ul className='nav-bar-content'>
+                    <div className = 'user-profile'>
+                        <p> {user} </p> </div>
                     <li className='logo'>
                         <Link to = "/main" className="cosmereLogo">THE COSMERE</Link>
                     </li>

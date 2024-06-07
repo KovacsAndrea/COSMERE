@@ -9,7 +9,7 @@ nav {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    padding: 10px 40px 10px 70px;
+    padding: 10px 20px 10px 20px;
     box-shadow: 0 4px 8px 0 rgb(173, 173, 173); 
     border-left: none;
     border-right: none;
@@ -41,3 +41,13 @@ nav ul {
     color: white;
 }
 
+.user-profile{
+    width: 300px;
+    height: 30px;
+    background-color: white;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.nav-bar-content{
+}

@@ -4,8 +4,6 @@ import { ChapterGrid } from "../../components/chapterComponents/chapterGridCompo
 import { Insignia } from "../../components/genericComponents/decor/insignia/insignia"
 
 export const ChapterPage: React.FC<{}> = ({}) => {
-    const {chapterList, setChapterList} = useGlobalState();
-    console.log(chapterList)
     return (
         <>
             <Insignia resource="Kaladin.png" /> 

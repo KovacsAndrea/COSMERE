@@ -10,7 +10,10 @@ export const collections: { books?: mongoDB.Collection,
     editedBooks?: mongoDB.Collection
     filterCriteria?: mongoDB.Collection,
     sortCriteria?: mongoDB.Collection,
-    paginationCriteria?: mongoDB.Collection} = {}
+    paginationCriteria?: mongoDB.Collection,
+    chapterCollection?: mongoDB.Collection,
+    userCollection?: mongoDB.Collection} = {}
+
 const DB_CONN_STRING="mongodb+srv://student:OFADKBux251jROqK@cosmere.0ntvhdb.mongodb.net/?retryWrites=true&w=majority&appName=COSMERE"
 const COSMERE_DB ="COSMERE_DB"
 const COSMERE_BOOK_COLLECTION = "COSMERE_BOOK_COLLECTION"
@@ -18,6 +21,8 @@ const COSMERE_EDITED_BOOKS = "COSMERE_EDITED_BOOKS"
 const COSMERE_FILTER_CRITERIA = "COSMERE_FILTER_CRITERIA"
 const COSMERE_SORT_CRITERIA = "COSMERE_SORT_CRITERIA"
 const COSMERE_PAGINATION_CRITERIA = "COSMERE_PAGINATION_CRITERIA"
+const COSMERE_CHAPTERS_COLLECTION = "COSMERE_CHAPTERS_COLLECTION"
+const COSMERE_USER_COLLECTION = "COSMERE_USER_COLLECTION"
 // Initialize Connection
 dotenv.config({ path: '.env.cosmere' });
 export async function connectToDatabase () {
@@ -33,19 +38,25 @@ export async function connectToDatabase () {
     const editedBookCollection: mongoDB.Collection = cosmere_db.collection(COSMERE_EDITED_BOOKS);
     const filterCriteriaCollection: mongoDB.Collection = cosmere_db.collection(COSMERE_FILTER_CRITERIA);
     const sortCriteriaCollection: mongoDB.Collection = cosmere_db.collection(COSMERE_SORT_CRITERIA);
-    const paginationCriteriaColection: mongoDB.Collection = cosmere_db.collection(COSMERE_PAGINATION_CRITERIA)
+    const paginationCriteriaColection: mongoDB.Collection = cosmere_db.collection(COSMERE_PAGINATION_CRITERIA);
+    const chapterCollection: mongoDB.Collection = cosmere_db.collection(COSMERE_CHAPTERS_COLLECTION);
+    const userCollection: mongoDB.Collection = cosmere_db.collection(COSMERE_USER_COLLECTION)
 
     collections.books = bookCollection;
     collections.editedBooks = editedBookCollection;
     collections.filterCriteria = filterCriteriaCollection;
     collections.sortCriteria = sortCriteriaCollection;
-    collections.paginationCriteria = paginationCriteriaColection
+    collections.paginationCriteria = paginationCriteriaColection;
+    collections.chapterCollection = chapterCollection;
+    collections.userCollection = userCollection;
 
     console.log(`Successfully connected to database: ${cosmere_db.databaseName} and collections: 
     ${bookCollection.collectionName}, 
     ${editedBookCollection.collectionName}, 
     ${filterCriteriaCollection.collectionName},
     ${sortCriteriaCollection.collectionName},
-    ${paginationCriteriaColection.collectionName}`);
+    ${paginationCriteriaColection.collectionName},
+    ${chapterCollection.collectionName},
+    ${userCollection.collectionName}`);
 }
 

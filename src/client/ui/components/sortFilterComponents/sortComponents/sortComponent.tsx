@@ -14,6 +14,7 @@ export const SortComponent: React.FC<{
 }> = ({
     setSortShouldBeComputed
 }) => {
+    const token = sessionStorage.getItem('token')
     const [sortIsOpen, setSortIsOpen] = useState(false);
     const [sortIsActive, setSortIsActive] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -64,7 +65,7 @@ export const SortComponent: React.FC<{
                 const result = await axios.patch("http://localhost:4000/mongoBooks/sort/current/data", {
                 criteria : sortCriteria,
                 direction : sortDirection
-                })
+                },{headers: {Authorization: `${token}`}})
                 if(result.data.modifiedCount<1){ alert("SOMETHING WENT WRONG. PLESE TRY AGAIN")}
                 refreshCurrentSortData();
                 setSortShouldBeComputed(true);

@@ -34,7 +34,7 @@ export const ChaptersCardComponent: React.FC<{
                             ref={chaptersAreaRef} > 
                             </textarea></> : <>
                             <div style={{width: '100%'}}>
-                            <ErrorComponent message={"Couldn't get hold of chapters!"} size={'40px'}/>
+                            <ErrorComponent message={"No chapters yet!"} size={'40px'}/>
                             </div>
                             </>}
                         

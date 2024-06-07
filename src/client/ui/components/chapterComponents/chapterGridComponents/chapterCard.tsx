@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import './chapterStyle.css'
+import axios from "axios";
 
 export const ChapterCard: React.FC <{
     chapterId: any,
@@ -10,6 +11,7 @@ export const ChapterCard: React.FC <{
     description: any, 
     wordcount: any,
     pov: any
+    setChapterWasDeleted: any
      }> = ({
     chapterId, 
     bookId, 
@@ -18,8 +20,10 @@ export const ChapterCard: React.FC <{
     bookData,
     description, 
     wordcount,
-    pov 
+    pov,
+    setChapterWasDeleted
 }) => {
+    const token = sessionStorage.getItem('token')
     const navigate = useNavigate();
     const editableChapterCardData = {
         chapterId: chapterId,
@@ -35,6 +39,12 @@ export const ChapterCard: React.FC <{
     const handleEditChapter = () => {
         navigate(`/chapters/${editableChapterCardData.chapterId}`, {state: {editableChapterCardData}})
     }
+
+    const handleDeleteChapter = async () => {
+        await axios.delete("http://localhost:4000/mongoChapters/" + chapterId, {headers: {Authorization: `${token}`}})
+        setChapterWasDeleted(true)
+    }
+
     return(
         <>
             <div className="card"> 
@@ -47,7 +57,7 @@ export const ChapterCard: React.FC <{
                 </div>
                 <div className="cardFooter">
                     <button className="edit" onClick = {handleEditChapter}>Details</button>
-                    <button className="delete">Delete</button>
+                    <button className="delete" onClick={handleDeleteChapter}>Delete</button>
                     </div>
             </div>
         </>

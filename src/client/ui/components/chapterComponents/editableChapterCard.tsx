@@ -8,9 +8,10 @@ import { IoCloseCircle } from "react-icons/io5";
 import { IoChevronBackCircle } from "react-icons/io5";
 import { AccordionCArdComponent } from "../bookComponents/acordionCardComponent/accordionCardComponent";
 import ErrorComponent from "../../../errorComponent";
+import axios from "axios";
 
 export const EditableChapterCard: React.FC<{}> = ({}) => {
-    
+    const token = sessionStorage.getItem('token');
     const location = useLocation();
     const navigate = useNavigate();
     const handleBackToBook = () => {
@@ -25,23 +26,26 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
     try{
     const bookId = location.state.editableChapterCardData.bookId
     const chapterId = location.state.editableChapterCardData.chapterId;
-    const chapterNumber = location.state.editableChapterCardData.chapterNumber;
+   
     const bookTitle = bookData._title
 
     const [title, setTitle] = useState(location.state.editableChapterCardData.title);
     const [description, setDescription] = useState(location.state.editableChapterCardData.description);
     const [wordcount, setWordcount] = useState(location.state.editableChapterCardData.wordcount);
     const [pov, setPov] = useState(location.state.editableChapterCardData.pov);
+    const [chapterNumber, setChapterNumber] = useState(location.state.editableChapterCardData.chapterNumber);
 
     const [OGtitle, setOGTitle] = useState(location.state.editableChapterCardData.title);
     const [OGdescription, setOGDescription] = useState(location.state.editableChapterCardData.description);
     const [OGwordcount, setOGWordcount] = useState(location.state.editableChapterCardData.wordcount);
     const [OGpov, setOGPov] = useState(location.state.editableChapterCardData.pov);
+    const [OGchapterNumber, setOGChapterNumber] = useState(location.state.editableChapterCardData.chapterNumber);
 
     const [titleValidator, setTitleValidator] = useState(false);
     const [descriptionValidator, setDescriptionValidator] = useState(false);
     const [wordcountValidator, setWordcountValidator] = useState(false);
     const [povValidator, setpovValidator] = useState(false);
+    const [chapterNumberValidator, setchapterNumberValidator] = useState(false);
 
     let allFieldsAreValid  = false;
     let anyFieldIsDifferent = false;
@@ -59,6 +63,7 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
         validateContent(description, REGEX.chapterDescription, setDescriptionValidator);
         validateContent(wordcount, REGEX.chapterWordCount, setWordcountValidator)
         validateContent(pov, REGEX.pov, setpovValidator)
+        validateContent(chapterNumber, REGEX.chapterNumber, setchapterNumberValidator)
     }
 
     useEffect (() => {
@@ -67,18 +72,21 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
             titleValidator &&
             descriptionValidator &&
             wordcountValidator &&
-            povValidator
+            povValidator &&
+            chapterNumberValidator
         )
         anyFieldIsDifferent = (
             OGtitle != title ||
             OGdescription != description ||
             OGwordcount != wordcount ||
-            OGpov != pov 
+            OGpov != pov ||
+            OGchapterNumber != chapterNumber
         )
         console.log("TITLE " + titleValidator)
         console.log("description " + descriptionValidator)
         console.log("count " + wordcountValidator)
         console.log("pov " + povValidator)
+        console.log("chNumber  " + chapterNumberValidator)
 
         let chapterCanBeSaved = (anyFieldIsDifferent && allFieldsAreValid)
         setCanBeSaved(chapterCanBeSaved)
@@ -98,36 +106,54 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
         updateDeleteIconStatus(chapterCanBeDeleted);
         setCanBeDeleted(chapterCanBeDeleted);
 
-    }, [title, description, wordcount, pov, titleValidator, descriptionValidator, wordcountValidator, povValidator])
+    }, [title, description, wordcount, pov, 
+        titleValidator, 
+        descriptionValidator, 
+        wordcountValidator, 
+        povValidator,
+        chapterNumberValidator])
     const titleAreaRef= useRef<HTMLTextAreaElement>(null);
     const chapterTitleAreaRef = useRef<HTMLTextAreaElement>(null);
     const descriptionAreaRef = useRef<HTMLTextAreaElement>(null);
     const wordcountAreaRef = useRef<HTMLTextAreaElement>(null);
     const povAreaRef = useRef<HTMLTextAreaElement>(null);
+    const chapterNumberAreaRef = useRef<HTMLTextAreaElement>(null);
 
     const handleTitleChange = (e: any) => {setTitle(e.target.value); adjustAreaHeight(chapterTitleAreaRef); validateContent(title, REGEX.chapterTitle, setTitleValidator)}
     const handleDescriptionChange = (e: any) => {setDescription(e.target.value); adjustAreaHeight(descriptionAreaRef); validateContent(description, REGEX.chapterDescription, setDescriptionValidator)}
-    const handleWordcountChange = (e: any) => {setWordcount(e.target.value); adjustAreaHeightGrid(wordcountAreaRef, povAreaRef); validateContent(wordcount, REGEX.chapterWordCount, setWordcountValidator)}
-    const handlePovChange = (e: any) => {setPov(e.target.value); adjustAreaHeightGrid(povAreaRef, wordcountAreaRef); validateContent(pov, REGEX.pov, setpovValidator)}
-
+    const handleWordcountChange = (e: any) => {setWordcount(e.target.value); adjustAreaHeight(wordcountAreaRef); validateContent(wordcount, REGEX.chapterWordCount, setWordcountValidator)}
+    const handlePovChange = (e: any) => {setPov(e.target.value); adjustAreaHeight(povAreaRef); validateContent(pov, REGEX.pov, setpovValidator)}
+    const handleChapterNumberChange = (e: any) => {setChapterNumber(e.target.value); adjustAreaHeight(chapterNumberAreaRef); validateContent(chapterNumber, REGEX.chapterNumber, setchapterNumberValidator)}
 
     useEffect(() => {
         adjustAreaHeight(titleAreaRef)
     }, [titleAreaRef])
     
-    const handleSave = () => {
+    const handleSave = async () => {
         if(canBeSaved){
-            let confirmation = window.confirm("Book can be saved but not implemented yet")
+            await axios.delete("http://localhost:4000/mongoChapters/" + chapterId, {headers: {Authorization: `${token}`}})
+            await axios.post("http://localhost:4000/mongoChapters/", {
+                _id: chapterId,
+                _book_id: bookData._id,
+                _chapter_number: chapterNumber,
+                _title: title,
+                _description: description,
+                _wordcount: wordcount,
+                _pov: pov
+            }, {headers: {Authorization: `${token}`}})
+            let confirmation = window.confirm("added chapter with id " + chapterId + " to book with id " + bookData._id)
             if(confirmation){
                 navigate(`/chapters/book/${bookData._id}`, { state: { bookData } })
             }
         }
     }
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         if(canBeDeleted){
-            let confirmation = window.confirm("Book can be DELETED but not implemented yet")
+            let confirmation = window.confirm("Are you sure you want to delete book?")
+
             if(confirmation){
+                await axios.delete("http://localhost:4000/mongoChapters/" + chapterId, {headers: {Authorization: `${token}`}})
                 navigate(`/chapters/book/${bookData._id}`, { state: { bookData } })
             }
         }
@@ -209,21 +235,38 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
 
                 <div className="column-section-editable-entity-card">
                     <div className="small-editable-section-editable-entity-card-wrapper"> 
+                            <textarea className={`small-editable-section-editable-entity-card ${!wordcountValidator ? 'shadow' : ''}`}  
+                                value = {wordcount}
+                                maxLength={6}
+                                onChange={handleWordcountChange}
+                                onBlur={validateAllContent}
+                                title = "Word count"
+                                placeholder="Word count"
+                                id = "chapterWordCount"
+                                rows={1} 
+                                ref = {wordcountAreaRef}
+                            />
+                            <AccordionCArdComponent infoMessage={infoMessage.chapterWordcount} errorMessage={errorMessage.chapterWordcount}/>
+                        </div>
+
+                    <div className="small-editable-section-editable-entity-card-wrapper"> 
                         <textarea className={`small-editable-section-editable-entity-card ${!wordcountValidator ? 'shadow' : ''}`}  
-                            value = {wordcount}
+                            value = {chapterNumber}
                             maxLength={6}
-                            onChange={handleWordcountChange}
+                            onChange={handleChapterNumberChange}
                             onBlur={validateAllContent}
-                            title = "Word count"
-                            placeholder="Word count"
-                            id = "chapterWordCount"
+                            title = "Chapter Number"
+                            placeholder="Chapter Number"
+                            id = "chapterNumber"
                             rows={1} 
-                            ref = {wordcountAreaRef}
+                            ref = {chapterNumberAreaRef}
                         />
                         <AccordionCArdComponent infoMessage={infoMessage.chapterWordcount} errorMessage={errorMessage.chapterWordcount}/>
                     </div>
 
-                    <div className="small-editable-section-editable-entity-card-wrapper"> 
+                    
+                </div>
+                <div className="small-editable-section-editable-entity-card-wrapper"> 
                         <textarea className={`small-editable-section-editable-entity-card ${!povValidator ? 'shadow' : ''}`}  
                             value = {pov}
                             maxLength={100}
@@ -237,7 +280,6 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
                         />
                         <AccordionCArdComponent infoMessage={infoMessage.chapterPov} errorMessage={errorMessage.chapterPov}/>
                     </div>
-                </div>
 
                 <div className = "save-delete-discard-icons-wrapper">
                     <IoChevronBackCircle className = "icon-chapter-section chapter-discard" onClick={handleDiscard}/>

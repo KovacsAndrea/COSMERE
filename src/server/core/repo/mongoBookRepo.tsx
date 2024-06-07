@@ -371,8 +371,19 @@ export class MongoBookRepo {
     
 
     public async getAllBooks() {
-        const books = await collections.editedBooks?.find({}).toArray();
+        const paginationCriteria = await collections.paginationCriteria?.findOne({_id: paginationDataID})
+        const elementsPerPage = paginationCriteria?.elementsPerPage;
+
+        const skipCount = (this._currentPage - 1) * elementsPerPage;
+
+        console.log("ELEMENTS PER PAGE " + elementsPerPage)
+        const books = await collections.editedBooks?.find({}).skip(skipCount).limit(elementsPerPage).toArray();
         return books;
+    }
+
+    public async getAllBooks_Length() {
+        const books = await collections.editedBooks?.find({}).toArray();
+        return books.length;
     }
 
     public async getAllBooks_Collection() {

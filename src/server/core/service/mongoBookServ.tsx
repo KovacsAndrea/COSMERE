@@ -17,6 +17,11 @@ export class MongoBookServ {
     public async getSearchResultWithCurrentCriteria(searchText: string) {
         return await this.bookRepo.getSearchResultWithCurrentCriteria(searchText);
     }
+
+    public async getAllBooks_Length(){
+        const result = await this.bookRepo.getAllBooks_Length();
+        return result;
+    }
     //#endregion
     
     //#region BOOK COLLECTION 

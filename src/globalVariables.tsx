@@ -14,8 +14,6 @@ interface GlobalState {
     setBookList: React.Dispatch<React.SetStateAction<any>>;
     mongoBookList: any;
     setMongoBookList: React.Dispatch<React.SetStateAction<any>>;
-    chapterList: any;
-    setChapterList: React.Dispatch<React.SetStateAction<any>>;
 
     planetData: string[];
     setPlanetData: React.Dispatch<React.SetStateAction<string[]>>;
@@ -45,15 +43,22 @@ interface GlobalState {
     currentElementsPerPage: number;
     setCurrentElementsPerPage: React.Dispatch<React.SetStateAction<number>>;
 
+    bookViewLength: number;
+    setBookViewLength: React.Dispatch<React.SetStateAction<number>>
+
+    user: string;
+    setUser: React.Dispatch<React.SetStateAction<string>>;
+    refreshUser: () => any;
+
     refreshBookList: () => void;
     refreshFilterData: () => void;
     refreshCurrentFilterData: () => void;
     refreshCurrentSortData: () => void;
     refreshCurrentPage: () => void;
-    setCurrentPageToBeginning: () => any;
     updateCurrentPage: (newCurrentPage: number) => void;
     refreshCurrentElementsPerPage: () => void;
     updateCurrentElementsPerPage: (newElementsPerPage: number) => any;
+    refreshBookViewLength: () => any;
     
 }
 
@@ -62,12 +67,14 @@ const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
 
 // Create a provider component to wrap your entire app
 export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const token = sessionStorage.getItem('token');
     const [clientIsConnectedToInternet, setClientIsConnectedToInternet] = useState(true);
     const [serverIsRunning, setServerIsRunning] = useState(true);
     const [usingLocal, setUsingLocal] = useState(false);
     const [bookList, setBookList] = useState([]);
     const [mongoBookList, setMongoBookList] = useState([]);
     const [chapterList, setChapterList] = useState([]);
+    
     
     const [planetData, setPlanetData] = useState<string[]>([]);
     const [systemData, setSystemData] = useState<string[]>([]);
@@ -85,8 +92,13 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [currentElementsPerPage, setCurrentElementsPerPage] = useState<number>(0);
     
+    const [bookViewLength, setBookViewLength] = useState(0);
+
+    const [user, setUser] = useState("")
+
+
     const refreshBookList = () =>{
-      axios.get("http://localhost:4000/mongoBooks").then( response => {
+      axios.get("http://localhost:4000/mongoBooks", {headers: {Authorization: `${token}`}}).then( response => {
         setMongoBookList(response.data.books);
         }).catch (error => {
         console.error('Error fetching backend data:', error);
@@ -94,7 +106,7 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
     }
 
     const refreshFilterData = () => {
-      axios.get<{ filterData: FilterData }>("http://localhost:4000/mongoBooks/filter/data")
+      axios.get<{ filterData: FilterData }>("http://localhost:4000/mongoBooks/filter/data", {headers: {Authorization: `${token}`}})
         .then(filterResponse => {
           console.log("FETCHING GFILTER DATA CURVELOR")
             const _filterData = filterResponse.data.filterData;
@@ -109,7 +121,7 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
   };
 
   const refreshCurrentFilterData = () => {
-    axios.get<{ currentFilterData: FilterData }>("http://localhost:4000/mongoBooks/filter/current/data").then(
+    axios.get<{ currentFilterData: FilterData }>("http://localhost:4000/mongoBooks/filter/current/data", {headers: {Authorization: `${token}`}}).then(
       currentFilterResponse => {
         const _currentFilterData = currentFilterResponse.data.currentFilterData;
                      
@@ -121,7 +133,7 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
   }
 
   const refreshCurrentSortData = () => {
-    axios.get<{ sortData: SortData }>("http://localhost:4000/mongoBooks/sort/current/data").then(
+    axios.get<{ sortData: SortData }>("http://localhost:4000/mongoBooks/sort/current/data", {headers: {Authorization: `${token}`}}).then(
       currentSortResponse => {
         setCurrentSortCriteria(currentSortResponse.data.sortData.criteria);
         setCurrentSortDirection(currentSortResponse.data.sortData.direction);
@@ -129,49 +141,49 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
   }
 
   const refreshCurrentPage = () => {
-    axios.get<{currentPage: number}>("http://localhost:4000/mongoBooks/pagination/currentPage").then(
+    axios.get<{currentPage: number}>("http://localhost:4000/mongoBooks/pagination/currentPage", {headers: {Authorization: `${token}`}}).then(
       currentPaginationResponse => {
+        //console.log("REFRESHING CURRENT PAGE TO: " + currentPaginationResponse.data.currentPage)
         setCurrentPage(currentPaginationResponse.data.currentPage)
       }
     )
   }
 
-  const setCurrentPageToBeginning = () => {
-    axios.patch("http://localhost:4000/mongoBooks/pagination/currentPage", {
-      currentPage: 1
-    }).then(
-      patchResult => {
-        return patchResult.data.result;
-      })
-  }
-
-  const updateCurrentPage = (newCurrentPage: number) => {
-    axios.patch("http://localhost:4000/mongoBooks/pagination/currentPage", {
+  const updateCurrentPage =  async (newCurrentPage: number) => {
+    await axios.patch("http://localhost:4000/mongoBooks/pagination/currentPage", {
       currentPage: newCurrentPage
-    }).then(
-      patchResult => {
-        return patchResult.data.result;
-      })
+    }, {headers: {Authorization: `Bearer ${token}`}})
+    const result = await axios.get<{currentPage: number}>("http://localhost:4000/mongoBooks/pagination/currentPage", {headers: {Authorization: `${token}`}})
+    setCurrentPage(result.data.currentPage)
   }
 
-  const refreshCurrentElementsPerPage = () => {
-    axios.get<{elementsPerPage: number}>("http://localhost:4000/mongoBooks/pagination/elementsPerPage").then(
-      currentPaginationResponse => {
-        setCurrentElementsPerPage(currentPaginationResponse.data.elementsPerPage)
-      }
-    )
+  const refreshCurrentElementsPerPage = async () => {
+    const result = await axios.get<{elementsPerPage: number}>("http://localhost:4000/mongoBooks/pagination/elementsPerPage", {headers: {Authorization: `${token}`}})
+    setCurrentElementsPerPage(result.data.elementsPerPage)
   }
 
-  const updateCurrentElementsPerPage = (newElementsPerPage: number) => {
-    axios.patch("http://localhost:4000/mongoBooks/pagination/elementsPerPage", {
+  const updateCurrentElementsPerPage = async (newElementsPerPage: number) => {
+    await axios.patch("http://localhost:4000/mongoBooks/pagination/elementsPerPage", {
       elementsPerPage: newElementsPerPage
-    }).then(
-      patchResult => {
-        return patchResult.data.result;
-      })
+    }, {headers: {Authorization: `Bearer ${token}`}})
+    const result = await axios.get<{elementsPerPage: number}>("http://localhost:4000/mongoBooks/pagination/elementsPerPage", {headers: {Authorization: `${token}`}})
+    setCurrentElementsPerPage(result.data.elementsPerPage)
   }
 
-  
+  const refreshBookViewLength = async () => {
+    const result = await axios.get<{length: number}>("http://localhost:4000/mongoBooks/view/length", {headers: {Authorization: `${token}`}})
+    setBookViewLength(result.data.length)
+  }
+
+  const refreshUser = async () => {
+    const token = sessionStorage.getItem('token')
+    const user = await axios.get("http://localhost:4000/mongoUsers/auth", {
+      params: {
+        token: token
+      }
+    })
+    setUser(user.data.decoded.email)
+  }
 
  
 
@@ -188,14 +200,14 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
             console.error('Error fetching backend data:', error);
             }); 
 
-            
-        setCurrentPageToBeginning();
+        
         refreshBookList();
         refreshFilterData();
         refreshCurrentFilterData();
         refreshCurrentSortData();
-        refreshCurrentPage();
         refreshCurrentElementsPerPage();
+        updateCurrentPage(1);
+        refreshUser();
         }, []);
 
   const state: GlobalState = {
@@ -211,9 +223,6 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
     mongoBookList,
     setMongoBookList,
     refreshBookList,
-
-    chapterList,
-    setChapterList,
 
     planetData,
     setPlanetData,
@@ -244,13 +253,20 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
     currentPage,
     setCurrentPage,
     refreshCurrentPage,
-    setCurrentPageToBeginning,
     updateCurrentPage,
 
     currentElementsPerPage,
     setCurrentElementsPerPage,
     refreshCurrentElementsPerPage,
-    updateCurrentElementsPerPage
+    updateCurrentElementsPerPage,
+
+    bookViewLength,
+    setBookViewLength,
+    refreshBookViewLength,
+
+    user,
+    setUser,
+    refreshUser
   };
 
   return (

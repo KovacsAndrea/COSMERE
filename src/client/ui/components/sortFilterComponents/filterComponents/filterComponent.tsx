@@ -15,6 +15,7 @@ export const FilterComponent: React.FC<{
 ({
     setFilterShouldBeComputed
 }) => {
+    const token = sessionStorage.getItem('token')
     const [filterIsOpen, setFilterIsOpen] = useState(false);
     const [filterIsActive, setFilterIsActive] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -109,7 +110,7 @@ export const FilterComponent: React.FC<{
                         systemData: currentSystemData,
                         shardData: currentShardData,
                         dateData: currentDateData
-                    })
+                    }, {headers: {Authorization: `${token}`}})
                     if(result.data.modifiedCount<1){ alert("SOMETHING WENT WRONG. PLESE TRY AGAIN")}
                     //do GET form DB and update currentFilter____Data to the current
                     //we do this, and NOT set the currentFilter____Data without a GET 

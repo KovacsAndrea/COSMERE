@@ -14,7 +14,6 @@ export const PaginationComponent: React.FC<{
     
     const {
         currentElementsPerPage,
-        refreshCurrentElementsPerPage,
         updateCurrentElementsPerPage
     } = useGlobalState()
     const [paginationIsOpen, setPaginationIsOpen] = useState(false)
@@ -33,7 +32,6 @@ export const PaginationComponent: React.FC<{
             if(possibleValues.includes(elementsPerPage)){
                 console.log("||||||||||||||||||||||||| UPDATING THE PAGINATION CRITERIA |||||||||||||||||||||||||")
                 updateCurrentElementsPerPage(elementsPerPage);
-                refreshCurrentElementsPerPage();
                 setPaginationShouldBeComputed(true)
             }
         }

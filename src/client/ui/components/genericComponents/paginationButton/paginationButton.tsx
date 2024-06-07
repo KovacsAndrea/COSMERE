@@ -11,7 +11,10 @@ export const PaginationButton: React.FC<{}> = ({}) => {
         refreshCurrentPage, 
         updateCurrentPage, 
         currentElementsPerPage,
-        mongoBookList} = useGlobalState();
+        refreshBookList,
+        refreshCurrentElementsPerPage,
+        mongoBookList,
+        bookViewLength, refreshBookViewLength} = useGlobalState();
     const [maxPageNr, setMaxPageNr] = useState(0)
     const [buttonText, setButtonText] = useState("")
     const [isLoading, setIsLoading] = useState(true);
@@ -22,17 +25,20 @@ export const PaginationButton: React.FC<{}> = ({}) => {
             console.log("STUFF CHANGED PAGINATION BUTTON")                    
         }
         async function useCloudData() {
-            setButtonText(currentPage.toString() + "/" + maxPageNr.toString());
+            console.log("EDITING LABEL")
+            refreshCurrentPage();
+            refreshCurrentElementsPerPage();
+            refreshBookViewLength();
+            
+            setMaxPageNr(Math.ceil(bookViewLength / currentElementsPerPage))
+            setButtonText(currentPage.toString() + "/" + maxPageNr.toString() + " EPP: " + currentElementsPerPage) ;
             setIsLoading(false);
         }
        if(usingLocal){useLocalData()} else {useCloudData()}
         
-    }, [currentPage, maxPageNr])
+    }, [currentPage, maxPageNr, currentElementsPerPage, mongoBookList])
     
-    useEffect(() => {
-        console.log("PAGINATION DETECTED THAT BOOKLIST CHANGED")
-        setMaxPageNr(mongoBookList.length)
-    }, [mongoBookList])
+
 
     const handleCurrentPageChange = (currentPage: number) => {
         async function useLocalData() {
@@ -40,7 +46,7 @@ export const PaginationButton: React.FC<{}> = ({}) => {
         }
         async function useCloudData() {
             updateCurrentPage(currentPage)
-            refreshCurrentPage();
+            refreshBookList();
         }
        if(usingLocal){useLocalData()} else {useCloudData()}
         
@@ -55,7 +61,7 @@ export const PaginationButton: React.FC<{}> = ({}) => {
 
     const handlePrevious = () => {
         if (currentPage > 1){
-            handleCurrentPageChange(currentPage -1 )
+            handleCurrentPageChange(currentPage-1)
             console.log(currentPage)
         }
     }

@@ -1,3 +1,5 @@
+
+import ObjectId from "bson-objectid";
 import { IoAddCircle, IoChevronBackCircle} from "react-icons/io5"
 import { useNavigate } from "react-router-dom";
 export const ChapterNavigationComponent: React.FC<{bookData: any}> = ({bookData}) => {
@@ -8,7 +10,7 @@ export const ChapterNavigationComponent: React.FC<{bookData: any}> = ({bookData}
     }
 
     const editableChapterCardData = {
-        chapterId: "6969696",
+        chapterId: new ObjectId().toString(), 
         bookId: bookData.id,
         chapterNumber: "?",
         title: "",

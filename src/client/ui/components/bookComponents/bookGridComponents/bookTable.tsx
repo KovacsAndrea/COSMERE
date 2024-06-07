@@ -36,10 +36,18 @@ const BookTable: React.FC<{
     setBackendCurrentPage, 
     setMaxPageNr
 }) => {
+    const token = sessionStorage.getItem('token');
     const [deleteBook, setDeleteBook] = useState("")
     const [isLoading, setIsLoading] = useState(true);
     const { usingLocal } = useGlobalState();
-    const { refreshFilterData, refreshBookList, setCurrentPageToBeginning, refreshCurrentPage } = useGlobalState();
+    const { 
+        refreshFilterData, 
+        refreshBookList, 
+        updateCurrentPage,
+        currentPage,
+        refreshCurrentElementsPerPage,
+        currentElementsPerPage,
+     } = useGlobalState();
 
     useEffect(() => {
         async function useLocalData() {
@@ -139,33 +147,30 @@ const BookTable: React.FC<{
         async function useCloudData() {
             setIsLoading(true)
             if(deleteBook.length != 0){
-                await axios.delete('http://localhost:4000/mongoBooks/' + deleteBook)
-                refreshBookList();
-                refreshFilterData();
-                setDeleteBook("")
+                await axios.delete('http://localhost:4000/mongoBooks/' + deleteBook, {headers: {Authorization: `${token}`}})
+                await refreshBookList();
+                await refreshFilterData();
+                await setDeleteBook("")
             }
 
             if(filterShouldBeComputed){
                 console.log("BOOK TABLE SAYS WE SHOULD COMPUTE FILTER")
-                setCurrentPageToBeginning();
-                refreshCurrentPage();
-                refreshBookList();
-                setFilterShouldBeComputed(false)
+                updateCurrentPage(1)
+                await refreshBookList();
+                await setFilterShouldBeComputed(false)
             }
 
             if(sortShouldBeComputed){
                 console.log("BOOK TABLE SAYS SORT SHOULD BE COMPUTED")
-                setCurrentPageToBeginning();
-                refreshCurrentPage();
-                refreshBookList();
-                setSortShouldBeComputed(false)
+                updateCurrentPage(1)
+                await refreshBookList();
+                await setSortShouldBeComputed(false)
             }
 
             if(paginationShouldBeComputed){
-                console.log("BOOK TABLE SAYS PAGINATION SHOULD BE COMPUTED")                
-                setCurrentPageToBeginning();
-                refreshCurrentPage();
-                refreshBookList();
+                console.log("BOOK TABLE SAYS PAGINATION SHOULD BE COMPUTED")           
+                updateCurrentPage(1)
+                refreshBookList()
                 setPaginationShouldBeComputed(false)
             }
             setIsLoading(false)
@@ -180,7 +185,15 @@ const BookTable: React.FC<{
         }
     
         fetchData();
-    }, [bookList, deleteBook, backendCurrentPage, searchShouldBeComputed, filterShouldBeComputed, paginationShouldBeComputed, sortShouldBeComputed])
+    }, [bookList, 
+        deleteBook, 
+        backendCurrentPage, 
+        searchShouldBeComputed, 
+        filterShouldBeComputed, 
+        paginationShouldBeComputed, 
+        sortShouldBeComputed,
+        currentPage, 
+    ])
 
     if (isLoading) {
         return <LoadingComponent />;

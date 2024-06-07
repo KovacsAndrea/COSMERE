@@ -10,6 +10,7 @@ import { ChapterPage } from './client/ui/pages/chapterPage/chapterPage';
 import { ChapterDetailPage } from './client/ui/pages/chapterPage/chapterDetailPage';
 import { ChaptersOfBookPage } from './client/ui/pages/chapterPage/chapterPerBookPage';
 import { GlobalStateProvider} from './globalVariables';
+import { AuthPage } from './client/ui/pages/authPage/authPage';
 
 
 export const backendPath = "http://localhost:4000/"
@@ -36,6 +37,7 @@ function App() {
       setSearchShouldBeComputed = {setSearchShouldBeComputed}
       >
       <Routes>
+        <Route path='/auth' element = {<AuthPage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/main" element={<MainPage 
         searchText={searchText} 
@@ -46,8 +48,7 @@ function App() {
 
         sortShouldBeComputed = {sortShouldBeComputed} 
         setSortShouldBeComputed = {setSortShouldBeComputed}
-        
-        paginationValue={paginationValue} setPaginationValue={setPaginationValue}
+      
         paginationShouldBeComputed = {paginationShouldBeComputed} setPaginationShouldBeComputed = {setPaginationShouldBeComputed}
         />} />
         <Route path="/details/*" element={<BookPage />}/>

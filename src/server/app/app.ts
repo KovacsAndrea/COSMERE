@@ -11,6 +11,8 @@ import { paginationData } from "./api/routes/paginationData";
 import chapterRouter from "./api/routes/chapterRoutes";
 import { connectToDatabase } from "../../database.service";
 import { mongoBookRouter } from "./api/routes/mongoBooks";
+import { mongoChapterRouter } from "./api/routes/mongoChapters";
+import { mongoUserRouter } from "./api/routes/authRoutes";
 
 
 const app = express();
@@ -39,6 +41,8 @@ connectToDatabase().then(() => {
     app.use("/pagination", paginationData)
     app.use("/chapters", chapterRouter)
     app.use("/mongoBooks", mongoBookRouter)
+    app.use("/mongoChapters", mongoChapterRouter)
+    app.use("/mongoUsers", mongoUserRouter)
     
     app.get('/ping', (_req, _res) => {
         _res.status(200).send('Server is up and running.');

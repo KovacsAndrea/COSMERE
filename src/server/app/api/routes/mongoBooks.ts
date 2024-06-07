@@ -3,6 +3,7 @@ import { collections } from "../../../../database.service";
 import { mongoBookServ, rafoRepo } from "../../data";
 import { Book } from "../../../core/model/book";
 import { ObjectId } from "mongodb";
+import { authenticateJWT } from "./authRoutes";
 
 export interface FilterData {
     planets: string[]; // Assuming planets is an array of strings
@@ -49,6 +50,21 @@ mongoBookRouter.get("/", async (_req, _res, _next) => {
      }
 })
 
+mongoBookRouter.get("/view/length", async (_req, _res, _next) => {
+    try{
+        const books_length = await mongoBookServ.getAllBooks_Length();
+        _res.status(200).json({
+            mesage: "trying to get books",
+            length: books_length
+        });
+    } catch (error) {
+        _res.status(500).json({
+            error: error
+        }
+        );
+     }
+})
+
 ///get books by search text
 mongoBookRouter.get("/search/:SearchText", async(_req, _res, _next) => {
     const searchText = _req.params.SearchText;
@@ -85,7 +101,7 @@ mongoBookRouter.get("/:ID", async (_req, _res, _next) => {
 })
 
 ///get mock book
-mongoBookRouter.get("/mockBook/book",  async (_req, _res, _next) => {
+mongoBookRouter.get("/mockBook/book", async (_req, _res, _next) => {
     try{
         let book = await mongoBookServ.getMockBook();
         _res.status(200).json({
@@ -135,7 +151,7 @@ mongoBookRouter.post("/", async(_req, _res, _next) => {
 })
 
 ///delete book 
-mongoBookRouter.delete("/:ID", async (_req, _res, _next) => {
+mongoBookRouter.delete("/:ID", authenticateJWT, async (_req, _res, _next) => {
     const ID = _req.params.ID;
     try{
         let result = await mongoBookServ.deleteBook(ID);
@@ -188,7 +204,7 @@ mongoBookRouter.get("/filter/current/data", async(_req, _res, _next) =>{
     }
 })
 
-mongoBookRouter.patch("/filter/current/data", async(_req, _res, _next) =>{
+mongoBookRouter.patch("/filter/current/data", authenticateJWT, async(_req, _res, _next) =>{
     try{
         const planetData = _req.body.planetData
         const systemData = _req.body.systemData
@@ -225,7 +241,7 @@ mongoBookRouter.get("/sort/current/data", async(_req, _res, _next) =>{
     }
 })
 
-mongoBookRouter.patch("/sort/current/data", async(_req, _res, _next) =>{
+mongoBookRouter.patch("/sort/current/data", authenticateJWT, async(_req, _res, _next) =>{
     try{
         const criteria = _req.body.criteria;
         const direction = _req.body.direction;
@@ -271,7 +287,7 @@ mongoBookRouter.get("/pagination/elementsPerPage", async(_req, _res, _next) =>{
     }
 })
 
-mongoBookRouter.patch("/pagination/elementsPerPage", async(_req, _res, _next) =>{
+mongoBookRouter.patch("/pagination/elementsPerPage", authenticateJWT, async(_req, _res, _next) =>{
     try{
         const elementsPerPage = _req.body.elementsPerPage;
         const result = await mongoBookServ.updateElementsPerPage(elementsPerPage)

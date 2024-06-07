@@ -2,10 +2,14 @@ import { ChapterCard } from "./chapterCard"
 
 export const ChapterGrid: React.FC<{
     chapterList:any, 
-    bookData: any}> = ({
+    bookData: any
+    setChapterWasDeleted: any
+}> = ({
         chapterList,
-        bookData
+        bookData,
+        setChapterWasDeleted
     }) => {
+    
     return(
         <>
         <div className="center">
@@ -20,6 +24,7 @@ export const ChapterGrid: React.FC<{
                 description={chapter._description} 
                 wordcount={chapter._wordcount} 
                 pov = {chapter._pov}
+                setChapterWasDeleted={setChapterWasDeleted}
                 key={chapter._id + chapter._book_id + chapter._title}
                 />)}
             </div>

@@ -12,5 +12,6 @@ export const REGEX = {
     chapterTitle: /^.+$/,
     chapterDescription: /^.+$/,
     chapterWordCount: /^(?:[1-9]\d{0,4}|100000|[1-9])$/,
-    pov: /^.+$/
+    pov: /^.+$/,
+    chapterNumber: /^(?:[1-9]|[1-9]\d|[12]\d{2}|300)$/
 }

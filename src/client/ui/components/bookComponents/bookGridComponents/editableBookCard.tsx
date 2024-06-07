@@ -13,8 +13,13 @@ import React from "react";
 import axios from "axios";
 import { useGlobalState } from "../../../../../globalVariables.tsx";
 import ErrorComponent from "../../../../errorComponent.tsx";
+import { AccessComponent } from "../../../../accessComponent.tsx";
 export const EditableBookCard: React.FC<{}> = ({}) => {
     try {
+    const token = sessionStorage.getItem('token');
+    if(!token){
+        return <AccessComponent />
+    }
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -26,8 +31,7 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
     console.log("ALOO, am ID" + bookId.toString())
     const { 
         refreshFilterData,
-        setCurrentPageToBeginning,
-        refreshCurrentPage,
+        updateCurrentPage,
         refreshBookList} = useGlobalState();
     const [name, setName] = useState(location.state.bookData._title);
     const [description, setDescription] = useState(location.state.bookData._description);
@@ -67,6 +71,14 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
     const [canBeSaved, setCanBeSaved] = useState(false);
     let allFieldsAreValid  = false;
     let anyFieldIsDifferent = false;
+
+    useEffect(() => {
+        async function getChapterFormat(){
+            const chFormat = await axios.get("http://localhost:4000/mongoChapters/format/" + bookId)
+            setChapters(chFormat.data.chapterFormat)
+        }
+        getChapterFormat();
+    }, [])
     
     useEffect(() => {
         allFieldsAreValid = 
@@ -145,8 +157,7 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
                     shard: shard,
                     date: startDate
                     })
-                    setCurrentPageToBeginning();
-                    refreshCurrentPage();
+                    updateCurrentPage(1)
                     refreshBookList();
                     refreshFilterData();
                     navigate("/main");
@@ -157,7 +168,8 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
             if(canBeSaved) {
                 // if(rafoServ.containsBook(data) || rafoServ.isValidIdForNewBook(data))
                 {
-                    await axios.delete('http://localhost:4000/mongoBooks/' + bookId)
+                    console.log(token)
+                    await axios.delete('http://localhost:4000/mongoBooks/' + bookId, {headers: {Authorization: `${token}`}})
                     await axios.post('http://localhost:4000/mongoBooks', {
                     _id: bookId,
                     _title: name,
@@ -166,7 +178,7 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
                     _planet: planet,
                     _system: system,
                     _shard: shard,
-                    _startDate: startDate})
+                    _startDate: startDate}, {headers: {Authorization: `${token}`}})
                     refreshFilterData();
                     navigate("/main");
                 }
