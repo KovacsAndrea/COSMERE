@@ -19,7 +19,7 @@
     align-items: center;
     height: 100vh;
     width: 100%;
-    background-image: url("../../../../src/assets/photos/Cosmere.jpg");
+    background-image: url("../../../../assets/photos/Cosmere.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
