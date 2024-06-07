@@ -13,18 +13,12 @@ export const ChaptersOfBookPage: React.FC<{}> = ({}) => {
     console.log("HELLO FROM CHAPTER GRID PAGE" + bookData)
     const bookId = bookData._id;
     const [chapterList, setChapterList] = useState([]);
-    const [bookTitle, setBookTitle] = useState("")
     const {usingLocal} = useGlobalState();
     const [chapterWasDeleted, setChapterWasDeleted] = useState(false)
 
     useEffect(() => {
         async function useLocalData() {
-            axios.get("http://localhost:4000/chapters/" + bookId, {headers: {Authorization: `Bearer ${token}`}}). then(response => {
-                setChapterList(response.data.chapters);
-            })
-            axios.get("http://localhost:4000/books/" + bookId, {headers: {Authorization: `Bearer ${token}`}}). then(response => {
-                setBookTitle(response.data.book._title);
-            })
+            
         }
         async function useCloudData() {
             axios.get("http://localhost:4000/mongoChapters/" + bookId, {headers: {Authorization: `Bearer ${token}`}}). then(response => {

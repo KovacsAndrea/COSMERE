@@ -2,13 +2,14 @@ import React from 'react'
 import '../sortFilterChartComponent.css'
 import './chartComponent.css'
 
-export const StateOptions: React.FC<{stateType: any, setStateType: any, isConnected: any}> = ({stateType, setStateType, isConnected}) => {
+export const StateOptions: React.FC<{stateType: any, setStateType: any, isConnected: any}> = ({setStateType, isConnected}) => {
     const handleSelectServer = () => {
         setStateType("Server")
     }
     const handleSelectSocket = () => {
         setStateType("Socket")
     }
+    console.log(isConnected)
     return (
         <>
             <div className="choices-for-grid">

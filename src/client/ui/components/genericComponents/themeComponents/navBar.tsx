@@ -19,7 +19,6 @@ export const NavBar: React.FC<{
         refreshUser
      } = useGlobalState();
 
-    const token = sessionStorage.getItem('token')
     useEffect(() => {
         refreshUser();
     }, [])

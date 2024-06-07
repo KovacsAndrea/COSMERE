@@ -1,8 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './bookCard.css'
 import React from "react";
 import { Book } from '../../../../../server/core/model/book';
-import axios from 'axios';
 
 
 const BookCard: React.FC<{

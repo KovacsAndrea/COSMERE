@@ -18,7 +18,7 @@ export const SortComponent: React.FC<{
     const [sortIsOpen, setSortIsOpen] = useState(false);
     const [sortIsActive, setSortIsActive] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-
+    console.log(isLoading)
     const [sortCriteria, setSortCriteria] = useState<string>("")
     const [sortDirection, setSortDirection] = useState<number>(0)
 

@@ -41,14 +41,14 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
     const [shard, setShard] = useState(location.state.bookData._shard);
     const [startDate, setStartDate] = useState(location.state.bookData._startDate);
 
-    const [OGname, setOGName] = useState(location.state.bookData.title);
-    const [OGdescription, setOGDescription] = useState(location.state.bookData.description);
-    const [OGplanet, setOGPlanet] = useState(location.state.bookData.planet);
-    const [OGsystem, setOGSystem] = useState(location.state.bookData.system);
-    const [OGshard, setOGShard] = useState(location.state.bookData.shard);
-    const [OGstartDate, setOGStartDate] = useState(location.state.bookData.date);
+    const [OGname, _setOGName] = useState(location.state.bookData.title);
+    const [OGdescription, _setOGDescription] = useState(location.state.bookData.description);
+    const [OGplanet, _setOGPlanet] = useState(location.state.bookData.planet);
+    const [OGsystem, _setOGSystem] = useState(location.state.bookData.system);
+    const [OGshard, _setOGShard] = useState(location.state.bookData.shard);
+    const [OGstartDate, _setOGStartDate] = useState(location.state.bookData.date);
 
-    const [canBeDeleted, setCanBeDeleted] = useState(false);
+    const [canBeDeleted, _setCanBeDeleted] = useState(false);
 
     const {usingLocal } = useGlobalState();
 

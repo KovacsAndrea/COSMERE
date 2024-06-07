@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import './chapterComponentsStyle.css'
 import { useEffect, useRef, useState } from "react";
-import { adjustAreaHeight, adjustAreaHeightGrid, errorMessage, infoMessage, validateContent } from "../bookComponents/utils";
+import { adjustAreaHeight, errorMessage, infoMessage, validateContent } from "../bookComponents/utils";
 import { REGEX } from "../../../../server/core/dummyData/regex";
 import { IoCheckmarkCircle, IoInformationCircle } from "react-icons/io5";
 import { IoCloseCircle } from "react-icons/io5";
@@ -24,7 +24,6 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
     }
 
     try{
-    const bookId = location.state.editableChapterCardData.bookId
     const chapterId = location.state.editableChapterCardData.chapterId;
    
     const bookTitle = bookData._title
@@ -35,11 +34,11 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
     const [pov, setPov] = useState(location.state.editableChapterCardData.pov);
     const [chapterNumber, setChapterNumber] = useState(location.state.editableChapterCardData.chapterNumber);
 
-    const [OGtitle, setOGTitle] = useState(location.state.editableChapterCardData.title);
-    const [OGdescription, setOGDescription] = useState(location.state.editableChapterCardData.description);
-    const [OGwordcount, setOGWordcount] = useState(location.state.editableChapterCardData.wordcount);
-    const [OGpov, setOGPov] = useState(location.state.editableChapterCardData.pov);
-    const [OGchapterNumber, setOGChapterNumber] = useState(location.state.editableChapterCardData.chapterNumber);
+    const [OGtitle, _setOGTitle] = useState(location.state.editableChapterCardData.title);
+    const [OGdescription, _setOGDescription] = useState(location.state.editableChapterCardData.description);
+    const [OGwordcount, _setOGWordcount] = useState(location.state.editableChapterCardData.wordcount);
+    const [OGpov, _setOGPov] = useState(location.state.editableChapterCardData.pov);
+    const [OGchapterNumber, _setOGChapterNumber] = useState(location.state.editableChapterCardData.chapterNumber);
 
     const [titleValidator, setTitleValidator] = useState(false);
     const [descriptionValidator, setDescriptionValidator] = useState(false);

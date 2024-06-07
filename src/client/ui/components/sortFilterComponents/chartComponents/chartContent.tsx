@@ -33,7 +33,6 @@ export const ChartContent: React.FC<{}> = ({}) => {
     const [socketDateData, setSocketDateData] = useState<ChartElement[]>([]);
     const {usingLocal} = useGlobalState();
     const [isLoading, setIsLoading] = useState(true);
-    const [fetchedOnce, setFetchedOnce] = useState(false);
     
     useEffect(() => {
         if(usingLocal){useLocalData()} else {useCloudData()}

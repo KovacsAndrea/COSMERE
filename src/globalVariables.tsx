@@ -73,7 +73,6 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [usingLocal, setUsingLocal] = useState(false);
     const [bookList, setBookList] = useState([]);
     const [mongoBookList, setMongoBookList] = useState([]);
-    const [chapterList, setChapterList] = useState([]);
     
     
     const [planetData, setPlanetData] = useState<string[]>([]);
@@ -194,11 +193,7 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
             console.error('Error fetching backend data:', error);
             });
 
-        axios.get("http://localhost:4000/chapters").then( response => {
-            setChapterList(response.data.chapters);
-            }).catch (error => {
-            console.error('Error fetching backend data:', error);
-            }); 
+       
 
         
         refreshBookList();

@@ -1,24 +1,17 @@
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import './addButton.css'
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import axios from "axios";
 import { useGlobalState } from "../../../../../globalVariables";
 import { Book } from "../../../../../server/core/model/book";
 
 export const AddButton: React.FC<{link: string}> = ({link}) => {
-    const [newBookId, setNewBookID] = useState("-1");
     let bookData: Book;
     const {usingLocal} = useGlobalState()
     
     useEffect(() => {
         async function fetchNewBookId() {
             async function useLocalData() {
-                try {
-                    const response = await axios.get('http://localhost:4000/newId');
-                    setNewBookID(response.data.newId);
-                } catch (error) {
-                    console.error('Error fetching new book ID:', error);
-                }   
             }
             async function useCloudData() {
                 // try {

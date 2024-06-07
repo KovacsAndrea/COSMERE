@@ -41,7 +41,7 @@ export const RadioButton: React.FC<{
             console.log(sortCriteria);
             console.log(sortDirection)
         }
-       if(usingLocal){useCloudData()} else {useCloudData()}
+       if(usingLocal){useLocalData()} else {useCloudData()}
         
     }
 

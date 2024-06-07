@@ -24,7 +24,6 @@ function App() {
 
   const [sortShouldBeComputed, setSortShouldBeComputed] = useState(false);
   
-  const [paginationValue, setPaginationValue] = useState(-1)
   const [paginationShouldBeComputed, setPaginationShouldBeComputed] = useState(false)
 
   return(

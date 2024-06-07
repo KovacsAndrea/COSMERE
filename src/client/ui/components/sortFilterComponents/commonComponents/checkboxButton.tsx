@@ -1,7 +1,6 @@
-import axios from "axios";
+
 import React from "react";
 import { useEffect, useState } from "react";
-import { useGlobalState } from "../../../../../globalVariables";
 
 
 export const CheckboxButton: React.FC<{

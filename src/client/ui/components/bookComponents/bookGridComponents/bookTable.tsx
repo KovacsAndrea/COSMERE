@@ -40,13 +40,12 @@ const BookTable: React.FC<{
     const [deleteBook, setDeleteBook] = useState("")
     const [isLoading, setIsLoading] = useState(true);
     const { usingLocal } = useGlobalState();
+    console.log(searchText)
     const { 
         refreshFilterData, 
         refreshBookList, 
         updateCurrentPage,
         currentPage,
-        refreshCurrentElementsPerPage,
-        currentElementsPerPage,
      } = useGlobalState();
 
     useEffect(() => {
@@ -88,12 +87,6 @@ const BookTable: React.FC<{
             }).catch (error => {
             console.error('Error fetching backend data:', error);
             })
-        }
-
-        async function setCurrentPageToBeginning(){
-            console.log("pagination to beginning")
-            axios.patch("http://localhost:4000/pagination/current", {currentPage: 1})
-            updatePaginationButton();
         }
         
         if(searchShouldBeComputed){
@@ -250,6 +243,7 @@ export const BookGrid: React.FC<{ searchText: string,
 }) => {
     const [backendCurrentPage, setBackendCurrentPage] = useState(1);
     const [maxPageNr, setMaxPageNr] = useState(1);
+    console.log(maxPageNr)
     const { usingLocal } = useGlobalState();
     useEffect(() => {
         async function updatePaginationButton() {

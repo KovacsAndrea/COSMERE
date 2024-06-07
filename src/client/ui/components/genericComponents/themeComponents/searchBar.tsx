@@ -1,6 +1,6 @@
 import { FaSearch } from "react-icons/fa";
 import './searchBar.css'
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import React from "react";
 import axios from "axios";
 export const SearchBar: React.FC<{
