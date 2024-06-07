@@ -20,7 +20,7 @@
     margin: 20px;
     margin-bottom: var(--marginBottom);
     cursor: pointer;
-    background-image: url("../../../assets/photos/Metal.png");
+    background-image: url("../../../../assets/photos/Metal.png");
     background-size: contain;
     background-repeat: no-repeat;
     display: flex;
@@ -35,7 +35,7 @@
     margin: 20px;
     margin-bottom: var(--marginBottom);
     cursor: pointer;
-    background-image: url("../../../assets/photos/Iron.png");
+    background-image: url("../../../../assets/photos/Iron.png");
     background-size: contain;
     background-repeat: no-repeat;
     display: flex;
@@ -50,7 +50,7 @@
     margin: 20px;
     margin-bottom: var(--marginBottom);
     cursor: pointer;
-    background-image: url("../../../assets/photos/Steel.png");
+    background-image: url("../../../../assets/photos/Steel.png");
     background-size: contain;
     background-repeat: no-repeat;
     display: flex;
@@ -67,7 +67,7 @@
 
     margin-bottom: var(--marginBottom);
     cursor: pointer;
-    background-image: url("../../../assets/photos/Allomancyy.png");
+    background-image: url("../../../../assets/photos/Allomancyy.png");
     background-size: contain;
     background-repeat: no-repeat;
     display: flex;
@@ -291,7 +291,7 @@
     border-radius: 7px;
     box-shadow: var(--bookcardShadow);
     box-shadow: 0 4px 6px 0 rgb(71, 71, 71); 
-    background-image: url("../../../assets/photos/CrowReversed.jpg");
+    background-image: url("../../../../assets/photos/CrowReversed.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -311,7 +311,7 @@
     border-radius: 7px;
     box-shadow: var(--bookcardShadow);
     box-shadow: 0 4px 6px 0 rgb(71, 71, 71); 
-    background-image: url("../../../assets/photos/Crow.jpg");
+    background-image: url("../../../../assets/photos/Crow.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -332,7 +332,7 @@
     border-radius: 7px;
     box-shadow: var(--bookcardShadow);
     box-shadow: 0 4px 6px 0 rgb(71, 71, 71); 
-    background-image: url("../../../assets/photos/Sunlit.jpg");
+    background-image: url("../../../../assets/photos/Sunlit.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -352,7 +352,7 @@
     border-radius: 7px;
     box-shadow: var(--bookcardShadow);
     box-shadow: 0 4px 6px 0 rgb(71, 71, 71); 
-    background-image: url("../../../assets/photos/SunlitReversed.jpg");
+    background-image: url("../../../../assets/photos/SunlitReversed.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -372,7 +372,7 @@
     border-radius: 7px;
     box-shadow: var(--bookcardShadow);
     box-shadow: 0 4px 6px 0 rgb(71, 71, 71); 
-    background-image: url("../../../../src/assets/photos/Shantid.png");
+    background-image: url("../../../../assets/photos/Shantid.png");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -392,7 +392,7 @@
     border-radius: 7px;
     box-shadow: var(--bookcardShadow);
     box-shadow: 0 4px 6px 0 rgb(71, 71, 71); 
-    background-image: url("../../../../src/assets/photos/ShantidReversed.png");
+    background-image: url("../../../../assets/photos/ShantidReversed.png");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -413,7 +413,7 @@
     border-radius: 7px;
     box-shadow: var(--bookcardShadow);
     box-shadow: 0 4px 6px 0 rgb(71, 71, 71); 
-    background-image: url("../../../../src/assets/photos/Painter.jpg");
+    background-image: url("../../../../assets/photos/Painter.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -433,7 +433,7 @@
     border-radius: 7px;
     box-shadow: var(--bookcardShadow);
     box-shadow: 0 4px 6px 0 rgb(71, 71, 71); 
-    background-image: url("../../../../src/assets/photos/PainterReversed.jpg");
+    background-image: url("../../../../assets/photos/PainterReversed.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -490,7 +490,7 @@
     margin: auto;
     border-radius: 7px;
     padding-bottom: 30px;
-    background-image: url("../../../../src/assets/photos/Pattern.png");
+    background-image: url("../../../../assets/photos/Pattern.png");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
