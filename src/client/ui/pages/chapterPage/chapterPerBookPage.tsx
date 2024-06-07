@@ -15,13 +15,13 @@ export const ChaptersOfBookPage: React.FC<{}> = ({}) => {
     const [chapterList, setChapterList] = useState([]);
     const {usingLocal} = useGlobalState();
     const [chapterWasDeleted, setChapterWasDeleted] = useState(false)
-
+    const {cosmerePath} = useGlobalState()
     useEffect(() => {
         async function useLocalData() {
             
         }
         async function useCloudData() {
-            axios.get("http://localhost:4000/mongoChapters/" + bookId, {headers: {Authorization: `Bearer ${token}`}}). then(response => {
+            axios.get(cosmerePath + "/mongoChapters/" + bookId, {headers: {Authorization: `Bearer ${token}`}}). then(response => {
                 setChapterList(response.data.chaptersOfBook);
             })
         }
@@ -33,7 +33,7 @@ export const ChaptersOfBookPage: React.FC<{}> = ({}) => {
     useEffect(() => {
         console.log(chapterWasDeleted)
         if(chapterWasDeleted){
-            axios.get("http://localhost:4000/mongoChapters/" + bookId, {headers: {Authorization: `Bearer ${token}`}}). then(response => {
+            axios.get(cosmerePath + "/mongoChapters/" + bookId, {headers: {Authorization: `Bearer ${token}`}}). then(response => {
                 setChapterList(response.data.chaptersOfBook);
             })
             setChapterWasDeleted(false)

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './authPage.css';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalState } from '../../../../globalVariables';
 //import { token } from 'morgan';
 
 export const AuthPage: React.FC = () => {
@@ -14,13 +15,14 @@ export const AuthPage: React.FC = () => {
   const toggleAuthMode = () => {
     setIsLogin(!isLogin);
   };
+  const {cosmerePath} = useGlobalState()
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isLogin) {
       try{
         
-        const response = await axios.post('http://localhost:4000/mongoUsers/login', 
+        const response = await axios.post(cosmerePath + '/mongoUsers/login', 
         { _email: email, 
           _password: password });
 
@@ -47,7 +49,7 @@ export const AuthPage: React.FC = () => {
      
     } else {
       try{
-        const response = await axios.post('http://localhost:4000/mongoUsers/register', {  _username: username, _email: email, _password: password, });
+        const response = await axios.post(cosmerePath + '/mongoUsers/register', {  _username: username, _email: email, _password: password, });
           if(response.data.result.acknowledged){
           navigate("/main");
         }

@@ -39,7 +39,7 @@ const BookTable: React.FC<{
     const token = sessionStorage.getItem('token');
     const [deleteBook, setDeleteBook] = useState("")
     const [isLoading, setIsLoading] = useState(true);
-    const { usingLocal } = useGlobalState();
+    const { usingLocal, cosmerePath } = useGlobalState();
     console.log(searchText)
     const { 
         refreshFilterData, 
@@ -140,7 +140,7 @@ const BookTable: React.FC<{
         async function useCloudData() {
             setIsLoading(true)
             if(deleteBook.length != 0){
-                await axios.delete('http://localhost:4000/mongoBooks/' + deleteBook, {headers: {Authorization: `${token}`}})
+                await axios.delete(cosmerePath + '/mongoBooks/' + deleteBook, {headers: {Authorization: `${token}`}})
                 await refreshBookList();
                 await refreshFilterData();
                 await setDeleteBook("")

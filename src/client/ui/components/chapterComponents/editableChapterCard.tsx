@@ -9,11 +9,13 @@ import { IoChevronBackCircle } from "react-icons/io5";
 import { AccordionCArdComponent } from "../bookComponents/acordionCardComponent/accordionCardComponent";
 import ErrorComponent from "../../../errorComponent";
 import axios from "axios";
+import { useGlobalState } from "../../../../globalVariables";
 
 export const EditableChapterCard: React.FC<{}> = ({}) => {
     const token = sessionStorage.getItem('token');
     const location = useLocation();
     const navigate = useNavigate();
+    const {cosmerePath} = useGlobalState()
     const handleBackToBook = () => {
         navigate(`/details/${bookData._id}`, { state: { bookData } })
     }
@@ -130,8 +132,8 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
     
     const handleSave = async () => {
         if(canBeSaved){
-            await axios.delete("http://localhost:4000/mongoChapters/" + chapterId, {headers: {Authorization: `${token}`}})
-            await axios.post("http://localhost:4000/mongoChapters/", {
+            await axios.delete(cosmerePath + "/mongoChapters/" + chapterId, {headers: {Authorization: `${token}`}})
+            await axios.post(cosmerePath + "/mongoChapters/", {
                 _id: chapterId,
                 _book_id: bookData._id,
                 _chapter_number: chapterNumber,
@@ -152,7 +154,7 @@ export const EditableChapterCard: React.FC<{}> = ({}) => {
             let confirmation = window.confirm("Are you sure you want to delete book?")
 
             if(confirmation){
-                await axios.delete("http://localhost:4000/mongoChapters/" + chapterId, {headers: {Authorization: `${token}`}})
+                await axios.delete(cosmerePath + "/mongoChapters/" + chapterId, {headers: {Authorization: `${token}`}})
                 navigate(`/chapters/book/${bookData._id}`, { state: { bookData } })
             }
         }

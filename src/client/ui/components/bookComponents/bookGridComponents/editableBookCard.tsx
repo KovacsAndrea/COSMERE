@@ -32,7 +32,8 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
     const { 
         refreshFilterData,
         updateCurrentPage,
-        refreshBookList} = useGlobalState();
+        refreshBookList, 
+        cosmerePath} = useGlobalState();
     const [name, setName] = useState(location.state.bookData._title);
     const [description, setDescription] = useState(location.state.bookData._description);
     const [chapters, setChapters] = useState(location.state.bookData._chaptersFormat);
@@ -169,8 +170,8 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
                 // if(rafoServ.containsBook(data) || rafoServ.isValidIdForNewBook(data))
                 {
                     console.log(token)
-                    await axios.delete('http://localhost:4000/mongoBooks/' + bookId, {headers: {Authorization: `${token}`}})
-                    await axios.post('http://localhost:4000/mongoBooks', {
+                    await axios.delete(cosmerePath + '/mongoBooks/' + bookId, {headers: {Authorization: `${token}`}})
+                    await axios.post(cosmerePath + '/mongoBooks', {
                     _id: bookId,
                     _title: name,
                     _description: description,

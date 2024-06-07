@@ -12,9 +12,9 @@ async function checkInternetConnection(): Promise<boolean> {
     }
 }
 
-async function checkServerStatus(): Promise<boolean> {
+async function checkServerStatus(cosmerePath: string): Promise<boolean> {
     try {
-        const response = await fetch("http://localhost:4000/ping", { method: "GET" });
+        const response = await fetch(cosmerePath + "/ping", { method: "GET" });
         return response.ok;
     } catch (error) {
         return false;
@@ -22,7 +22,7 @@ async function checkServerStatus(): Promise<boolean> {
 }
 export const ConnectionStatus: React.FC<{}> = ({}) => {
     const { clientIsConnectedToInternet, setClientIsConnectedToInternet } = useGlobalState();
-    const { serverIsRunning, setServerIsRunning} = useGlobalState();
+    const { serverIsRunning, setServerIsRunning, cosmerePath} = useGlobalState();
     useEffect(() => {
         checkInternetConnection().then((connected) => {
             setClientIsConnectedToInternet(connected);
@@ -30,7 +30,7 @@ export const ConnectionStatus: React.FC<{}> = ({}) => {
     }, []);
     
     useEffect(() => {
-        checkServerStatus().then((connected) => {
+        checkServerStatus(cosmerePath).then((connected) => {
             setServerIsRunning(connected);
         });
     })

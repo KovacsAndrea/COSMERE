@@ -59,6 +59,7 @@ interface GlobalState {
     refreshCurrentElementsPerPage: () => void;
     updateCurrentElementsPerPage: (newElementsPerPage: number) => any;
     refreshBookViewLength: () => any;
+    cosmerePath: string
     
 }
 
@@ -94,10 +95,12 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [bookViewLength, setBookViewLength] = useState(0);
 
     const [user, setUser] = useState("")
+    const _renderedCosmerePath = "https://cosmerebackend.onrender.com"
+    //const _localCosmerePath = "http://localhost:4000"
 
-
+    const cosmerePath = _renderedCosmerePath
     const refreshBookList = () =>{
-      axios.get("http://localhost:4000/mongoBooks", {headers: {Authorization: `${token}`}}).then( response => {
+      axios.get(cosmerePath + "/mongoBooks", {headers: {Authorization: `${token}`}}).then( response => {
         setMongoBookList(response.data.books);
         }).catch (error => {
         console.error('Error fetching backend data:', error);
@@ -105,7 +108,7 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
     }
 
     const refreshFilterData = () => {
-      axios.get<{ filterData: FilterData }>("http://localhost:4000/mongoBooks/filter/data", {headers: {Authorization: `${token}`}})
+      axios.get<{ filterData: FilterData }>(cosmerePath + "/mongoBooks/filter/data", {headers: {Authorization: `${token}`}})
         .then(filterResponse => {
           console.log("FETCHING GFILTER DATA CURVELOR")
             const _filterData = filterResponse.data.filterData;
@@ -120,7 +123,7 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
   };
 
   const refreshCurrentFilterData = () => {
-    axios.get<{ currentFilterData: FilterData }>("http://localhost:4000/mongoBooks/filter/current/data", {headers: {Authorization: `${token}`}}).then(
+    axios.get<{ currentFilterData: FilterData }>(cosmerePath + "/mongoBooks/filter/current/data", {headers: {Authorization: `${token}`}}).then(
       currentFilterResponse => {
         const _currentFilterData = currentFilterResponse.data.currentFilterData;
                      
@@ -132,7 +135,7 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
   }
 
   const refreshCurrentSortData = () => {
-    axios.get<{ sortData: SortData }>("http://localhost:4000/mongoBooks/sort/current/data", {headers: {Authorization: `${token}`}}).then(
+    axios.get<{ sortData: SortData }>(cosmerePath + "/mongoBooks/sort/current/data", {headers: {Authorization: `${token}`}}).then(
       currentSortResponse => {
         setCurrentSortCriteria(currentSortResponse.data.sortData.criteria);
         setCurrentSortDirection(currentSortResponse.data.sortData.direction);
@@ -140,7 +143,7 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
   }
 
   const refreshCurrentPage = () => {
-    axios.get<{currentPage: number}>("http://localhost:4000/mongoBooks/pagination/currentPage", {headers: {Authorization: `${token}`}}).then(
+    axios.get<{currentPage: number}>(cosmerePath + "/mongoBooks/pagination/currentPage", {headers: {Authorization: `${token}`}}).then(
       currentPaginationResponse => {
         //console.log("REFRESHING CURRENT PAGE TO: " + currentPaginationResponse.data.currentPage)
         setCurrentPage(currentPaginationResponse.data.currentPage)
@@ -149,34 +152,34 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
   }
 
   const updateCurrentPage =  async (newCurrentPage: number) => {
-    await axios.patch("http://localhost:4000/mongoBooks/pagination/currentPage", {
+    await axios.patch(cosmerePath + "/mongoBooks/pagination/currentPage", {
       currentPage: newCurrentPage
     }, {headers: {Authorization: `Bearer ${token}`}})
-    const result = await axios.get<{currentPage: number}>("http://localhost:4000/mongoBooks/pagination/currentPage", {headers: {Authorization: `${token}`}})
+    const result = await axios.get<{currentPage: number}>(cosmerePath + "/mongoBooks/pagination/currentPage", {headers: {Authorization: `${token}`}})
     setCurrentPage(result.data.currentPage)
   }
 
   const refreshCurrentElementsPerPage = async () => {
-    const result = await axios.get<{elementsPerPage: number}>("http://localhost:4000/mongoBooks/pagination/elementsPerPage", {headers: {Authorization: `${token}`}})
+    const result = await axios.get<{elementsPerPage: number}>(cosmerePath + "/mongoBooks/pagination/elementsPerPage", {headers: {Authorization: `${token}`}})
     setCurrentElementsPerPage(result.data.elementsPerPage)
   }
 
   const updateCurrentElementsPerPage = async (newElementsPerPage: number) => {
-    await axios.patch("http://localhost:4000/mongoBooks/pagination/elementsPerPage", {
+    await axios.patch(cosmerePath + "/mongoBooks/pagination/elementsPerPage", {
       elementsPerPage: newElementsPerPage
     }, {headers: {Authorization: `Bearer ${token}`}})
-    const result = await axios.get<{elementsPerPage: number}>("http://localhost:4000/mongoBooks/pagination/elementsPerPage", {headers: {Authorization: `${token}`}})
+    const result = await axios.get<{elementsPerPage: number}>(cosmerePath + "/mongoBooks/pagination/elementsPerPage", {headers: {Authorization: `${token}`}})
     setCurrentElementsPerPage(result.data.elementsPerPage)
   }
 
   const refreshBookViewLength = async () => {
-    const result = await axios.get<{length: number}>("http://localhost:4000/mongoBooks/view/length", {headers: {Authorization: `${token}`}})
+    const result = await axios.get<{length: number}>(cosmerePath + "/mongoBooks/view/length", {headers: {Authorization: `${token}`}})
     setBookViewLength(result.data.length)
   }
 
   const refreshUser = async () => {
     const token = sessionStorage.getItem('token')
-    const user = await axios.get("http://localhost:4000/mongoUsers/auth", {
+    const user = await axios.get(cosmerePath + "/mongoUsers/auth", {
       params: {
         token: token
       }
@@ -187,7 +190,7 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
  
 
     useEffect(() => {
-        axios.get("http://localhost:4000/books/search/NONE").then( response => {
+        axios.get(cosmerePath + "/books/search/NONE").then( response => {
             setBookList(response.data.books);
             }).catch (error => {
             console.error('Error fetching backend data:', error);
@@ -261,7 +264,9 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
 
     user,
     setUser,
-    refreshUser
+    refreshUser,
+
+    cosmerePath
   };
 
   return (

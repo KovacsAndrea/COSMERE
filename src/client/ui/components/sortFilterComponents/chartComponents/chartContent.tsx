@@ -23,6 +23,7 @@ export const ChartContent: React.FC<{}> = ({}) => {
     const [backendDateData, setBackendDateData] = useState<ChartElement[]>([]);
     const URL = 'http://localhost:5000';
 
+    const {cosmerePath} = useGlobalState()
     const socket = io(URL, { reconnectionAttempts: 1 });
 
     const [socketIsConnected, setSocketIsConnected] = useState(socket.connected);
@@ -168,13 +169,13 @@ export const ChartContent: React.FC<{}> = ({}) => {
     useEffect (() => {
 
         async function useLocalData() {
-            axios.get("http://localhost:4000/chart/planets").then(
+            axios.get(cosmerePath + "/chart/planets").then(
                 result => {
                     setBackendPlanetData(result.data.chartData)
                 }
             ).catch(error => {console.error("Failed fetching chart data for planets", error)})
     
-            axios.get("http://localhost:4000/chart/systems")
+            axios.get(cosmerePath + "/chart/systems")
             .then(result => {
                 setBackendSystemData(result.data.chartData);
             })
@@ -182,7 +183,7 @@ export const ChartContent: React.FC<{}> = ({}) => {
                 console.error("Failed fetching chart data for systems", error);
             });
     
-            axios.get("http://localhost:4000/chart/shards")
+            axios.get(cosmerePath + "/chart/shards")
                 .then(result => {
                     setBackendShardData(result.data.chartData);
                 })
@@ -190,7 +191,7 @@ export const ChartContent: React.FC<{}> = ({}) => {
                     console.error("Failed fetching chart data for shards", error);
                 });
     
-            axios.get("http://localhost:4000/chart/dates")
+            axios.get(cosmerePath + "/chart/dates")
                 .then(result => {
                     setBackendDateData(result.data.chartData);
                 })
@@ -201,7 +202,7 @@ export const ChartContent: React.FC<{}> = ({}) => {
 
         async function useCloudData() {
             console.log("FETCHING CHART DATA")
-            const result = await axios.get<{chartData: ChartData}>("http://localhost:4000/mongoBooks/chart/data")
+            const result = await axios.get<{chartData: ChartData}>(cosmerePath + "/mongoBooks/chart/data")
             // After 2 seconds, set the fetched data and hide the loading indicator
             setBackendPlanetData(result.data.chartData.planets);
             setBackendSystemData(result.data.chartData.systems);

@@ -15,6 +15,7 @@ export const FilterComponent: React.FC<{
 ({
     setFilterShouldBeComputed
 }) => {
+    const {cosmerePath} = useGlobalState()
     const token = sessionStorage.getItem('token')
     const [filterIsOpen, setFilterIsOpen] = useState(false);
     const [filterIsActive, setFilterIsActive] = useState(false);
@@ -54,7 +55,7 @@ export const FilterComponent: React.FC<{
         async function useLocalData() {}
         async function useCloudData() {
             //fetching current data from database
-            const currentFilterResponse = await axios.get<{ currentFilterData: FilterData }>("http://localhost:4000/mongoBooks/filter/current/data");
+            const currentFilterResponse = await axios.get<{ currentFilterData: FilterData }>(cosmerePath + "/mongoBooks/filter/current/data");
             const _currentFilterData = currentFilterResponse.data.currentFilterData;
                         
             setCurrentPlanetData(_currentFilterData.planets);
@@ -105,7 +106,7 @@ export const FilterComponent: React.FC<{
                 {
                     //DO THE PATCH
                     console.log("||||||||||||||||||||||||| UPDATING THE FILTER CRITERIA |||||||||||||||||||||||||")
-                    const result = await axios.patch("http://localhost:4000/mongoBooks/filter/current/data", {
+                    const result = await axios.patch(cosmerePath + "/mongoBooks/filter/current/data", {
                         planetData: currentPlanetData,
                         systemData: currentSystemData,
                         shardData: currentShardData,

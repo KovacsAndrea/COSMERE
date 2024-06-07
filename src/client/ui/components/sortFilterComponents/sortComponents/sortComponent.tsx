@@ -14,6 +14,7 @@ export const SortComponent: React.FC<{
 }> = ({
     setSortShouldBeComputed
 }) => {
+    const {cosmerePath} = useGlobalState()
     const token = sessionStorage.getItem('token')
     const [sortIsOpen, setSortIsOpen] = useState(false);
     const [sortIsActive, setSortIsActive] = useState(false);
@@ -35,7 +36,7 @@ export const SortComponent: React.FC<{
 
         }
         async function useGlobalData(){
-            const sortResult = await axios.get<{sortData: SortData}>("http://localhost:4000/mongoBooks/sort/current/data")
+            const sortResult = await axios.get<{sortData: SortData}>(cosmerePath + "/mongoBooks/sort/current/data")
             setSortCriteria(sortResult.data.sortData.criteria)
             setSortDirection(sortResult.data.sortData.direction)
             setIsLoading(false);
@@ -62,7 +63,7 @@ export const SortComponent: React.FC<{
             if(sortCriteriaChanged || sortDirectionChanged){
                 console.log("|||||||||||||||||||||||||||| UPDATING SORT CRITERIA ||||||||||||||||||||||||||||")
                 
-                const result = await axios.patch("http://localhost:4000/mongoBooks/sort/current/data", {
+                const result = await axios.patch(cosmerePath + "/mongoBooks/sort/current/data", {
                 criteria : sortCriteria,
                 direction : sortDirection
                 },{headers: {Authorization: `${token}`}})
