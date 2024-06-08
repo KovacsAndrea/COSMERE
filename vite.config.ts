@@ -9,8 +9,7 @@ export default defineConfig({
     {
       ...copy({
         targets: [
-          { src: 'src/assets', dest: 'dist' },
-          { src: '_redirects', dest: 'dist' } 
+          { src: 'src/assets', dest: 'dist' }
         ],
         flatten: false,
         verbose: true,
