@@ -11,6 +11,7 @@
     margin-top: 80px;
     border-radius: 7px;
     justify-content: center;
+    z-index: 400;
 }
 
 .sort-component-wrapper{
@@ -26,6 +27,7 @@
     display: flex;
     justify-content: center; 
     align-items: center;
+    z-index: 400;
 }
 
 .filter-component-wrapper{
@@ -41,6 +43,7 @@
     display: flex;
     justify-content: center; 
     align-items: center;
+    z-index: 400;
 }
 
 .chart-component-wrapper{
@@ -56,6 +59,7 @@
     display: flex;
     justify-content: center; 
     align-items: center;
+    z-index: 400;
 }
 
 .pagination-component-wrapper{
@@ -132,7 +136,7 @@
     position: fixed;
     cursor: default;
     overflow-y: auto;
-    z-index: 9999;
+    z-index: 500;
 }
 
 .overlay{

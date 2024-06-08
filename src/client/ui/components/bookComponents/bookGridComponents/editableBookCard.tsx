@@ -193,6 +193,8 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
                         _system: system,
                         _shard: shard,
                         _startDate: startDate}, {headers: {Authorization: `${token}`}})
+                        updateCurrentPage(1)
+                        refreshBookList();
                         refreshFilterData();
                         navigate("/main");
                     }

@@ -60,17 +60,25 @@ export const SortComponent: React.FC<{
             const sortCriteriaChanged = sortCriteria.toString() != currentSortCriteria.toString();
             const sortDirectionChanged = sortDirection.toString() != currentSortDirection.toString();
 
-            if(sortCriteriaChanged || sortDirectionChanged){
-                console.log("|||||||||||||||||||||||||||| UPDATING SORT CRITERIA ||||||||||||||||||||||||||||")
-                
-                const result = await axios.patch(cosmerePath + "/mongoBooks/sort/current/data", {
-                criteria : sortCriteria,
-                direction : sortDirection
-                },{headers: {Authorization: `${token}`}})
-                if(result.data.modifiedCount<1){ alert("SOMETHING WENT WRONG. PLESE TRY AGAIN")}
-                refreshCurrentSortData();
-                setSortShouldBeComputed(true);
+            try{
+                if(sortCriteriaChanged || sortDirectionChanged){
+                    console.log("|||||||||||||||||||||||||||| UPDATING SORT CRITERIA ||||||||||||||||||||||||||||")
+                    
+                    const result = await axios.patch(cosmerePath + "/mongoBooks/sort/current/data", {
+                    criteria : sortCriteria,
+                    direction : sortDirection
+                    },{headers: {Authorization: `${token}`}})
+                    if(result.data.modifiedCount<1){ alert("SOMETHING WENT WRONG. PLESE TRY AGAIN")}
+                    refreshCurrentSortData();
+                    setSortShouldBeComputed(true);
+                }
+            }catch(error){
+                    alert(error.response.data.error)
+                    setSortCriteria(currentSortCriteria)
+                    setSortDirection(currentSortDirection)
+
             }
+            
             
         }
         if(usingLocal) {modifyAccordingToLocalChanges()} else {modifyAccordingToGlobalChanges()};

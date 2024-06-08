@@ -66,10 +66,10 @@ export const ChartContent: React.FC<{}> = ({}) => {
             socket.on('connect', onConnect);
             socket.on('disconnect', onDisconnect);
             const interval = 1000;
-            let planetInterval: NodeJS.Timeout | null = null;
-            let systemInterval: NodeJS.Timeout | null = null;
-            let shardInterval: NodeJS.Timeout | null = null;
-            let dateInterval: NodeJS.Timeout | null = null;
+            let planetInterval= null;
+            let systemInterval= null;
+            let shardInterval= null;
+            let dateInterval = null;
         
             if (stateType === "Socket") {
                 socket.connect();

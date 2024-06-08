@@ -46,9 +46,13 @@ interface GlobalState {
     bookViewLength: number;
     setBookViewLength: React.Dispatch<React.SetStateAction<number>>
 
-    user: string;
-    setUser: React.Dispatch<React.SetStateAction<string>>;
+    user: any;
+    setUser: React.Dispatch<React.SetStateAction<any>>;
     refreshUser: () => any;
+
+    userList: any;
+    setUserList: React.Dispatch<React.SetStateAction<any>>;
+    refreshUserList: () => any;
 
     refreshBookList: () => void;
     refreshFilterData: () => void;
@@ -95,10 +99,12 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [bookViewLength, setBookViewLength] = useState(0);
 
     const [user, setUser] = useState("")
-    const _renderedCosmerePath = "https://cosmerebackend.onrender.com"
-    //const _localCosmerePath = "http://localhost:4000"
+    const [userList, setUserList] = useState([])
 
-    const cosmerePath = _renderedCosmerePath
+    //const _renderedCosmerePath = "https://cosmerebackend.onrender.com"
+    const _localCosmerePath = "http://localhost:4000"
+
+    const cosmerePath = _localCosmerePath
     const refreshBookList = () =>{
       axios.get(cosmerePath + "/mongoBooks", {headers: {Authorization: `${token}`}}).then( response => {
         setMongoBookList(response.data.books);
@@ -179,12 +185,13 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
 
   const refreshUser = async () => {
     const token = sessionStorage.getItem('token')
-    const user = await axios.get(cosmerePath + "/mongoUsers/auth", {
-      params: {
-        token: token
-      }
-    })
-    setUser(user.data.decoded.email)
+    const user = await axios.get(cosmerePath + "/mongoUsers/user",  {headers: {Authorization: `${token}`}})
+    setUser(user.data.user)
+  }
+
+  const refreshUserList = async () => {
+    const result = await axios.get(cosmerePath + "/mongoUsers/list")
+    setUserList(result.data.userList)
   }
 
  
@@ -206,6 +213,9 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
         refreshCurrentElementsPerPage();
         updateCurrentPage(1);
         refreshUser();
+        refreshUserList();
+
+        
         }, []);
 
   const state: GlobalState = {
@@ -265,6 +275,10 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
     user,
     setUser,
     refreshUser,
+
+    userList, 
+    setUserList,
+    refreshUserList,
 
     cosmerePath
   };

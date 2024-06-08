@@ -22,7 +22,7 @@ export const SortContent: React.FC <{
     const startDateCategory = "_startDate"
     
     let directions = [1, -1];
-    const sortingIsCurrentlyDisabled = true;
+    const sortingIsCurrentlyDisabled = false;
 
     const clearSort = () => {
         setSortCriteria("");

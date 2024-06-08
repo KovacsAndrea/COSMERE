@@ -11,6 +11,7 @@ import { ChapterDetailPage } from './client/ui/pages/chapterPage/chapterDetailPa
 import { ChaptersOfBookPage } from './client/ui/pages/chapterPage/chapterPerBookPage';
 import { GlobalStateProvider} from './globalVariables';
 import { AuthPage } from './client/ui/pages/authPage/authPage';
+import { ProfilePage } from './client/ui/pages/profilePage/profilePage';
 
 
 export const backendPath = "http://localhost:4000/"
@@ -54,6 +55,7 @@ function App() {
         <Route path="/chapters" element={<ChapterPage />}/>
         <Route path="/chapters/*" element={<ChapterDetailPage />}/>
         <Route path='/chapters/book/*' element = {<ChaptersOfBookPage />} />
+        <Route path='/profile' element = {<ProfilePage />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
       </Theme>
