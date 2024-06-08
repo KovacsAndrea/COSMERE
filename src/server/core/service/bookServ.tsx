@@ -21,7 +21,7 @@ export class BookServ implements BookIServ{
     private sortCriteria;
     private sortDirection;
     private editedBookListLength;
-    private intervalGeneration: NodeJS.Timeout | null;
+    private intervalGeneration: NodeJS.Timer;
     
     constructor(rafoRepo: BookRepo){
         this.rafoRepo = rafoRepo;
@@ -41,12 +41,12 @@ export class BookServ implements BookIServ{
     }
 
     public setupGenerating(){
-        const book = this.generateRandomBook();
-        this.addBook(book)
-        this.intervalGeneration = setInterval(() => {
-            const book = this.generateRandomBook();
-            this.addBook(book)
-        }, 500);
+        // const book = this.generateRandomBook();
+        // this.addBook(book)
+        // this.intervalGeneration = setInterval(() => {
+        //     const book = this.generateRandomBook();
+        //     this.addBook(book)
+        // }, 500);
     }
 
     public tearDownGeneration(){
