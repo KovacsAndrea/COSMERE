@@ -49,7 +49,7 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
     const [OGshard, _setOGShard] = useState(location.state.bookData.shard);
     const [OGstartDate, _setOGStartDate] = useState(location.state.bookData.date);
 
-    const [canBeDeleted, _setCanBeDeleted] = useState(false);
+    const [canBeDeleted, setCanBeDeleted] = useState(false);
 
     const {usingLocal } = useGlobalState();
 
@@ -78,7 +78,14 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
             const chFormat = await axios.get("http://localhost:4000/mongoChapters/format/" + bookId)
             setChapters(chFormat.data.chapterFormat)
         }
+        async function handleCanBeDeleted(){
+            const bookExists = await axios.get(cosmerePath + '/mongoBooks/' + bookId)
+            console.log("BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOK")
+            console.log(bookExists.data.book)
+            if(bookExists.data.book){setCanBeDeleted(true)}
+        }
         getChapterFormat();
+        handleCanBeDeleted();
     }, [])
     
     useEffect(() => {
@@ -131,8 +138,13 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
             if(canBeDeleted){
                 let confirmation = window.confirm("Sure you want to delete this?");
                 if(confirmation){
-                    await axios.delete('http://localhost:4000/mongoBooks/' + bookId)
-                    navigate("/main");
+                    try{
+                        await axios.delete(cosmerePath + '/mongoBooks/' + bookId, {headers: {Authorization: `${token}`}})
+                        navigate("/main");
+                    }
+                    catch(error){
+                        alert(error.response.data.error)
+                    }
                 }
             }
             console.log(" -----------USING CLOUD DATA -----------")
@@ -169,19 +181,25 @@ export const EditableBookCard: React.FC<{}> = ({}) => {
             if(canBeSaved) {
                 // if(rafoServ.containsBook(data) || rafoServ.isValidIdForNewBook(data))
                 {
-                    console.log(token)
-                    await axios.delete(cosmerePath + '/mongoBooks/' + bookId, {headers: {Authorization: `${token}`}})
-                    await axios.post(cosmerePath + '/mongoBooks', {
-                    _id: bookId,
-                    _title: name,
-                    _description: description,
-                    chaptersFormat: chapters,
-                    _planet: planet,
-                    _system: system,
-                    _shard: shard,
-                    _startDate: startDate}, {headers: {Authorization: `${token}`}})
-                    refreshFilterData();
-                    navigate("/main");
+                    try{
+                        console.log(token)
+                        await axios.delete(cosmerePath + '/mongoBooks/' + bookId, {headers: {Authorization: `${token}`}})
+                        await axios.post(cosmerePath + '/mongoBooks', {
+                        _id: bookId,
+                        _title: name,
+                        _description: description,
+                        chaptersFormat: chapters,
+                        _planet: planet,
+                        _system: system,
+                        _shard: shard,
+                        _startDate: startDate}, {headers: {Authorization: `${token}`}})
+                        refreshFilterData();
+                        navigate("/main");
+                    }
+                    catch(error){
+                        alert(error.response.data.error)
+                    }
+                    
                 }
             } 
         }

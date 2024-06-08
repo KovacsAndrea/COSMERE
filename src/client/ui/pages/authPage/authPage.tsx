@@ -28,7 +28,7 @@ export const AuthPage: React.FC = () => {
 
         
         console.log(response.data.token)
-         if(response.data.token){
+        if(response.data.token){
           console.log(response.data)
           sessionStorage.setItem('token', response.data.token);
           navigate("/main");
@@ -51,7 +51,13 @@ export const AuthPage: React.FC = () => {
       try{
         const response = await axios.post(cosmerePath + '/mongoUsers/register', {  _username: username, _email: email, _password: password, });
           if(response.data.result.acknowledged){
-          navigate("/main");
+            const response = await axios.post(cosmerePath + '/mongoUsers/login', { _email: email, _password: password });
+            if(response.data.token){
+              console.log(response.data)
+              sessionStorage.setItem('token', response.data.token);
+              navigate("/main");
+            }
+            navigate("/main");
         }
       }
       catch(error) {

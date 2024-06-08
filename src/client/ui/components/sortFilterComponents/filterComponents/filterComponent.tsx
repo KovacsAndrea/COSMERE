@@ -106,19 +106,40 @@ export const FilterComponent: React.FC<{
                 {
                     //DO THE PATCH
                     console.log("||||||||||||||||||||||||| UPDATING THE FILTER CRITERIA |||||||||||||||||||||||||")
-                    const result = await axios.patch(cosmerePath + "/mongoBooks/filter/current/data", {
-                        planetData: currentPlanetData,
-                        systemData: currentSystemData,
-                        shardData: currentShardData,
-                        dateData: currentDateData
-                    }, {headers: {Authorization: `${token}`}})
-                    if(result.data.modifiedCount<1){ alert("SOMETHING WENT WRONG. PLESE TRY AGAIN")}
-                    //do GET form DB and update currentFilter____Data to the current
-                    //we do this, and NOT set the currentFilter____Data without a GET 
-                    //because we don't want to proceed without being absolutely sure 
-                    //that what we have in currentFilter____Data is EXACTLY what we have in the DB
-                    refreshCurrentFilterData();
-                    setFilterShouldBeComputed(true); 
+                    try{
+                        const result = await axios.patch(cosmerePath + "/mongoBooks/filter/current/data", {
+                            planetData: currentPlanetData,
+                            systemData: currentSystemData,
+                            shardData: currentShardData,
+                            dateData: currentDateData
+                        }, {headers: {Authorization: `${token}`}})
+                        if(result.data.modifiedCount<1){ alert("SOMETHING WENT WRONG. PLESE TRY AGAIN")}
+                        //do GET form DB and update currentFilter____Data to the current
+                        //we do this, and NOT set the currentFilter____Data without a GET 
+                        //because we don't want to proceed without being absolutely sure 
+                        //that what we have in currentFilter____Data is EXACTLY what we have in the DB
+                        refreshCurrentFilterData();
+                        setFilterShouldBeComputed(true); 
+                    }catch(error){
+                        setCurrentPlanetData(currentFilterPlanetData)
+                        setCurrentSystemData(currentFilterSystemData)
+                        setCurrentShardData(currentFilterShardData)
+                        setCurrentDateData(currentFilterDateData)
+                        alert(error.response.data.error)
+                    }
+                    // const result = await axios.patch(cosmerePath + "/mongoBooks/filter/current/data", {
+                    //     planetData: currentPlanetData,
+                    //     systemData: currentSystemData,
+                    //     shardData: currentShardData,
+                    //     dateData: currentDateData
+                    // }, {headers: {Authorization: `${token}`}})
+                    // if(result.data.modifiedCount<1){ alert("SOMETHING WENT WRONG. PLESE TRY AGAIN")}
+                    // //do GET form DB and update currentFilter____Data to the current
+                    // //we do this, and NOT set the currentFilter____Data without a GET 
+                    // //because we don't want to proceed without being absolutely sure 
+                    // //that what we have in currentFilter____Data is EXACTLY what we have in the DB
+                    // refreshCurrentFilterData();
+                    // setFilterShouldBeComputed(true); 
                 }
         }
         if(usingLocal) {modifyAccordingToLocalChanges()} else {modifyAccordingToGlobalChanges()};

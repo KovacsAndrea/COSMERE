@@ -140,7 +140,11 @@ const BookTable: React.FC<{
         async function useCloudData() {
             setIsLoading(true)
             if(deleteBook.length != 0){
-                await axios.delete(cosmerePath + '/mongoBooks/' + deleteBook, {headers: {Authorization: `${token}`}})
+                try{
+                    await axios.delete(cosmerePath + '/mongoBooks/' + deleteBook, {headers: {Authorization: `${token}`}})
+                }catch(error){
+                        alert(error.response.data.error)
+                }
                 await refreshBookList();
                 await refreshFilterData();
                 await setDeleteBook("")
