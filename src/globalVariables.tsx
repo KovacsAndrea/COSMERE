@@ -101,10 +101,10 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [user, setUser] = useState("")
     const [userList, setUserList] = useState([])
 
-    //const _renderedCosmerePath = "https://cosmerebackend.onrender.com"
-    const _localCosmerePath = "http://localhost:4000"
+    const _renderedCosmerePath = "https://cosmerebackend.onrender.com"
+    //const _localCosmerePath = "http://localhost:4000"
 
-    const cosmerePath = _localCosmerePath
+    const cosmerePath = _renderedCosmerePath
     const refreshBookList = () =>{
       axios.get(cosmerePath + "/mongoBooks", {headers: {Authorization: `${token}`}}).then( response => {
         setMongoBookList(response.data.books);
@@ -215,7 +215,7 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
         refreshUser();
         refreshUserList();
 
-        
+
         }, []);
 
   const state: GlobalState = {
