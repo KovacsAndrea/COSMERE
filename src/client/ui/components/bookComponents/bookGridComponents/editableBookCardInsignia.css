@@ -14,7 +14,7 @@
     width: 100px;
     height: 400px;
     margin-top:120px;
-    background-image: url("../../../../src/assets/photos/ShallanCutReversed.jpg");
+    background-image: url("../../../../../assets/photos/ShallanCutReversed.jpg");
     background-position: left;
     background-repeat: no-repeat;
     background-size: cover;
@@ -27,7 +27,7 @@
     width: 150px;
     height: 500px;
     margin-top:120px;
-    background-image: url("../../../../src/assets/photos/ShallanCutReversed.jpg");
+    background-image: url("../../../../../assets/photos/ShallanCutReversed.jpg");
     background-position: right;
     background-repeat: no-repeat;
     background-size: cover;
@@ -40,7 +40,7 @@
     width:150px;
     height: 500px;
     margin-top:120px;
-    background-image: url("../../../../src/assets/photos/ShallanCut.jpg");
+    background-image: url("../../../../../assets/photos/ShallanCut.jpg");
     background-position: left;
     background-repeat: no-repeat;
     background-size: cover;
@@ -53,7 +53,7 @@
     width: 100px;
     height: 400px;
     margin-top:120px;
-    background-image: url("../../../../src/assets/photos/ShallanCut.jpg");
+    background-image: url("../../../../../assets/photos/ShallanCut.jpg");
     background-position: right;
     background-repeat: no-repeat;
     background-size: cover;
